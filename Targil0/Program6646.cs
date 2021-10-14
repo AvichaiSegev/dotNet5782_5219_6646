@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Targil0
 {
-    partial class Program6646
+    partial class Program
     {
-        static void Main()
+        static partial void Welcome6646()
         {
             Console.WriteLine("HooHoo!");
         }
