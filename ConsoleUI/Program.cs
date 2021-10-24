@@ -4,6 +4,7 @@ namespace ConsoleUI
 {
     class Program
     {
+        //function for
         static int options(string text)
         {
             int Choice;
