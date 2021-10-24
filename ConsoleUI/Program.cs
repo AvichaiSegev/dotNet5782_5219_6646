@@ -4,19 +4,25 @@ namespace ConsoleUI
 {
     class Program
     {
+        static int MainMenu()
+        {
+            int firstChoice;
+            Console.WriteLine("Welcome to our program!\n=====Choose one of the follow options:=====");
+            Console.WriteLine("1. Insert options.");
+            Console.WriteLine("2. Update options.");
+            Console.WriteLine("3. Display options.");
+            Console.WriteLine("4. List view options.");
+            Console.WriteLine("5. Exit.");
+            int.TryParse(Console.ReadLine(), out firstChoice);
+            return firstChoice;
+        }
         static void Main(string[] args)
         {
-            int FirstChoice = 0, SecondChoice = 0;
-            while (FirstChoice != 5)
+            int firstChoice = 0, secondChoice = 0;
+            while (firstChoice != 5)
             {
-                Console.WriteLine("Welcome to our program!\n=====Choose one of the follow options:=====");
-                Console.WriteLine("1. Insert options.");
-                Console.WriteLine("2. Update options.");
-                Console.WriteLine("3. Display options.");
-                Console.WriteLine("4. List view options.");
-                Console.WriteLine("5. Exit.");
-                int.TryParse(Console.ReadLine(), out FirstChoice);
-                switch (FirstChoice)
+                firstChoice = MainMenu();
+                switch (firstChoice)
                 {
                     case 1:
                         Console.WriteLine("=====Insert options=====");
@@ -24,7 +30,7 @@ namespace ConsoleUI
                         Console.WriteLine("2. Add a drone to the list of existing drones.");
                         Console.WriteLine("3. Addition of a new customer to the customer list.");
                         Console.WriteLine("4. Receipt of package for shipment.");
-                        int.TryParse(Console.ReadLine(), out SecondChoice);
+                        int.TryParse(Console.ReadLine(), out secondChoice);
                         break;
                     case 2:
                         Console.WriteLine("=====Update options=====");
@@ -33,7 +39,7 @@ namespace ConsoleUI
                         Console.WriteLine("3. Delivery package to customer.");
                         Console.WriteLine("4. Sending a drone for charging at a base station.");
                         Console.WriteLine("5. Release drone from charging at base station.");
-                        int.TryParse(Console.ReadLine(), out SecondChoice);
+                        int.TryParse(Console.ReadLine(), out secondChoice);
                         break;
                     case 3:
                         Console.WriteLine("=====Display options=====");
@@ -41,7 +47,7 @@ namespace ConsoleUI
                         Console.WriteLine("2. Drone view.");
                         Console.WriteLine("3. Customer view.");
                         Console.WriteLine("4. Package view.");
-                        int.TryParse(Console.ReadLine(), out SecondChoice);
+                        int.TryParse(Console.ReadLine(), out secondChoice);
                         break;
                     case 4:
                         Console.WriteLine("=====List view options=====");
@@ -56,7 +62,6 @@ namespace ConsoleUI
                         break;
                 }
             }
-
         }
     }
 }
