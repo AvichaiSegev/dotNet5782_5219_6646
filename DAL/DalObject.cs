@@ -21,10 +21,22 @@ namespace DAL
             }
             static internal void Initialize()
             {
-                for (int i = 0; i < 2; ++i){ StationList.Add(new Station { Id = 0, ChargeSlots = 0, Name = 2, Longitude = 2, Lattitude = 2 }); }
-                //for (int i = 0; i < length; i++)
+                Random r = new Random();
+                for (int i = 0; i < 2; ++i)
                 {
-
+                    StationList.Add(new Station { Id = i, ChargeSlots = r.Next(10), Name = i, Longitude = i, Lattitude = i });
+                }
+                for (int i = 0; i < 5; i++)
+                {
+                    DroneList.Add(new Drone { Id = i, Model = "Model", Battery = r.Next(), MaxWeight = , Status =  }) ;
+                }
+                for (int i = 0; i < 10; i++)
+                {
+                    CostumerList.Add(new Costumer { Id = i, Name = "Costumer " + i, Phone = "050" + i + i + i + i + i + i + i, Longitude = i, Lattitude = i}) ;
+                }
+                for (int i = 0; i < 10; i++)
+                {
+                    ParcelList.Add(new Parcel { Id = i, SenderId = r.Next(10), TargetId = r.Next(10), DroneID = r.Next(5), Requested = , Scheduled = , PickedUp = , Delivered = , Priority = , Weight =  }) ;
                 }
             }
         }
