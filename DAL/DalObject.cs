@@ -15,6 +15,7 @@ namespace DAL
             static internal List<Station> StationList = new List<Station>();
             static internal List<Costumer> CostumerList = new List<Costumer>();
             static internal List<Parcel> ParcelList = new List<Parcel>();
+            static internal List<DroneCharge> DroneChargeList = new List<DroneCharge>();
             static DataSource() => Initialize();
             static internal void Initialize()
             {
@@ -25,11 +26,11 @@ namespace DAL
                 }
                 for (int i = 0; i < 5; i++)
                 {
-                    DroneList.Add(new Drone { Id = i, Model = "Model", Battery = r.Next(), MaxWeight = WeightCategories.light, Status = DroneStatuses.shipment }) ;
+                    DroneList.Add(new Drone { Id = i, Model = "Model", Battery = r.Next(), MaxWeight = WeightCategories.light, Status = DroneStatuses.available }) ;
                 }
                 for (int i = 0; i < 10; i++)
                 {
-                    CostumerList.Add(new Costumer { Id = i, Name = "Costumer " + i, Phone = "05" + i + i + i + i + i + i + i + i, Longitude = i, Lattitude = i}) ;
+                    CostumerList.Add(new Costumer { Id = i, Name = "Costumer " + i, Phone = "0" + i + i + i + i + i + i + i + i + i, Longitude = i, Lattitude = i}) ;
                 }
                 for (int i = 0; i < 10; i++)
                 {
@@ -41,7 +42,6 @@ namespace DAL
                 static internal int IDParcel;
             }
         }
-
         public class DalObject
         {
             public DalObject(){ DataSource.Initialize(); }
@@ -73,6 +73,83 @@ namespace DAL
             static public void AddStation(int stationId, int stationName, double stationLongitude, double stationLattitude, int chargeSlots) { DataSource.StationList.Add(new Station { Id = stationId, Name = stationName, Longitude = stationLongitude, Lattitude = stationLattitude, ChargeSlots = chargeSlots }); }
             static public void AddDrone(int droneId, string droneModel, WeightCategories droneMaxWeight, DroneStatuses droneStatus, double droneBattery) { DataSource.DroneList.Add(new Drone { Id = droneId, Model = droneModel, MaxWeight = droneMaxWeight, Status = droneStatus, Battery = droneBattery }); }
             static public void AddCostumer(int costumerId, string costumerName, string costumerPhone, double costumerLongitude, double costumerLattitude) { DataSource.CostumerList.Add(new Costumer { Id = costumerId, Name = costumerName, Phone = costumerPhone, Longitude = costumerLongitude, Lattitude = costumerLattitude }); }
+            static public void AddParcel(int parcelId, int senderId, int targetId, WeightCategories parcelWeight, Priorities priority) { DataSource.ParcelList.Add(new Parcel { Id = parcelId, SenderId = senderId, TargetId = targetId, Weight = parcelWeight, Priority = priority, Requested = DateTime.Now }); }
+            static public void schedule(int parcelId)
+            {
+                Parcel theParcel = new Parcel();
+                Drone theDrone = new Drone();
+                foreach (Parcel item in DataSource.ParcelList){ if (parcelId == item.Id) { theParcel = item; } }
+                foreach (Drone item in DataSource.DroneList)
+                {
+                    if (item.MaxWeight >= theParcel.Weight && item.Status == DroneStatuses.available)
+                    {
+                        theDrone = item;
+                        int parcelIndex = DataSource.ParcelList.IndexOf(theParcel);
+                        int droneIndex = DataSource.DroneList.IndexOf(theDrone);
+                        theDrone.Status = DroneStatuses.shipment;
+                        theParcel.Scheduled = DateTime.Now;
+                        theParcel.DroneId = item.Id;
+                        DataSource.ParcelList[parcelIndex] = theParcel;
+                        DataSource.DroneList[droneIndex] = theDrone;
+                        break;
+                    }
+                }
+            }
+            static public void pickUp(int parcelId)
+            {
+                Parcel theParcel = new Parcel();
+                foreach (Parcel item in DataSource.ParcelList) { if (parcelId == item.Id) { theParcel = item; } }
+                int parcelIndex = DataSource.ParcelList.IndexOf(theParcel);
+                theParcel.PickedUp = DateTime.Now;
+                DataSource.ParcelList[parcelIndex] = theParcel;
+            }
+            static public void deliver(int parcelId)
+            {
+                Parcel theParcel = new Parcel();
+                Drone theDrone = new Drone();
+                foreach (Parcel item in DataSource.ParcelList) { if (parcelId == item.Id) { theParcel = item; } }
+                foreach (Drone item in DataSource.DroneList) { if (theParcel.DroneId == item.Id) { theDrone = item; } }
+                int parcelIndex = DataSource.ParcelList.IndexOf(theParcel);
+                int droneIndex = DataSource.DroneList.IndexOf(theDrone);
+                theParcel.Delivered = DateTime.Now;
+                theDrone.Status = DroneStatuses.available;
+                DataSource.ParcelList[parcelIndex] = theParcel;
+                DataSource.DroneList[droneIndex] = theDrone;
+            }
+            static public void charge(int droneId, int stationId)
+            {
+                Station theStation = new Station();
+                Drone theDrone = new Drone();
+                foreach (Station item in DataSource.StationList) { if (item.Id == stationId) { theStation = item; } }
+                foreach (Drone item in DataSource.DroneList) { if(item.Id == droneId){ theDrone = item; } }
+                int stationIndex = DataSource.StationList.IndexOf(theStation);
+                int droneIndex = DataSource.DroneList.IndexOf(theDrone);
+                theStation.ChargeSlots-=1;
+                theDrone.Status = DroneStatuses.maintenance;
+                DataSource.StationList[stationIndex] = theStation;
+                DataSource.DroneList[droneIndex] = theDrone;
+                DataSource.DroneChargeList.Add(new DroneCharge { Droneld = droneId, Stationld = stationId });
+            }
+            static public void unCharge(int droneId)
+            {
+                Station theStation = new Station();
+                Drone theDrone = new Drone();
+                foreach (Drone item in DataSource.DroneList) { if (item.Id == droneId) { theDrone = item; } }
+                foreach (Station item1 in DataSource.StationList)
+                {
+                    foreach (DroneCharge item2 in DataSource.DroneChargeList)
+                    {
+                        if (item1.Id == item2.Stationld) { theStation = item1; DataSource.DroneChargeList.Remove(item2); }
+                        break;
+                    }
+                }
+                int stationIndex = DataSource.StationList.IndexOf(theStation);
+                int droneIndex = DataSource.DroneList.IndexOf(theDrone);
+                theStation.ChargeSlots += 1;
+                theDrone.Status = DroneStatuses.available;
+                DataSource.StationList[stationIndex] = theStation;
+                DataSource.DroneList[droneIndex] = theDrone;
+            }
         }
     }
 }

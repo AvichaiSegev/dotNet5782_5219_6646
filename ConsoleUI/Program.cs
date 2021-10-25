@@ -17,14 +17,14 @@ namespace ConsoleUI
         public static void Main(string[] args)
         {
             int firstChoice = 0, secondChoice = 0;
-            int stationId, droneId, costumerId, parcelId;
+            int stationId, droneId, costumerId, parcelId, senderId = 0, targetId = 0;
             int stationName = 0, chargeSlots = 0;
-            string droneStatusString = "", droneMaxWeightString = "", costumerName = "", costumerPhone = "";
+            string droneStatusString = "", droneMaxWeightString = "", costumerName = "", costumerPhone = "", parcelWeightString = "", priorityString = "";
             double stationLongitude = 0, stationLattitude = 0, droneBattery = 0, costumerLongitude = 0, costumerLattitude = 0;
             string droneModel = "";
             DroneStatuses droneStatus = DroneStatuses.available;
-            WeightCategories droneMaxWeight = WeightCategories.light;
-
+            WeightCategories droneMaxWeight = WeightCategories.light, parcelWeight = WeightCategories.light;
+            Priorities priority = Priorities.regular;
             Console.WriteLine("Welcome to our program!\n");
             while (firstChoice != 5)
             {
@@ -33,6 +33,8 @@ namespace ConsoleUI
                 costumerId = 0;
                 parcelId = 0;
                 droneId = 0;
+                senderId = 0;
+                targetId = 0;
                 stationName = 0;
                 chargeSlots = 0;
                 stationLongitude = 0;
@@ -47,6 +49,10 @@ namespace ConsoleUI
                 droneModel = "";
                 costumerName = "";
                 costumerPhone = "";
+                parcelWeight = WeightCategories.light;
+                parcelWeightString = "";
+                priority = Priorities.regular;
+                priorityString = "";
                 firstChoice = options("~<>~<>~<>~<>~<>~<>~<>~<>~<>~<>~<>~<>~ Choose one of the follow options: ~<>~<>~<>~<>~<>~<>~<>~<>~<>~<>~<>~<>~\n" +
                     "1. Insert options.\n" +
                     "2. Update options.\n" +
@@ -56,7 +62,7 @@ namespace ConsoleUI
                 switch (firstChoice)
                 {
                     case 1:
-                        secondChoice = options("=====Insert options=====\n" +
+                        secondChoice = options("==========Insert options==========\n" +
                             "1. Add a base station to the list of stations.\n" +
                             "2. Add a drone to the list of existing drones.\n" +
                             "3. Addition of a new customer to the customer list.\n" +
@@ -116,20 +122,82 @@ namespace ConsoleUI
                                 double.TryParse(Console.ReadLine(), out costumerLattitude);
                                 DAL.DalObject.DalObject.AddCostumer(costumerId, costumerName, costumerPhone, costumerLongitude, costumerLattitude);
                                 break;
+                            case 4:
+                                Console.WriteLine("Enter parcel Id: ");
+                                int.TryParse(Console.ReadLine(), out parcelId);
+                                Console.WriteLine("Enter sender Id: ");
+                                int.TryParse(Console.ReadLine(), out senderId);
+                                Console.WriteLine("Enter target Id: ");
+                                int.TryParse(Console.ReadLine(), out targetId);
+                                Console.WriteLine("Enter parcel weight: ");
+                                parcelWeightString = Console.ReadLine();
+                                Console.WriteLine("Enter priority: ");
+                                priorityString = Console.ReadLine();
+
+                                switch (parcelWeightString)
+                                {
+                                    case "light": parcelWeight = WeightCategories.light; break;
+                                    case "liver": parcelWeight = WeightCategories.liver; break;
+                                    case "medium": parcelWeight = WeightCategories.medium; break;
+                                    default:break;
+                                }
+                                switch (priorityString)
+                                {
+                                    case "regular": priority = Priorities.regular; break;
+                                    case "quick": priority = Priorities.quick; break;
+                                    case "emergency": priority = Priorities.emergency; break;
+                                    default:break;
+                                }
+                                DAL.DalObject.DalObject.AddParcel(parcelId, senderId, targetId, parcelWeight, priority);
+                                break;
                             default:
                                 break;
                         }
                         break;
                     case 2:
-                        secondChoice = options("=====Update options=====\n" +
+                        secondChoice = options("==========Update options==========\n" +
                             "1. Assign a package to a drone.\n" +
                             "2. Collection of a package by drone.\n" +
                             "3. Delivery package to customer.\n" +
                             "4. Sending a drone for charging at a base station.\n" +
                             "5. Release drone from charging at base station.");
+                        switch (secondChoice)
+                        {
+                            case 1:
+                                Console.WriteLine("Enter parcel Id: ");
+                                int.TryParse(Console.ReadLine(), out parcelId);
+                                DAL.DalObject.DalObject.schedule(parcelId);
+                                break;
+                            case 2:
+                                Console.WriteLine("Enter parcel Id: ");
+                                int.TryParse(Console.ReadLine(), out parcelId);
+                                DAL.DalObject.DalObject.pickUp(parcelId);
+                                break;
+                            case 3:
+                                Console.WriteLine("Enter parcel Id: ");
+                                int.TryParse(Console.ReadLine(), out parcelId);
+                                DAL.DalObject.DalObject.deliver(parcelId);
+                                break;
+                            case 4:
+                                Console.WriteLine("Enter drone Id: ");
+                                int.TryParse(Console.ReadLine(), out droneId);
+                                Console.WriteLine("Choose one of the follow stations:");
+                                foreach (Station item in DAL.DalObject.DalObject.displayStationList()) { if (item.ChargeSlots > 0) { Console.WriteLine("Station " + item.Id); } }
+                                int.TryParse(Console.ReadLine(), out stationId);
+                                DAL.DalObject.DalObject.charge(droneId, stationId);
+                                DroneCharge droneCharge = new DroneCharge { Droneld = droneId, Stationld = stationId };
+                                break;
+                            case 5:
+                                Console.WriteLine("Enter drone Id: ");
+                                int.TryParse(Console.ReadLine(), out droneId);
+                                DAL.DalObject.DalObject.unCharge(droneId);
+                                break;
+                            default:
+                                break;
+                        }
                         break;
                     case 3:
-                        secondChoice = options("=====Display options=====\n" +
+                        secondChoice = options("==========Display options==========\n" +
                             "1. Base station view.\n" +
                             "2. Drone view.\n" +
                             "3. Customer view.\n" +
@@ -165,7 +233,7 @@ namespace ConsoleUI
                         }
                         break;
                     case 4:
-                        secondChoice = options("=====List view options=====\n" +
+                        secondChoice = options("==========List view options==========\n" +
                         "1. Displays a list of base stations.\n" +
                         "2. Displays the list of drones.\n" +
                         "3. View customer list.\n" +
