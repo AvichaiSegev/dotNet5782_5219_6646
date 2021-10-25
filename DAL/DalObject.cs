@@ -11,14 +11,20 @@ namespace DAL
     {
         public static class DataSource
         {
+            static internal int NumberForStations;
+
+            //Create te lists:
             static internal List<Drone> DroneList = new List<Drone>();
             static internal List<Station> StationList = new List<Station>();
             static internal List<Costumer> CostumerList = new List<Costumer>();
             static internal List<Parcel> ParcelList = new List<Parcel>();
             static internal List<DroneCharge> DroneChargeList = new List<DroneCharge>();
             static DataSource() => Initialize();
+            
+            //Create function for initialize the lists:
             static internal void Initialize()
             {
+                NumberForStations = 100;
                 Random r = new Random();
                 for (int i = 0; i < 2; i++)
                 {
@@ -44,8 +50,10 @@ namespace DAL
         }
         public class DalObject
         {
+            //Run "initialize" in the constructor: 
             public DalObject(){ DataSource.Initialize(); }
 
+            //Create function for display objects:
             static public Station displayStation(int Id)
             {
                 foreach (Station item in DataSource.StationList){ if (item.Id == Id) { return item; } }
@@ -66,14 +74,28 @@ namespace DAL
                 foreach (Parcel item in DataSource.ParcelList){ if (item.Id == Id) { return item; } }
                 return new Parcel { Id = -1, SenderId = -1, TargetId = -1, Weight = WeightCategories.light, Priority = Priorities.regular, Requested = DateTime.Now, Scheduled = DateTime.Now, PickedUp = DateTime.Now, Delivered = DateTime.Now, DroneId = -1 };
             }
+
+            //Create function for create list of the available stations:
+            static public List<int> IdListForStations()
+            {
+                List<int> list = new List<int>();
+                foreach (Station item in DataSource.StationList) { if (item.ChargeSlots > 0) { list.Add(item.Id); } }
+                return list;
+            }
+
+            //Create functions for display list of object:
             static public List<Station> displayStationList() { return DataSource.StationList; }
             static public List<Drone> displayDroneList() { return DataSource.DroneList; }
             static public List<Costumer> displayCostumerList() { return DataSource.CostumerList; }
             static public List<Parcel> displayParcelList() { return DataSource.ParcelList; }
+            
+            //Create function for add objects to the list:
             static public void AddStation(int stationId, int stationName, double stationLongitude, double stationLattitude, int chargeSlots) { DataSource.StationList.Add(new Station { Id = stationId, Name = stationName, Longitude = stationLongitude, Lattitude = stationLattitude, ChargeSlots = chargeSlots }); }
             static public void AddDrone(int droneId, string droneModel, WeightCategories droneMaxWeight, DroneStatuses droneStatus, double droneBattery) { DataSource.DroneList.Add(new Drone { Id = droneId, Model = droneModel, MaxWeight = droneMaxWeight, Status = droneStatus, Battery = droneBattery }); }
             static public void AddCostumer(int costumerId, string costumerName, string costumerPhone, double costumerLongitude, double costumerLattitude) { DataSource.CostumerList.Add(new Costumer { Id = costumerId, Name = costumerName, Phone = costumerPhone, Longitude = costumerLongitude, Lattitude = costumerLattitude }); }
             static public void AddParcel(int parcelId, int senderId, int targetId, WeightCategories parcelWeight, Priorities priority) { DataSource.ParcelList.Add(new Parcel { Id = parcelId, SenderId = senderId, TargetId = targetId, Weight = parcelWeight, Priority = priority, Requested = DateTime.Now }); }
+            
+            //Create function for assign drone: 
             static public void schedule(int parcelId)
             {
                 Parcel theParcel = new Parcel();
@@ -95,6 +117,8 @@ namespace DAL
                     }
                 }
             }
+            
+            //Create function for pick up package by a drone:
             static public void pickUp(int parcelId)
             {
                 Parcel theParcel = new Parcel();
@@ -103,6 +127,8 @@ namespace DAL
                 theParcel.PickedUp = DateTime.Now;
                 DataSource.ParcelList[parcelIndex] = theParcel;
             }
+
+            //Create function for deliver package by a drone: 
             static public void deliver(int parcelId)
             {
                 Parcel theParcel = new Parcel();
@@ -116,6 +142,8 @@ namespace DAL
                 DataSource.ParcelList[parcelIndex] = theParcel;
                 DataSource.DroneList[droneIndex] = theDrone;
             }
+            
+            //Create function for charge a drone:
             static public void charge(int droneId, int stationId)
             {
                 Station theStation = new Station();
@@ -130,6 +158,8 @@ namespace DAL
                 DataSource.DroneList[droneIndex] = theDrone;
                 DataSource.DroneChargeList.Add(new DroneCharge { Droneld = droneId, Stationld = stationId });
             }
+            
+            //Create function for stop chrage of a drone:
             static public void unCharge(int droneId)
             {
                 Station theStation = new Station();
