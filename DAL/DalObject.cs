@@ -127,7 +127,7 @@ namespace DAL
                 theParcel.PickedUp = DateTime.Now;
                 DataSource.ParcelList[parcelIndex] = theParcel;
             }
-
+            
             //Create function for deliver package by a drone: 
             static public void deliver(int parcelId)
             {

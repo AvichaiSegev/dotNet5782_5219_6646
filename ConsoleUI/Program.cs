@@ -1,4 +1,5 @@
 ﻿/* ~ ~ ~ The main program ~ ~ ~ */
+//By: Avichai Segev & Benaya Halevi.
 
 using System;
 using IDAL.DO;
