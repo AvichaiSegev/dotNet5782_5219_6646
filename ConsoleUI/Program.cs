@@ -1,4 +1,6 @@
-﻿using System;
+﻿/* ~ ~ ~ The main program ~ ~ ~ */
+
+using System;
 using IDAL.DO;
 using DAL.DalObject;
 

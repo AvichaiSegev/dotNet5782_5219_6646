@@ -40,7 +40,7 @@ namespace DAL
                 }
                 for (int i = 0; i < 10; i++)
                 {
-                    ParcelList.Add(new Parcel { Id = i, SenderId = r.Next(10), TargetId = r.Next(10), DroneId = r.Next(5), Requested = DateTime.Now, Scheduled = DateTime.Now, PickedUp = DateTime.Now, Delivered = DateTime.Now, Priority = Priorities.regular, Weight = WeightCategories.light }) ;
+                    ParcelList.Add(new Parcel { Id = i, SenderId = r.Next(10), TargetId = r.Next(10), DroneId = r.Next(5), Priority = Priorities.regular, Weight = WeightCategories.light }) ;
                 }
             }
             static internal class Config
