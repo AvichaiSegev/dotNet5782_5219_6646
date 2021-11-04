@@ -111,14 +111,18 @@ namespace ConsoleUI
                                     case "available":droneStatus = DroneStatuses.available; break;
                                     case "maintenance":droneStatus = DroneStatuses.maintenance; break;
                                     case "shipment":droneStatus = DroneStatuses.shipment; break;
-                                    default:break;
+                                    default:
+                                        Console.WriteLine("INPUT ERROR!   try again"); 
+                                        break;
                                 }
                                 switch (droneMaxWeightString)
                                 {
                                     case "light": droneMaxWeight = WeightCategories.light; break;
                                     case "liver": droneMaxWeight = WeightCategories.liver; break;
                                     case "medium": droneMaxWeight = WeightCategories.medium; break;
-                                    default: break;
+                                    default:
+                                        Console.WriteLine("INPUT ERROR!   try again");
+                                        break;
                                 }
                                 DAL.DalObject.DalObject.AddDrone(droneId, droneModel, droneMaxWeight, droneStatus, droneBattery);
                                 break;
@@ -153,18 +157,23 @@ namespace ConsoleUI
                                     case "light": parcelWeight = WeightCategories.light; break;
                                     case "liver": parcelWeight = WeightCategories.liver; break;
                                     case "medium": parcelWeight = WeightCategories.medium; break;
-                                    default:break;
+                                    default:
+                                        Console.WriteLine("INPUT ERROR!   try again"); 
+                                        break;
                                 }
                                 switch (priorityString)
                                 {
                                     case "regular": priority = Priorities.regular; break;
                                     case "quick": priority = Priorities.quick; break;
                                     case "emergency": priority = Priorities.emergency; break;
-                                    default:break;
+                                    default:
+                                        Console.WriteLine("INPUT ERROR!   try again"); 
+                                        break;
                                 }
                                 DAL.DalObject.DalObject.AddParcel(parcelId, senderId, targetId, parcelWeight, priority);
                                 break;
                             default:
+                                Console.WriteLine("INPUT ERROR!   try again");
                                 break;
                         }
                         break;
@@ -213,6 +222,7 @@ namespace ConsoleUI
                                 DAL.DalObject.DalObject.unCharge(droneId);
                                 break;
                             default:
+                                Console.WriteLine("INPUT ERROR!   try again");
                                 break;
                         }
                         break;
@@ -255,6 +265,7 @@ namespace ConsoleUI
                                 Console.WriteLine(parcel.ToString());
                                 break;
                             default:
+                                Console.WriteLine("INPUT ERROR!   try again");
                                 break;
                         }
                         break;
@@ -295,10 +306,12 @@ namespace ConsoleUI
                                 foreach (Station item in DAL.DalObject.DalObject.displayStationList()) { if (item.ChargeSlots > 0) { Console.WriteLine(item.ToString()); } }
                                 break;
                             default:
+                                Console.WriteLine("INPUT ERROR!   try again");
                                 break;
                         }
                         break;
                     default:
+                        Console.WriteLine("INPUT ERROR!   try again");
                         break;
                 }
             }
