@@ -1,15 +1,12 @@
-﻿/* ~ ~ ~ The main program ~ ~ ~ */
-//By: Avichai Segev & Benaya Halevi.
+﻿using System;
+using BL;
+using IBL.BO;
 
-using System;
-using IDAL.DO;
-using DAL.DalObject;
 
-namespace ConsoleUI
+namespace ConsoleUI_BL
 {
-    public class Program
+    class Program
     {
-        //function for manager the choice of the user:
         static int options(string text)
         {
             int Choice;
@@ -17,46 +14,21 @@ namespace ConsoleUI
             int.TryParse(Console.ReadLine(), out Choice);
             return Choice;
         }
+        static private IBL.IBL logi = new BL.BL;
         public static void Main(string[] args)
         {
-            //Decleration of variables for save (in the continue) the user input:
-            int firstChoice = 0, secondChoice = 0;
+            int firstChoice = 0, secondChoice;
             int stationId, droneId, customerId, parcelId, senderId = 0, targetId = 0;
             int stationName = 0, chargeSlots = 0;
             string droneMaxWeightString = "", customerName = "", customerPhone = "", parcelWeightString = "", priorityString = "";
-            double stationLongitude = 0, stationLattitude = 0, customerLongitude = 0, customerLattitude = 0;
+            double stationLongitude = 0, stationLattitude = 0, customerLongitude = 0, customerLattitude = 0, chargingTime;
             string droneModel = "";
             WeightCategories droneMaxWeight = WeightCategories.light, parcelWeight = WeightCategories.light;
             Priorities priority = Priorities.regular;
             Console.WriteLine("Welcome to our program!\n");
-
-            //Loop for the choices of the user until he choose to exit:
             while (firstChoice != 5)
             {
-                //Reset the variables:
-                stationId = 0;
-                droneId = 0;
-                customerId = 0;
-                parcelId = 0;
-                droneId = 0;
-                senderId = 0;
-                targetId = 0;
-                stationName = 0;
-                chargeSlots = 0;
-                stationLongitude = 0;
-                stationLattitude = 0;
-                customerLongitude = 0;
-                customerLattitude = 0;
-                droneMaxWeight = WeightCategories.light;
-                droneMaxWeightString = "";
-                droneModel = "";
-                customerName = "";
-                customerPhone = "";
-                parcelWeight = WeightCategories.light;
-                parcelWeightString = "";
-                priority = Priorities.regular;
-                priorityString = "";
-
+                
                 //The main menu, and the first choice:
                 firstChoice = options("~<>~<>~<>~<>~<>~<>~<>~<>~<>~<>~<>~<>~ Choose one of the follow options: ~<>~<>~<>~<>~<>~<>~<>~<>~<>~<>~<>~<>~\n" +
                     "1. Insert options.\n" +
@@ -88,7 +60,15 @@ namespace ConsoleUI
                                 double.TryParse(Console.ReadLine(), out stationLattitude);
                                 Console.WriteLine("Enter station available charge slots: ");
                                 int.TryParse(Console.ReadLine(), out chargeSlots);
-                                DAL.DalObject.DalObject.AddStation(stationId, stationName, stationLongitude, stationLattitude, chargeSlots);
+                                try
+                                {
+                                logi.AddStation(stationId, stationName, stationLongitude, stationLattitude, chargeSlots);
+                                }
+                                catch(Exception error)
+                                {
+                                    Console.WriteLine(error.Message);
+                                }
+                                ////////////////////////////////////////
                                 break;
                             //option 2: Add a drone:
                             case 2:
@@ -107,7 +87,16 @@ namespace ConsoleUI
                                         Console.WriteLine("INPUT ERROR!   try again");
                                         break;
                                 }
-                                DAL.DalObject.DalObject.AddDrone(droneId, droneModel, droneMaxWeight);
+                                Console.WriteLine("Enter station for first charging: ");
+                                int.TryParse(Console.ReadLine(), out stationId);
+                                try
+                                {
+                                    logi.AddDrone(droneId, droneModel, droneMaxWeight);
+                                }
+                                catch(Exception error)
+                                {
+                                    Console.WriteLine(error.Message);
+                                }
                                 break;
                             //option 3: Add a customer:
                             case 3:
@@ -121,8 +110,15 @@ namespace ConsoleUI
                                 double.TryParse(Console.ReadLine(), out customerLongitude);
                                 Console.WriteLine("Enter customer lattitude: ");
                                 double.TryParse(Console.ReadLine(), out customerLattitude);
-                                DAL.DalObject.DalObject.Addcustomer(customerId, customerName, customerPhone, customerLongitude, customerLattitude);
-                                break;
+                                try
+                                {
+                                    logi.Addcustomer(customerId, customerName, customerPhone, customerLongitude, customerLattitude);
+                                }
+                                catch (Exception error)
+                                {
+                                    Console.WriteLine(error.Message);
+                                }
+                                    break;
                             //option 4: Add a parcel:
                             case 4:
                                 Console.WriteLine("Enter parcel Id: ");
@@ -141,7 +137,7 @@ namespace ConsoleUI
                                     case "liver": parcelWeight = WeightCategories.liver; break;
                                     case "medium": parcelWeight = WeightCategories.medium; break;
                                     default:
-                                        Console.WriteLine("INPUT ERROR!   try again"); 
+                                        Console.WriteLine("INPUT ERROR!   try again");
                                         break;
                                 }
                                 switch (priorityString)
@@ -150,11 +146,18 @@ namespace ConsoleUI
                                     case "quick": priority = Priorities.quick; break;
                                     case "emergency": priority = Priorities.emergency; break;
                                     default:
-                                        Console.WriteLine("INPUT ERROR!   try again"); 
+                                        Console.WriteLine("INPUT ERROR!   try again");
                                         break;
                                 }
-                                DAL.DalObject.DalObject.AddParcel(parcelId, senderId, targetId, parcelWeight, priority);
-                                break;
+                                try
+                                {
+                                    logi.AddParcel(parcelId, senderId, targetId, parcelWeight, priority);
+                                }
+                                catch(Exception error)
+                                    {
+                                    Console.WriteLine(error.Message);
+                                }
+                                    break;
                             default:
                                 Console.WriteLine("INPUT ERROR!   try again");
                                 break;
@@ -166,40 +169,88 @@ namespace ConsoleUI
                         secondChoice = options("==========Update options==========\n" +
                             "1. Assign a package to a drone.\n" +
                             "2. Collection of a package by a drone.\n" +
-                            "3. Delivery package to customer.\n" +
+                            "3. Delivery package to customer.\n" +//////////////
                             "4. Sending a drone for charging at a base station.\n" +
                             "5. Release drone from charging at base station.");
                         switch (secondChoice)
                         {
-                            //option 1: Assign a package to a drone:
                             case 1:
+                                Console.WriteLine("Enter drone Id: ");
+                                int.TryParse(Console.ReadLine(), out droneId);
+                                Console.WriteLine("Enter parcel model: ");
+                                droneModel = Console.ReadLine();
+                                try
+                                {
+                                    logi.UpdateDroneModel(droneId, droneModel);
+                                }
+                                catch(Exception error)
+                                {
+                                    Console.WriteLine(error.Message);
+                                }
+                                break;
+                            case 2:
+                                Console.WriteLine("Enter station Id: ");
+                                int.TryParse(Console.ReadLine(), out stationId);
+                                Console.WriteLine("Enter station Id: ");
+                                int.TryParse(Console.ReadLine(), out stationId);
+                                try
+                                {
+                                    logi.UpdateStationName(stationId, stationName);
+                                }
+                                catch(Exception error)
+                                {
+                                    Console.WriteLine(error.Message);
+                                }
+                                break;
+                            case 3:
+                                Console.WriteLine("Enter Customer Id: ");
+                                int.TryParse(Console.ReadLine(), out customerId);
+                                Console.WriteLine("Enter Customer Name: ");
+                                customerName = Console.ReadLine();
+                                Console.WriteLine("Enter Customer Phone: ");
+                                customerPhone = Console.ReadLine();
+                                logi.UpdatecustomerNameAndPhone(customerId, customerName, customerPhone);
+                                break;
+                            case 4:
+                                Console.WriteLine("Enter Drone Id: ");
+                                int.TryParse(Console.ReadLine(), out droneId);
+                                break;
+                            case 5:
+                                Console.WriteLine("Enter Drone Id: ");
+                                int.TryParse(Console.ReadLine(), out droneId);
+                                Console.WriteLine("Enter charging Time: ");
+                                double.TryParse(Console.ReadLine(), out chargingTime);//chargingTime - Hours
+
+                                break;
+                            //option 1: Assign a package to a drone:
+                            case 10:
                                 Console.WriteLine("Enter parcel Id: ");
                                 int.TryParse(Console.ReadLine(), out parcelId);
-                                DAL.DalObject.DalObject.schedule(parcelId);
+                                logi.schedule(parcelId);
                                 break;
                             //option 2: Collection of a package by a drone:
-                            case 2:
+                            case 20:
                                 Console.WriteLine("Enter parcel Id: ");
                                 int.TryParse(Console.ReadLine(), out parcelId);
-                                DAL.DalObject.DalObject.pickUp(parcelId);
+                                logi.pickUp(parcelId);
                                 break;
                             //option 3: Delivery package to customer:
-                            case 3:
+                            case 30:
                                 Console.WriteLine("Enter parcel Id: ");
                                 int.TryParse(Console.ReadLine(), out parcelId);
                                 DAL.DalObject.DalObject.deliver(parcelId);
                                 break;
                             //option 4: Sending a drone for charging at a base station:
-                            case 4:
+                            case 40:
                                 Console.WriteLine("Enter drone Id: ");
                                 int.TryParse(Console.ReadLine(), out droneId);
                                 Console.WriteLine("Choose one of the follow stations:");
-                                foreach (int item in DAL.DalObject.DalObject.IdListForStations()){ Console.WriteLine("Station " + item); }
+                                foreach (int item in logi.IdListForStations()) { Console.WriteLine("Station " + item); }
                                 int.TryParse(Console.ReadLine(), out stationId);
                                 DAL.DalObject.DalObject.charge(droneId, stationId);
                                 break;
                             //option 5: Release drone from charging at base station: 
-                            case 5:
+                            case 50:
                                 Console.WriteLine("Enter drone Id: ");
                                 int.TryParse(Console.ReadLine(), out droneId);
                                 DAL.DalObject.DalObject.unCharge(droneId);
@@ -223,28 +274,28 @@ namespace ConsoleUI
                             case 1:
                                 Console.WriteLine("Enter the Id of the station:");
                                 int.TryParse(Console.ReadLine(), out stationId);
-                                Station station = DAL.DalObject.DalObject.displayStation(stationId);
+                                Station station = logi.displayStation(stationId);
                                 Console.WriteLine(station.ToString());
                                 break;
                             //option 2: view a drone:
                             case 2:
                                 Console.WriteLine("Enter the Id of the drone:");
                                 int.TryParse(Console.ReadLine(), out droneId);
-                                Drone drone = DAL.DalObject.DalObject.displayDrone(droneId);
+                                Drone drone = logi.displayDrone(droneId);
                                 Console.WriteLine(drone.ToString());
                                 break;
                             //option 3: view a customer:
                             case 3:
                                 Console.WriteLine("Enter the Id of the customer:");
                                 int.TryParse(Console.ReadLine(), out customerId);
-                                customer customer = DAL.DalObject.DalObject.displaycustomer(customerId);
+                                Customer customer = logi.displaycustomer(customerId);
                                 Console.WriteLine(customer.ToString());
                                 break;
                             //option 4: view a package:
                             case 4:
                                 Console.WriteLine("Enter the Id of the parcel:");
                                 int.TryParse(Console.ReadLine(), out parcelId);
-                                Parcel parcel = DAL.DalObject.DalObject.displayParcel(parcelId);
+                                Parcel parcel = logi.displayParcel(parcelId);
                                 Console.WriteLine(parcel.ToString());
                                 break;
                             default:
@@ -261,32 +312,32 @@ namespace ConsoleUI
                         "3. View customer list.\n" +
                         "4. Displays the list of packages.\n" +
                         "5. Displays a list of packages not yet associated with a drone.\n" +
-                        "6. Display base stations with available charging stations.");    
+                        "6. Display base stations with available charging stations.");
                         switch (secondChoice)
                         {
                             //option 1: Displays a list of base stations:
                             case 1:
-                                foreach (Station item in DAL.DalObject.DalObject.displayStationList()){ Console.WriteLine(item.ToString()); }
+                                foreach (Station item in logi.displayStationList()) { Console.WriteLine(item.ToString()); }
                                 break;
                             //option 2: Displays the list of drones:
                             case 2:
-                                foreach (Drone item in DAL.DalObject.DalObject.displayDroneList()) { Console.WriteLine(item.ToString()); }
+                                foreach (Drone item in logi.displayDroneList()) { Console.WriteLine(item.ToString()); }
                                 break;
                             //option 3: View customer list:
                             case 3:
-                                foreach (customer item in DAL.DalObject.DalObject.displaycustomerList()) { Console.WriteLine(item.ToString()); }
+                                foreach (Customer item in logi.displaycustomerList()) { Console.WriteLine(item.ToString()); }
                                 break;
                             //option 4: Displays the list of packages:
                             case 4:
-                                foreach (Parcel item in DAL.DalObject.DalObject.displayParcelList()) { Console.WriteLine(item.ToString()); }
+                                foreach (Parcel item in logi.displayParcelList()) { Console.WriteLine(item.ToString()); }
                                 break;
                             //option 5: Displays a list of packages not yet associated with a drone:
                             case 5:
-                                foreach(Parcel item in DAL.DalObject.DalObject.displayParcelList()){ if (item.DroneId == -1) { Console.WriteLine(item.ToString()); } }
+                                foreach (Parcel item in logi.displayParcelList()) { if (item.DroneId == -1) { Console.WriteLine(item.ToString()); } }
                                 break;
                             //option 6: Display base stations with available charging stations:
                             case 6:
-                                foreach (Station item in DAL.DalObject.DalObject.displayStationList()) { if (item.ChargeSlots > 0) { Console.WriteLine(item.ToString()); } }
+                                foreach (Station item in logi.displayStationList()) { if (item.ChargeSlots > 0) { Console.WriteLine(item.ToString()); } }
                                 break;
                             default:
                                 Console.WriteLine("INPUT ERROR!   try again");
