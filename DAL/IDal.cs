@@ -7,24 +7,24 @@ using IDAL.DO;
 
 namespace IDAL
 {
-    interface IDal
+    public interface IDal
     {
         Station displayStation(int Id);
         Drone displayDrone(int Id);
-        customer displaycustomer(int Id);
+        Customer displaycustomer(int Id);
         Parcel displayParcel(int Id);
         IEnumerable<Station> displayStationList();
         IEnumerable<Drone> displayDroneList();
-        IEnumerable<customer> displaycustomerList();
+        IEnumerable<Customer> displaycustomerList();
         IEnumerable<Parcel> displayParcelList();
-        void AddStation(int stationId, int stationName, double stationLongitude, double stationLattitude, int chargeSlots);
-        void AddDrone(int droneId, string droneModel, WeightCategories droneMaxWeight);
-        void Addcustomer(int customerId, string customerName, string customerPhone, double customerLongitude, double customerLattitude);
-        void AddParcel(int parcelId, int senderId, int targetId, WeightCategories parcelWeight, Priorities priority);
-        void UpdateStation(int stationId, int stationName, double stationLongitude, double stationLattitude, int chargeSlots);
-        void UpdateDrone(int droneId, string droneModel, WeightCategories droneMaxWeight);
-        void Updatecustomer(int customerId, string customerName, string customerPhone, double customerLongitude, double customerLattitude);
-        void UpdateParcel(int parcelId, int senderId, int targetId, WeightCategories parcelWeight, Priorities priority);
+        void AddStation(Station station);
+        void AddDrone(Drone drone);
+        void Addcustomer(Customer customer);
+        void AddParcel(Parcel parcel);
+        void UpdateStation(Station station);
+        void UpdateDrone(Drone drone);
+        void Updatecustomer(Customer customer);
+        void UpdateParcel(Parcel parcel);
         double[] electricityUse();
 
     }

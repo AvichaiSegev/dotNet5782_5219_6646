@@ -11,6 +11,7 @@ namespace IBL
     {
         public class Parcel
         {
+
             public int Id { set; get; }
             public CustomerInParcel delivered { set; get; }
             public CustomerInParcel getted { set; get; }

@@ -16,7 +16,7 @@ namespace DAL
             //Create te lists:
             internal List<Drone> DroneList = new List<Drone>();
             internal List<Station> StationList = new List<Station>();
-            internal List<customer> customerList = new List<customer>();
+            internal List<Customer> customerList = new List<Customer>();
             internal List<Parcel> ParcelList = new List<Parcel>();
             internal List<DroneCharge> DroneChargeList = new List<DroneCharge>();
             public DataSource() => Initialize();
@@ -36,7 +36,7 @@ namespace DAL
                 }
                 for (int i = 0; i < 10; i++)
                 {
-                    customerList.Add(new customer { Id = i, Name = "customer " + i, Phone = "0" + i + i + i + i + i + i + i + i + i, Longitude = i, Lattitude = i}) ;
+                    customerList.Add(new Customer { Id = i, Name = "customer " + i, Phone = "0" + i + i + i + i + i + i + i + i + i, Longitude = i, Lattitude = i}) ;
                 }
                 for (int i = 0; i < 10; i++)
                 {
@@ -66,10 +66,10 @@ namespace DAL
                 foreach (Drone item in data.DroneList){ if (item.Id == Id) { return item; } }
                 return new Drone { Id = -1, Model = "None", MaxWeight = WeightCategories.light};
             }
-            public customer displaycustomer(int Id)
+            public Customer displaycustomer(int Id)
             {
-                foreach (customer item in data.customerList){ if (item.Id == Id) { return item; } }
-                return new customer { Id = -1, Name = "None", Phone = "0", Longitude = 0, Lattitude = 0 };
+                foreach (Customer item in data.customerList){ if (item.Id == Id) { return item; } }
+                return new Customer { Id = -1, Name = "None", Phone = "0", Longitude = 0, Lattitude = 0 };
             }
             public Parcel displayParcel(int Id)
             {
@@ -88,74 +88,52 @@ namespace DAL
             //Create functions for display list of object:
             public IEnumerable<Station> displayStationList() { return data.StationList; }
             public IEnumerable<Drone> displayDroneList() { return data.DroneList; }
-            public IEnumerable<customer> displaycustomerList() { return data.customerList; }
+            public IEnumerable<Customer> displaycustomerList() { return data.customerList; }
             public IEnumerable<Parcel> displayParcelList() { return data.ParcelList; }
             
             //Create function for add objects to the list:
-            public void AddStation(int stationId, int stationName, double stationLongitude, double stationLattitude, int chargeSlots) { data.StationList.Add(new Station { Id = stationId, Name = stationName, Longitude = stationLongitude, Lattitude = stationLattitude, ChargeSlots = chargeSlots }); }
-            public void AddDrone(int droneId, string droneModel, WeightCategories droneMaxWeight) { data.DroneList.Add(new Drone { Id = droneId, Model = droneModel, MaxWeight = droneMaxWeight}); }
-            public void Addcustomer(int customerId, string customerName, string customerPhone, double customerLongitude, double customerLattitude) { data.customerList.Add(new customer { Id = customerId, Name = customerName, Phone = customerPhone, Longitude = customerLongitude, Lattitude = customerLattitude }); }
-            public void AddParcel(int parcelId, int senderId, int targetId, WeightCategories parcelWeight, Priorities priority) { data.ParcelList.Add(new Parcel { Id = parcelId, SenderId = senderId, TargetId = targetId, Weight = parcelWeight, Priority = priority, Requested = DateTime.Now }); }
+            public void AddStation(Station station) { data.StationList.Add(station); }
+            public void AddDrone(Drone drone) { data.DroneList.Add(drone); }
+            public void Addcustomer(Customer customer) { data.customerList.Add(customer); }
+            public void AddParcel(Parcel parcel) { data.ParcelList.Add(parcel); }
 
             //Create function for update objects in the list:
-            public void UpdateStation(int stationId, int stationName, double stationLongitude, double stationLattitude, int chargeSlots)
+            public void UpdateStation(Station station)
             {
                 int i = 0;
-                while(data.StationList[i].Id != stationId){
+                while(data.StationList[i].Id != station.Id){
                     i++;
                 }
-                Station station = data.StationList[i];
-                station.Name = stationName;
-                station.Longitude = stationLongitude;
-                station.Lattitude = stationLattitude;
-                station.ChargeSlots = chargeSlots;
                 data.StationList[i] = station;
             }
 
-            public void UpdateDrone(int droneId, string droneModel, WeightCategories droneMaxWeight)
+            public void UpdateDrone(Drone drone)
             {
                 int i = 0;
-                while (data.DroneList[i].Id != droneId)
-                {
+                while (data.DroneList[i].Id != drone.Id){
                     i++;
                 }
-                Drone drone = data.DroneList[i];
-                drone.Model = droneModel;
-                drone.MaxWeight = droneMaxWeight;
                 data.DroneList[i] = drone;
             }
 
-            public void Updatecustomer(int customerId, string customerName, string customerPhone, double customerLongitude, double customerLattitude)
+            public void Updatecustomer(Customer customer)
             {
                 int i = 0;
-                while (data.customerList[i].Id != customerId)
+                while (data.customerList[i].Id != customer.Id)
                 {
                     i++;
                 }
-                customer customer = data.customerList[i];
-                customer.Name = customerName;
-                customer.Longitude = customerLongitude;
-                customer.Lattitude = customerLattitude;
-                customer.Phone = customerPhone;
                 data.customerList[i] = customer;
             }
 
-            public void UpdateParcel(int parcelId, int senderId, int targetId, WeightCategories parcelWeight, Priorities priority)
+            public void UpdateParcel(Parcel parcel)
             {
 
-                checkId(id);
-
-
                 int i = 0;
-                while (data.ParcelList[i].Id != parcelId)
+                while (data.ParcelList[i].Id != parcel.Id)
                 {
                     i++;
                 }
-                Parcel parcel = data.ParcelList[i];
-                parcel.SenderId = senderId;
-                parcel.TargetId = targetId;
-                parcel.Weight = parcelWeight;
-                parcel.Priority = priority;
                 data.ParcelList[i] = parcel;
             }
 
