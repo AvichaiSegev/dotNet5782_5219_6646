@@ -66,7 +66,7 @@ namespace DAL
                 foreach (Drone item in data.DroneList){ if (item.Id == Id) { return item; } }
                 return new Drone { Id = -1, Model = "None", MaxWeight = WeightCategories.light};
             }
-            public Customer displaycustomer(int Id)
+            public Customer displayCustomer(int Id)
             {
                 foreach (Customer item in data.customerList){ if (item.Id == Id) { return item; } }
                 return new Customer { Id = -1, Name = "None", Phone = "0", Longitude = 0, Lattitude = 0 };
@@ -88,13 +88,13 @@ namespace DAL
             //Create functions for display list of object:
             public IEnumerable<Station> displayStationList() { return data.StationList; }
             public IEnumerable<Drone> displayDroneList() { return data.DroneList; }
-            public IEnumerable<Customer> displaycustomerList() { return data.customerList; }
+            public IEnumerable<Customer> displayCustomerList() { return data.customerList; }
             public IEnumerable<Parcel> displayParcelList() { return data.ParcelList; }
             
             //Create function for add objects to the list:
             public void AddStation(Station station) { data.StationList.Add(station); }
             public void AddDrone(Drone drone) { data.DroneList.Add(drone); }
-            public void Addcustomer(Customer customer) { data.customerList.Add(customer); }
+            public void AddCustomer(Customer customer) { data.customerList.Add(customer); }
             public void AddParcel(Parcel parcel) { data.ParcelList.Add(parcel); }
 
             //Create function for update objects in the list:
@@ -116,7 +116,7 @@ namespace DAL
                 data.DroneList[i] = drone;
             }
 
-            public void Updatecustomer(Customer customer)
+            public void UpdateCustomer(Customer customer)
             {
                 int i = 0;
                 while (data.customerList[i].Id != customer.Id)

@@ -12,7 +12,7 @@ namespace BL
         public void Addcustomer(int customerId, string customerName, string customerPhone, double customerLongitude, double customerLattitude)
         {
             IDAL.DO.Customer customer = new IDAL.DO.Customer { Id = customerId, Lattitude = customerLattitude, Longitude = customerLattitude, Name = customerName, Phone = customerPhone};
-            dali.Addcustomer(customer);
+            dali.AddCustomer(customer);
         }
 
         public void AddDrone(int droneId, string droneModel, WeightCategories droneMaxWeight)
@@ -31,6 +31,7 @@ namespace BL
         {
             IDAL.DO.Station station = new IDAL.DO.Station { Id = stationId, Name = stationName, Longitude = stationLongitude, Lattitude = stationLattitude, ChargeSlots = chargeSlots };
             dali.AddStation(station);
+            
         }
 
         public void assignParcelToDrone(int droneId)
@@ -105,37 +106,51 @@ namespace BL
 
         public void Updatecustomer(int customerId, string customerName, string customerPhone, double customerLongitude, double customerLattitude)
         {
-            throw new NotImplementedException();
+            IDAL.DO.Customer customer = new IDAL.DO.Customer { Id = customerId, Name = customerName, Phone = customerPhone, Lattitude = customerLattitude, Longitude = customerLongitude };
+            dali.UpdateCustomer(customer);
         }
 
         public void UpdatecustomerNameAndPhone(int customerId, string customerName, string customerPhone)
         {
-            throw new NotImplementedException();
+            
+            IDAL.DO.Customer customer = dali.displayCustomer(customerId);
+            customer.Name = customerName;
+            customer.Phone = customerPhone;
+            dali.UpdateCustomer(customer);
         }
 
         public void UpdateDrone(int droneId, string droneModel, WeightCategories droneMaxWeight)
         {
-            throw new NotImplementedException();
+            IDAL.DO.Drone drone = new IDAL.DO.Drone { Id = droneId, Model = droneModel, MaxWeight = (IDAL.DO.WeightCategories)droneMaxWeight};
+            dali.UpdateDrone(drone);
         }
 
         public void UpdateDroneModel(int droneId, string droneModel)
         {
-            throw new NotImplementedException();
+
+            IDAL.DO.Drone drone = dali.displayDrone(droneId);
+            drone.Model = droneModel;
+            dali.UpdateDrone(drone);
+
         }
 
         public void UpdateParcel(int parcelId, int senderId, int targetId, WeightCategories parcelWeight, Priorities priority)
         {
-            throw new NotImplementedException();
+            IDAL.DO.Parcel parcel = new IDAL.DO.Parcel { Id = parcelId, SenderId = senderId, TargetId = targetId, Weight = (IDAL.DO.WeightCategories)parcelWeight, Priority = (IDAL.DO.Priorities)priority,  };
+            dali.UpdateParcel(parcel);
         }
 
         public void UpdateStation(int stationId, int stationName, double stationLongitude, double stationLattitude, int chargeSlots)
         {
-            throw new NotImplementedException();
+            IDAL.DO.Station station = new IDAL.DO.Station { Id = stationId, Name = stationName, Longitude = stationLongitude, Lattitude = stationLattitude, ChargeSlots = chargeSlots };
+            dali.UpdateStation(station);
         }
 
         public void UpdateStationName(int stationId, int stationName)
         {
-            throw new NotImplementedException();
+            IDAL.DO.Station station = dali.displayStation(stationId);
+            station.Name = stationName;
+            dali.UpdateStation(station);
         }
     }
 }
