@@ -10,10 +10,10 @@ namespace IBL
     public interface IBL
     {
         //Add functions
-        void AddStation(int stationId, int stationName, double stationLongitude, double stationLattitude, int chargeSlots);
-        void AddDrone(int droneId, string droneModel, WeightCategories droneMaxWeight);
-        void Addcustomer(int customerId, string customerName, string customerPhone, double customerLongitude, double customerLattitude);
-        void AddParcel(int parcelId, int senderId, int targetId, WeightCategories parcelWeight, Priorities priority);
+        void AddStation(Station station);
+        void AddDrone(Drone drone, int stationId);
+        void Addcustomer(Customer customer);
+        void AddParcel(Parcel parcel, int senderId, int gettedId);
 
         //Update functions
         void UpdateStation(int stationId, int stationName, double stationLongitude, double stationLattitude, int chargeSlots);
@@ -32,12 +32,14 @@ namespace IBL
         Drone displayDrone(int Id);
         Customer displaycustomer(int Id);
        Parcel displayParcel(int Id);
-        IEnumerable<Station> displayStationList();
-        IEnumerable<Drone> displayDroneList();
-        IEnumerable<Customer> displaycustomerList();
-        IEnumerable<Parcel> displayParcelList();
-        
-        
+        IEnumerable<StationToList> displayStationList();
+        IEnumerable<StationToList> displayFreeStationList();
+        IEnumerable<DroneToList> displayDroneList();
+        IEnumerable<CustomerToList> displaycustomerList();
+        IEnumerable<ParcelToList> displayParcelList();
+        IEnumerable<ParcelToList> displayFreeParcelList();
+
+
         double[] electricityUse();
     }
 }

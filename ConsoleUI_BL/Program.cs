@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BL;
 using IBL.BO;
 
@@ -14,7 +15,7 @@ namespace ConsoleUI_BL
             int.TryParse(Console.ReadLine(), out Choice);
             return Choice;
         }
-        static private IBL.IBL logi = new BL.BL;
+        static private IBL.IBL logi = new BL.BL();
         public static void Main(string[] args)
         {
             int firstChoice = 0, secondChoice;
@@ -62,7 +63,9 @@ namespace ConsoleUI_BL
                                 int.TryParse(Console.ReadLine(), out chargeSlots);
                                 try
                                 {
-                                logi.AddStation(stationId, stationName, stationLongitude, stationLattitude, chargeSlots);
+
+                                    logi.AddStation(new Station() { id = stationId, location = new Location(stationLongitude, stationLattitude), name = stationName, numFreeChargingStands = chargeSlots, dronesInCharging = new List<DroneInCharging>()});
+                                    
                                 }
                                 catch(Exception error)
                                 {
@@ -91,7 +94,7 @@ namespace ConsoleUI_BL
                                 int.TryParse(Console.ReadLine(), out stationId);
                                 try
                                 {
-                                    logi.AddDrone(droneId, droneModel, droneMaxWeight);
+                                    logi.AddDrone(new Drone() { id = droneId, model = droneModel, maxWeight = droneMaxWeight}, stationId);
                                 }
                                 catch(Exception error)
                                 {
@@ -112,7 +115,7 @@ namespace ConsoleUI_BL
                                 double.TryParse(Console.ReadLine(), out customerLattitude);
                                 try
                                 {
-                                    logi.Addcustomer(customerId, customerName, customerPhone, customerLongitude, customerLattitude);
+                                    logi.Addcustomer(new Customer() { id = customerId, location = new Location(customerLongitude, customerLattitude), name = customerName, phone = customerPhone});
                                 }
                                 catch (Exception error)
                                 {
@@ -151,7 +154,7 @@ namespace ConsoleUI_BL
                                 }
                                 try
                                 {
-                                    logi.AddParcel(parcelId, senderId, targetId, parcelWeight, priority);
+                                    logi.AddParcel(new Parcel() { Id = parcelId, priority = priority, weight = parcelWeight}, senderId, targetId);
                                 }
                                 catch(Exception error)
                                     {
@@ -333,27 +336,27 @@ namespace ConsoleUI_BL
                         {
                             //option 1: Displays a list of base stations:
                             case 1:
-                                foreach (Station item in logi.displayStationList()) { Console.WriteLine(item.ToString()); }
+                                foreach (StationToList item in logi.displayStationList()) { Console.WriteLine(item); }
                                 break;
                             //option 2: Displays the list of drones:
                             case 2:
-                                foreach (Drone item in logi.displayDroneList()) { Console.WriteLine(item.ToString()); }
+                                foreach (DroneToList item in logi.displayDroneList()) { Console.WriteLine(item); }
                                 break;
                             //option 3: View customer list:
                             case 3:
-                                foreach (Customer item in logi.displaycustomerList()) { Console.WriteLine(item.ToString()); }
+                                foreach (CustomerToList item in logi.displaycustomerList()) { Console.WriteLine(item); }
                                 break;
                             //option 4: Displays the list of packages:
                             case 4:
-                                foreach (Parcel item in logi.displayParcelList()) { Console.WriteLine(item.ToString()); }
+                                foreach (ParcelToList item in logi.displayParcelList()) { Console.WriteLine(item); }
                                 break;
                             //option 5: Displays a list of packages not yet associated with a drone:
                             case 5:
-                                foreach (Parcel item in logi.displayParcelList()) { if (item.DroneId == -1) { Console.WriteLine(item.ToString()); } }
+                                foreach (ParcelToList item in logi.displayFreeParcelList()) { Console.WriteLine(item); }
                                 break;
                             //option 6: Display base stations with available charging stations:
                             case 6:
-                                foreach (Station item in logi.displayStationList()) { if (item.ChargeSlots > 0) { Console.WriteLine(item.ToString()); } }
+                                foreach (StationToList item in logi.displayFreeStationList()) { Console.WriteLine(item); }
                                 break;
                             default:
                                 Console.WriteLine("INPUT ERROR!   try again");

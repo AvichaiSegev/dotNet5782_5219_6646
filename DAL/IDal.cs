@@ -13,18 +13,22 @@ namespace IDAL
         Drone displayDrone(int Id);
         Customer displayCustomer(int Id);
         Parcel displayParcel(int Id);
+        DroneCharge displayDroneCharge(int Id);
         IEnumerable<Station> displayStationList();
         IEnumerable<Drone> displayDroneList();
         IEnumerable<Customer> displayCustomerList();
         IEnumerable<Parcel> displayParcelList();
+        IEnumerable<DroneCharge> displayDroneChargeList();
         void AddStation(Station station);
         void AddDrone(Drone drone);
         void AddCustomer(Customer customer);
         void AddParcel(Parcel parcel);
+        void AddDroneCharge(DroneCharge droneCharge);
         void UpdateStation(Station station);
         void UpdateDrone(Drone drone);
         void UpdateCustomer(Customer customer);
         void UpdateParcel(Parcel parcel);
+        void deleteDroneCharge(int Id);
         double[] electricityUse();
 
     }

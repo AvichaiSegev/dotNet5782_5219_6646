@@ -18,7 +18,20 @@ namespace IDAL
 
             public override string ToString()
             {
-                return "ERROR! id does not exist!\n";
+                return "ERROR! id "+ID+" does not exist!\n";
+            }
+        }
+        public class IdAlreadyExistException : Exception
+        {
+            public int ID;
+            public IdAlreadyExistException(int id)
+            {
+                ID = id;
+            }
+
+            public override string ToString()
+            {
+                return "ERROR! id " + ID + " already exist!\n";
             }
         }
     }

@@ -12,7 +12,7 @@ namespace IBL
         public class DroneInParcel
         {
             public int id { set; get; }
-            public int battery { set; get; }
+            public double battery { set; get; }
             public Location location { set; get; }
         }
     }

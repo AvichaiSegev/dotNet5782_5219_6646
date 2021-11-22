@@ -11,7 +11,7 @@ namespace IBL
         public class Station
         {
             public int id { set; get; }
-            public string name { set; get; }
+            public int name { set;  get; }
             public Location location { set; get; }
             public int numFreeChargingStands { set; get; }
             public List<DroneInCharging> dronesInCharging { set; get; }
