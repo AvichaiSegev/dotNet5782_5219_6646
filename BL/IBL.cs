@@ -18,10 +18,10 @@ namespace IBL
         //Update functions
         void UpdateStation(int stationId, int stationName, double stationLongitude, double stationLattitude, int chargeSlots);
         void UpdateStationName(Station station);
-        void UpdateDrone(int droneId, string droneModel, WeightCategories droneMaxWeight);
+        void UpdateDrone(Drone drone);
         void UpdateDroneModel(Drone drone);
         void Updatecustomer(int customerId, string customerName, string customerPhone, double customerLongitude, double customerLattitude);
-        void UpdatecustomerNameAndPhone(int customerId, string customerName, string customerPhone);
+        void UpdatecustomerNameAndPhone(Customer customer);
         void UpdateParcel(int parcelId, int senderId, int targetId, WeightCategories parcelWeight, Priorities priority);
         void sendDroneToCharging(int droneId);
         void releaseDroneFromCharging(int droneId, double chargingTime);

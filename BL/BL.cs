@@ -2,13 +2,14 @@
 using IDAL;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 
 namespace BL
 {
     public class BL : IBL.IBL
     {
         List<DroneToList> droneList = new List<DroneToList>();
+        List<StationToList> stationList = new List<StationToList>();
         double electricityUseForVacantDrone, electricityUseForLightParcel, electricityUseForMediumParcel, electricityUseForHeavyParcel, chargingRate;
         IDAL.IDal dali = new DAL.DalObject.DalObject();
         static readonly Random randy = new Random();
@@ -172,10 +173,24 @@ namespace BL
         {
             throw new NotImplementedException();
         }
-
+        DroneToList displayDroneToList(int droneId)
+        {
+            if (!droneList.Any(x => x.id == droneId))
+            {
+                throw new NotImplementedException();
+            }
+            return droneList.Find(x => x.id == droneId);
+        }
         public void sendDroneToCharging(int droneId)
         {
-            throw new NotImplementedException();
+            if (displayDroneToList(droneId).status != DroneStatus.free) { throw new droneIsNotFree(); }
+            Drone drone = displayDrone(droneId);
+            Location nearstation = nearStation(drone.location.latitude, drone.location.longitude);
+            double distance = DistanceTo(drone.location.latitude, drone.location.longitude, nearstation.latitude, nearstation.longitude);
+            double distanceAbility = drone.battery/electricityUseForVacantDrone;
+            if (distanceAbility < distance) { throw new dontHaveMuchBattery(); }
+            UpdateDrone(new IDAL.DO.Drone() { Id = drone.id, battery = drone.battery - distance * electricityUseForVacantDrone, location = nearstation, maxWeight = drone.maxWeight, model = drone.model, parcel = drone.parcel, status = DroneStatus.matance });
+
         }
 
         public IEnumerable<ParcelToList> displayFreeParcelList()
@@ -192,19 +207,20 @@ namespace BL
             dali.UpdateCustomer(customer);
         }
 
-        public void UpdatecustomerNameAndPhone(int customerId, string customerName, string customerPhone)
+        public void UpdatecustomerNameAndPhone(Customer customer)
         {
             
-            IDAL.DO.Customer customer = dali.displayCustomer(customerId);
-            customer.Name = customerName;
-            customer.Phone = customerPhone;
-            dali.UpdateCustomer(customer);
+            IDAL.DO.Customer Dcustomer = dali.displayCustomer(customer.id);
+            Dcustomer.Name = customer.name;
+            Dcustomer.Phone = customer.phone;
+            dali.UpdateCustomer(Dcustomer);
         }
 
-        public void UpdateDrone(int droneId, string droneModel)
+        public void UpdateDrone(Drone drone)
         {
-            IDAL.DO.Drone drone = new IDAL.DO.Drone { Id = droneId, Model = droneModel};
-            dali.UpdateDrone(drone);
+
+            IDAL.DO.Drone Ddrone = new IDAL.DO.Drone() { MaxWeight = (IDAL.DO.WeightCategories)drone.maxWeight, Model = drone.model };
+            dali.UpdateDrone(Ddrone);
         }
 
         public void UpdateDroneModel(Drone drone)
@@ -286,6 +302,19 @@ namespace BL
                 counter++;
             }
             return counter;
+        }
+
+        List<IDAL.DO.Station> listFreeStation()
+        {
+            List<IDAL.DO.Station> statioFree = new List<IDAL.DO.Station>();
+            foreach(var station in dali.displayStationList())
+            {
+                if (station.ChargeSlots != 0)
+                {
+                    statioFree.Add(station);
+                }
+            }
+            return statioFree;
         }
     }
 }

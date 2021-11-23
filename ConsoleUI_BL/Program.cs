@@ -202,8 +202,8 @@ namespace ConsoleUI_BL
                             case 2:
                                 Console.WriteLine("Enter station Id: ");
                                 int.TryParse(Console.ReadLine(), out stationId);
-                                Console.WriteLine("Enter station Id: ");
-                                int.TryParse(Console.ReadLine(), out stationId);
+                                Console.WriteLine("Enter station name: ");
+                                int.TryParse(Console.ReadLine(), out stationName);
                                 try
                                 {
                                     logi.UpdateStationName(new Station() { id = stationId, name = stationName });
@@ -220,13 +220,27 @@ namespace ConsoleUI_BL
                                 customerName = Console.ReadLine();
                                 Console.WriteLine("Enter Customer Phone: ");
                                 customerPhone = Console.ReadLine();
-                                logi.UpdatecustomerNameAndPhone(customerId, customerName, customerPhone);
+                                try
+                                {
+                                    logi.UpdatecustomerNameAndPhone(new Customer(){id = customerId, name = customerName, phone = customerPhone});
+                                }
+                                catch(Exception error)
+                                {
+                                    Console.WriteLine(error.Message);
+                                }
                                 break;
                             case 4:
                                 Console.WriteLine("Enter Drone Id: ");
                                 int.TryParse(Console.ReadLine(), out droneId);
-                                logi.sendDroneToCharging(droneId);
-                                break;
+                                try
+                                {
+                                    logi.sendDroneToCharging(droneId);
+                                }
+                                catch (Exception error)
+                                {
+                                    Console.WriteLine(error.Message);
+                                }
+                        break;
                             case 5:
                                 Console.WriteLine("Enter Drone Id: ");
                                 int.TryParse(Console.ReadLine(), out droneId);
