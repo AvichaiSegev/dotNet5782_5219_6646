@@ -170,21 +170,29 @@ namespace ConsoleUI_BL
                     case 2:
                         //second menu for the second choice:
                         secondChoice = options("==========Update options==========\n" +
-                            "1. Assign a package to a drone.\n" +
-                            "2. Collection of a package by a drone.\n" +
-                            "3. Delivery package to customer.\n" +//////////////
+                            "1. Update drone.\n" +
+                            "2. Update station.\n" +
+                            "3. Updaet customer.\n" +
                             "4. Sending a drone for charging at a base station.\n" +
-                            "5. Release drone from charging at base station.");
+                            "5. Release drone from charging at base station.\n" +
+                            "6. Assign a package to a drone.\n" +
+                            "7. Collection of a package by a drone.\n" +
+                            "8. Delivery package to customer.");
+                          //  "1. Assign a package to a drone.\n" +
+                          //  "2. Collection of a package by a drone.\n" +
+                          //  "3. Delivery package to customer.\n" +//////////////
+                          //  "4. Sending a drone for charging at a base station.\n" +
+                          //  "5. Release drone from charging at base station.");
                         switch (secondChoice)
                         {
                             case 1:
                                 Console.WriteLine("Enter drone Id: ");
                                 int.TryParse(Console.ReadLine(), out droneId);
-                                Console.WriteLine("Enter parcel model: ");
+                                Console.WriteLine("Enter drone model: ");
                                 droneModel = Console.ReadLine();
                                 try
                                 {
-                                    logi.UpdateDroneModel(droneId, droneModel);
+                                    logi.UpdateDroneModel(new Drone() { id = droneId, model = droneModel});
                                 }
                                 catch(Exception error)
                                 {
@@ -198,7 +206,7 @@ namespace ConsoleUI_BL
                                 int.TryParse(Console.ReadLine(), out stationId);
                                 try
                                 {
-                                    logi.UpdateStationName(stationId, stationName);
+                                    logi.UpdateStationName(new Station() { id = stationId, name = stationName });
                                 }
                                 catch(Exception error)
                                 {

@@ -89,14 +89,15 @@ namespace BL
         {
             double DBattery = 20 + 20*randy.NextDouble();
             Location Dlocation = new Location(dali.displayStation(stationId).Longitude, dali.displayStation(stationId).Lattitude);
-            droneList.Add(new DroneToList() { id = drone.id, maxWeight = drone.maxWeight, battery = DBattery, location = Dlocation});
+
+            droneList.Add(new DroneToList() { id = drone.id, maxWeight = drone.maxWeight, battery = DBattery, location = Dlocation, status = DroneStatus.matance, model = drone.model, parcelNumber = drone.parcel.id});
             IDAL.DO.Drone Ddrone = new IDAL.DO.Drone { Id = drone.id, MaxWeight = (IDAL.DO.WeightCategories) drone.maxWeight, Model = drone.model };
             dali.AddDrone(Ddrone);
         }
 
         public void AddParcel(Parcel parcel, int senderId, int gettedId)
         {
-            IDAL.DO.Parcel DParcel = new IDAL.DO.Parcel { Id = parcel.Id, SenderId = senderId, TargetId = gettedId, Weight = (IDAL.DO.WeightCategories)parcel.weight, Priority = (IDAL.DO.Priorities)parcel.priority };
+            IDAL.DO.Parcel DParcel = new IDAL.DO.Parcel { Id = parcel.Id, SenderId = senderId, TargetId = gettedId, Weight = (IDAL.DO.WeightCategories)parcel.weight, Priority = (IDAL.DO.Priorities)parcel.priority , DroneId = null, Defined = DateTime.Now, Assigned = DateTime.MinValue, Collected = DateTime.MinValue, Provided = DateTime.MinValue};
             dali.AddParcel(DParcel);
         }
 
@@ -200,18 +201,18 @@ namespace BL
             dali.UpdateCustomer(customer);
         }
 
-        public void UpdateDrone(int droneId, string droneModel, WeightCategories droneMaxWeight)
+        public void UpdateDrone(int droneId, string droneModel)
         {
-            IDAL.DO.Drone drone = new IDAL.DO.Drone { Id = droneId, Model = droneModel, MaxWeight = (IDAL.DO.WeightCategories)droneMaxWeight};
+            IDAL.DO.Drone drone = new IDAL.DO.Drone { Id = droneId, Model = droneModel};
             dali.UpdateDrone(drone);
         }
 
-        public void UpdateDroneModel(int droneId, string droneModel)
+        public void UpdateDroneModel(Drone drone)
         {
 
-            IDAL.DO.Drone drone = dali.displayDrone(droneId);
-            drone.Model = droneModel;
-            dali.UpdateDrone(drone);
+            IDAL.DO.Drone Ddrone = dali.displayDrone(drone.id);
+            Ddrone.Model = drone.model;//dali.displayDrone(droneId);
+            dali.UpdateDrone(Ddrone);
 
         }
 
@@ -227,11 +228,11 @@ namespace BL
             dali.UpdateStation(station);
         }
 
-        public void UpdateStationName(int stationId, int stationName)
+        public void UpdateStationName(Station station)
         {
-            IDAL.DO.Station station = dali.displayStation(stationId);
-            station.Name = stationName;
-            dali.UpdateStation(station);
+            IDAL.DO.Station Dstation = dali.displayStation(station.id);
+            Dstation.Name = station.name;
+            dali.UpdateStation(Dstation);
         }
 
         Location nearStation(double latitude, double longitude)

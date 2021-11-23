@@ -197,6 +197,38 @@ namespace DAL
                 return new double[]{ 1, 5, 10, 15, 50 }; 
             }
 
+            public DroneCharge displayDroneCharge(int Id)
+            {
+                if (!data.DroneChargeList.Any(x => x.droneId == Id))
+                {
+                    throw new IdDoesNotExistException(Id);
+                }
+                foreach (DroneCharge item in data.DroneChargeList) { if (item.droneId == Id) { return item; } }
+                return new DroneCharge { droneId = -1, StationId = -1 };
+            }
+
+            public IEnumerable<DroneCharge> displayDroneChargeList()
+            {
+                return data.DroneChargeList;
+            }
+
+            public void AddDroneCharge(DroneCharge droneCharge)
+            {
+                if (data.StationList.Any(x => x.Id == droneCharge.droneId))
+                {
+                    throw new IdAlreadyExistException(droneCharge.droneId);
+                }
+                data.DroneChargeList.Add(droneCharge);
+            }
+
+            public void deleteDroneCharge(int Id)
+            {
+                if (data.DroneChargeList.Any(x => x.droneId == Id))
+                {
+                    throw new IdAlreadyExistException(Id);
+                }
+                data.DroneChargeList.Remove(displayDroneCharge(Id));
+            }
         }
     }
 }
