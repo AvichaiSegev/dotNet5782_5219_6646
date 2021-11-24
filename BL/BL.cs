@@ -118,14 +118,62 @@ namespace BL
                 if(parcel.Id == -1)
                 {
                     parcel = assignAParcelToDrone(drone, Priorities.regular);
-                    if(parcel.Id == -1) { throw new NoSuiTablePackageFound}
+                    if(parcel.Id == -1) { throw new NoSuiTablePackageFound(); }
                 }
             }
-            UpdateDrone(new Drone() { id = drone.id, battery = drone.battery, location = drone.location, maxWeight = drone.maxWeight, model = drone.model, status = DroneStatus.delivery })
+            UpdateDrone(new Drone() { id = drone.id, battery = drone.battery, location = drone.location, maxWeight = drone.maxWeight, model = drone.model, status = DroneStatus.delivery });
+            parcel.droneInParcel = new DroneInParcel() { battery = drone.battery, id = drone.id, location = drone.location };
+            parcel.assignedParcelTime = DateTime.Now;
+            UpdateParcel(parcel);
         }
         Parcel assignAParcelToDrone(Drone drone, Priorities priority)
         {
-
+            Parcel Bparcel = new Parcel();
+            double closestDistance = double.MaxValue;
+            foreach(var parcel in dali.displayParcelList())
+            {
+                if (parcel.Weight <= (IDAL.DO.WeightCategories)drone.maxWeight)
+                {
+                    Location senderL = new Location(dali.displayCustomer(parcel.SenderId).Longitude, dali.displayCustomer(parcel.SenderId).Lattitude);
+                    Location targetL = new Location(dali.displayCustomer(parcel.TargetId).Longitude, dali.displayCustomer(parcel.TargetId).Lattitude);
+                    Location nearTargetStation = nearStation(targetL.latitude, targetL.longitude);
+                    double totalDistance = DistanceTo(drone.location.latitude, drone.location.longitude, senderL.latitude, senderL.longitude) + DistanceTo(senderL.latitude, senderL.longitude, targetL.latitude, targetL.longitude) + DistanceTo(targetL.latitude, targetL.longitude, nearTargetStation.latitude, nearTargetStation.longitude);
+                    double minBattery;
+                    switch ((WeightCategories)parcel.Weight)
+                    {
+                        case WeightCategories.light:
+                            minBattery = electricityUseForLightParcel * totalDistance;
+                            break;
+                        case WeightCategories.medium:
+                            minBattery = electricityUseForMediumParcel * totalDistance;
+                            break;
+                        case WeightCategories.liver:
+                            minBattery = electricityUseForHeavyParcel * totalDistance;
+                            break;
+                        default:
+                            minBattery = 0;
+                            break;
+                    }
+                    if (minBattery <= drone.battery)
+                    {
+                        double distanceToParcel = DistanceTo(drone.location.latitude, drone.location.longitude, senderL.latitude, senderL.longitude);
+                        if (distanceToParcel < closestDistance)
+                        {
+                            Bparcel.Id = parcel.Id;
+                            Bparcel.priority = (Priorities)parcel.Priority;
+                            Bparcel.providedParcelTime = parcel.Provided;
+                            Bparcel.delivered.id = parcel.SenderId;
+                            Bparcel.getted.id = parcel.TargetId;
+                            Bparcel.weight = (WeightCategories)parcel.Weight;
+                            Bparcel.droneInParcel.id = parcel.DroneId;
+                            Bparcel.definedParcelTime = parcel.Defined;
+                            Bparcel.collectedParcelTime = parcel.Collected;
+                            Bparcel.assignedParcelTime = parcel.Assigned;
+                            closestDistance = distanceToParcel;
+                        }
+                    }
+                }
+            }
             return new Parcel();
         }
 
@@ -254,10 +302,19 @@ namespace BL
 
         }
 
-        public void UpdateParcel(int parcelId, int senderId, int targetId, WeightCategories parcelWeight, Priorities priority)
+        public void UpdateParcel(Parcel parcel)
         {
-            IDAL.DO.Parcel parcel = new IDAL.DO.Parcel { Id = parcelId, SenderId = senderId, TargetId = targetId, Weight = (IDAL.DO.WeightCategories)parcelWeight, Priority = (IDAL.DO.Priorities)priority,  };
-            dali.UpdateParcel(parcel);
+            IDAL.DO.Parcel Dparcel = dali.displayParcel(parcel.Id);
+            Dparcel.Priority = (IDAL.DO.Priorities)parcel.priority;
+            Dparcel.Provided = parcel.providedParcelTime;
+            Dparcel.SenderId = parcel.delivered.id;
+            Dparcel.TargetId = parcel.getted.id;
+            Dparcel.Weight = (IDAL.DO.WeightCategories)parcel.weight;
+            Dparcel.DroneId = parcel.droneInParcel.id;
+            Dparcel.Defined = parcel.definedParcelTime;
+            Dparcel.Collected = parcel.collectedParcelTime;
+            Dparcel.Assigned = parcel.assignedParcelTime;
+            dali.UpdateParcel(Dparcel);
         }
 
         public void UpdateStation(Station station)
