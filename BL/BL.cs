@@ -224,9 +224,39 @@ namespace BL
             IDAL.DO.Parcel parcel1 = dali.displayParcel(Id);
             Parcel parcel2 = new Parcel();
             parcel2.Id = parcel1.Id;
-            parcel2.Id = parcel1.Weight;
-            if (parcel1.Weight == WeightCategories.light);
-            
+            switch ((WeightCategories)parcel1.Weight)
+            {
+                case WeightCategories.light:
+                    parcel1.Weight = IDAL.DO.WeightCategories.light;
+                    break;
+                case WeightCategories.medium:
+                    parcel1.Weight = IDAL.DO.WeightCategories.medium;
+                    break;
+                case WeightCategories.liver:
+                    parcel1.Weight = IDAL.DO.WeightCategories.liver;
+                    break;
+                default:break;
+            }
+            switch ((Priorities)parcel1.Priority)
+            {
+                case Priorities.emergency:
+                    parcel1.Priority = IDAL.DO.Priorities.emergency;
+                    break;
+                case Priorities.quick:
+                    parcel1.Priority = IDAL.DO.Priorities.quick;
+                    break;
+                case Priorities.regular:
+                    parcel1.Priority = IDAL.DO.Priorities.regular;
+                    break;
+                default: break;
+            }
+            parcel2.assignedParcelTime = parcel1.Assigned;
+            parcel2.collectedParcelTime = parcel1.Collected;
+            parcel2.definedParcelTime = parcel1.Defined;
+            parcel2.providedParcelTime = parcel1.Provided;
+            parcel2.getted.id = parcel1.TargetId;
+            parcel2.delivered.id = parcel1.SenderId;
+            parcel2.droneInParcel.id = parcel1.DroneId;
             return parcel2;
         }
 
@@ -237,7 +267,14 @@ namespace BL
 
         public Station displayStation(int Id)
         {
-            throw new NotImplementedException();
+            IDAL.DO.Station station1 = dali.displayStation(Id);
+            Station station2 = new Station();
+            station2.id = station1.Id;
+            station2.location.latitude = station1.Lattitude;
+            station2.location.longitude = station1.Longitude;
+            station2.name = station1.Name;
+            station2.numFreeChargingStands = station1.freeChargeSlots;
+            return station2;
         }
 
         public IEnumerable<StationToList> displayStationList()
