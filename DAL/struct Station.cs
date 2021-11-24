@@ -17,7 +17,7 @@ namespace IDAL
                         "\nStation name: " + this.Name +
                         "\nStation longitude: " + this.Longitude +
                         "\nStation lattitude: " + this.Lattitude +
-                        "\nStation charge slots: " + this.ChargeSlots;
+                        "\nStation charge slots: " + this.freeChargeSlots;
             }
         }
     }

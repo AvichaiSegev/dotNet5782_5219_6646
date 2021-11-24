@@ -87,12 +87,19 @@ namespace BL
 
         public void AddDrone(Drone drone, int stationId)
         {
-            double DBattery = 20 + 20*randy.NextDouble();
-            Location Dlocation = new Location(dali.displayStation(stationId).Longitude, dali.displayStation(stationId).Lattitude);
+            try
+            {
+                double DBattery = 20 + 20 * randy.NextDouble();
+                Location Dlocation = new Location(dali.displayStation(stationId).Longitude, dali.displayStation(stationId).Lattitude);
 
-            droneList.Add(new DroneToList() { id = drone.id, maxWeight = drone.maxWeight, battery = DBattery, location = Dlocation, status = DroneStatus.matance, model = drone.model, parcelNumber = drone.parcel.id});
-            IDAL.DO.Drone Ddrone = new IDAL.DO.Drone { Id = drone.id, MaxWeight = (IDAL.DO.WeightCategories) drone.maxWeight, Model = drone.model };
-            dali.AddDrone(Ddrone);
+                droneList.Add(new DroneToList() { id = drone.id, maxWeight = drone.maxWeight, battery = DBattery, location = Dlocation, status = DroneStatus.matance, model = drone.model, parcelNumber = drone.parcel.id });
+                IDAL.DO.Drone Ddrone = new IDAL.DO.Drone { Id = drone.id, MaxWeight = (IDAL.DO.WeightCategories)drone.maxWeight, Model = drone.model };
+                dali.AddDrone(Ddrone);
+            }
+            catch (IDAL.DO.IdDoesNotExistException err)
+            {
+                throw new IdDoesNotExist(err.ID);
+            }
         }
 
         public void AddParcel(Parcel parcel, int senderId, int gettedId)
@@ -128,7 +135,7 @@ namespace BL
         }
         Parcel assignAParcelToDrone(Drone drone, Priorities priority)
         {
-            Parcel Bparcel = new Parcel();
+            Parcel Bparcel = new Parcel(){ Id = -1};
             double closestDistance = double.MaxValue;
             foreach(var parcel in dali.displayParcelList())
             {
@@ -174,17 +181,27 @@ namespace BL
                     }
                 }
             }
-            return new Parcel();
+            return Bparcel;
         }
 
         public void collectParcelByDrone(int droneId)
         {
-            throw new NotImplementedException();
+
+            Drone drone = displayDrone(droneId);
+            if()
         }
+
 
         public Customer displaycustomer(int Id)
         {
-            throw new NotImplementedException();
+            IDAL.DO.Customer customer1 = dali.displayCustomer(Id);
+            Customer customer2 = new Customer();
+            customer2.id = customer1.Id;
+            customer2.name = customer1.Name;
+            customer2.phone = customer1.Phone;
+            customer2.location.latitude = customer1.Lattitude;
+            customer2.location.longitude = customer1.Longitude;
+            return customer2;
         }
 
         public IEnumerable<CustomerToList> displaycustomerList()
@@ -204,7 +221,13 @@ namespace BL
 
         public Parcel displayParcel(int Id)
         {
-            throw new NotImplementedException();
+            IDAL.DO.Parcel parcel1 = dali.displayParcel(Id);
+            Parcel parcel2 = new Parcel();
+            parcel2.Id = parcel1.Id;
+            parcel2.Id = parcel1.Weight;
+            if (parcel1.Weight == WeightCategories.light);
+            
+            return parcel2;
         }
 
         public IEnumerable<ParcelToList> displayParcelList()
