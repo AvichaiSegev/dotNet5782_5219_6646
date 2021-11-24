@@ -21,6 +21,19 @@ namespace IDAL
                 return "ERROR! id "+ID+" does not exist!\n";
             }
         }
+        public class LocationDoesNotExistException : Exception
+        {
+            public LocationDoesNotExistException()
+            {
+                
+            }
+
+            public override string ToString()
+            {
+                return "ERROR! station in this location does not exist!\n";
+            }
+        }
+
         public class IdAlreadyExistException : Exception
         {
             public int ID;

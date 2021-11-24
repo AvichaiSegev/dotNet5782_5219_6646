@@ -28,7 +28,7 @@ namespace DAL
                 Random r = new Random();
                 for (int i = 0; i < 2; i++)
                 {
-                    StationList.Add(new Station { Id = i, ChargeSlots = r.Next(10), Name = i, Longitude = i, Lattitude = i });
+                    StationList.Add(new Station { Id = i, freeChargeSlots = r.Next(10), Name = i, Longitude = i, Lattitude = i });
                 }
                 for (int i = 0; i < 5; i++)
                 {
@@ -63,7 +63,7 @@ namespace DAL
                     throw new IdDoesNotExistException(Id);
                 }
                 foreach (Station item in data.StationList){ if (item.Id == Id) { return item; } }
-                return new Station { Id = -1, Name = -1, Longitude = -1, Lattitude = -1, ChargeSlots = -1 };
+                return new Station { Id = -1, Name = -1, Longitude = -1, Lattitude = -1, freeChargeSlots = -1 };
             }
             public Drone displayDrone(int Id)
             {
@@ -93,11 +93,20 @@ namespace DAL
                 return new Parcel { Id = -1, SenderId = -1, TargetId = -1, Weight = WeightCategories.light, Priority = Priorities.regular, Defined = DateTime.Now, Assigned = DateTime.Now, Collected = DateTime.Now, Provided = DateTime.Now, DroneId = -1 };
             }
 
+            public Station displayStationByLocation(double latitude, double longitude)
+            {
+                if (!data.StationList.Any(x => x.Lattitude == latitude && x.Longitude == longitude))
+                {
+                    throw new LocationDoesNotExistException();
+                }
+                foreach (Station item in data.StationList) { if (item.Longitude == longitude && item.Lattitude == latitude) { return item; } }
+                return new Station { Id = -1, Name = -1, Longitude = -1, Lattitude = -1, freeChargeSlots = -1 };
+            }
             //Create function for create list of the available stations:
             public List<int> IdListForStations()
             {
                 List<int> list = new List<int>();
-                foreach (Station item in data.StationList) { if (item.ChargeSlots > 0) { list.Add(item.Id); } }
+                foreach (Station item in data.StationList) { if (item.freeChargeSlots > 0) { list.Add(item.Id); } }
                 return list;
             }
 
@@ -194,7 +203,7 @@ namespace DAL
             public double[] electricityUse()
             {
 
-                return new double[]{ 1, 5, 10, 15, 50 }; 
+                return new double[]{ 1, 1, 5, 10, 15 }; //Charging per minute
             }
 
             public DroneCharge displayDroneCharge(int Id)

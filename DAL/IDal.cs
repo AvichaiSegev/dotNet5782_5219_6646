@@ -13,6 +13,7 @@ namespace IDAL
         Drone displayDrone(int Id);
         Customer displayCustomer(int Id);
         Parcel displayParcel(int Id);
+        Station displayStationByLocation(double latitude, double longitude);
         DroneCharge displayDroneCharge(int Id);
         IEnumerable<Station> displayStationList();
         IEnumerable<Drone> displayDroneList();

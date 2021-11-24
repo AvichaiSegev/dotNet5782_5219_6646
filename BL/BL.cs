@@ -9,7 +9,6 @@ namespace BL
     public class BL : IBL.IBL
     {
         List<DroneToList> droneList = new List<DroneToList>();
-        List<StationToList> stationList = new List<StationToList>();
         double electricityUseForVacantDrone, electricityUseForLightParcel, electricityUseForMediumParcel, electricityUseForHeavyParcel, chargingRate;
         IDAL.IDal dali = new DAL.DalObject.DalObject();
         static readonly Random randy = new Random();
@@ -104,14 +103,30 @@ namespace BL
 
         public void AddStation(Station station)
         {
-            IDAL.DO.Station Dstation = new IDAL.DO.Station { Id = station.id, Name = station.name, Longitude = station.location.longitude, Lattitude = station.location.latitude, ChargeSlots = station.numFreeChargingStands };
+            IDAL.DO.Station Dstation = new IDAL.DO.Station { Id = station.id, Name = station.name, Longitude = station.location.longitude, Lattitude = station.location.latitude, freeChargeSlots = station.numFreeChargingStands };
             dali.AddStation(Dstation);
             
         }
 
         public void assignParcelToDrone(int droneId)
         {
-            throw new NotImplementedException();
+            Drone drone = displayDrone(droneId);
+            Parcel parcel = assignAParcelToDrone(drone, Priorities.emergency);
+            if (parcel.Id == -1)
+            {
+                parcel = assignAParcelToDrone(drone, Priorities.quick);
+                if(parcel.Id == -1)
+                {
+                    parcel = assignAParcelToDrone(drone, Priorities.regular);
+                    if(parcel.Id == -1) { throw new NoSuiTablePackageFound}
+                }
+            }
+            UpdateDrone(new Drone() { id = drone.id, battery = drone.battery, location = drone.location, maxWeight = drone.maxWeight, model = drone.model, status = DroneStatus.delivery })
+        }
+        Parcel assignAParcelToDrone(Drone drone, Priorities priority)
+        {
+
+            return new Parcel();
         }
 
         public void collectParcelByDrone(int droneId)
@@ -169,30 +184,37 @@ namespace BL
             throw new NotImplementedException();
         }
 
-        public void releaseDroneFromCharging(int droneId, double chargingTime)
-        {
-            throw new NotImplementedException();
-        }
         DroneToList displayDroneToList(int droneId)
         {
             if (!droneList.Any(x => x.id == droneId))
             {
-                throw new NotImplementedException();
+                throw new IdDoesNotExist();
             }
             return droneList.Find(x => x.id == droneId);
         }
         public void sendDroneToCharging(int droneId)
         {
-            if (displayDroneToList(droneId).status != DroneStatus.free) { throw new droneIsNotFree(); }
+            if (displayDroneToList(droneId).status != DroneStatus.free) { throw new dronesStatusIsNotApplicable(); }
             Drone drone = displayDrone(droneId);
             Location nearstation = nearStation(drone.location.latitude, drone.location.longitude);
             double distance = DistanceTo(drone.location.latitude, drone.location.longitude, nearstation.latitude, nearstation.longitude);
             double distanceAbility = drone.battery/electricityUseForVacantDrone;
             if (distanceAbility < distance) { throw new dontHaveMuchBattery(); }
-            UpdateDrone(new IDAL.DO.Drone() { Id = drone.id, battery = drone.battery - distance * electricityUseForVacantDrone, location = nearstation, maxWeight = drone.maxWeight, model = drone.model, parcel = drone.parcel, status = DroneStatus.matance });
-
+            UpdateDrone(new Drone() { id = drone.id, battery = drone.battery - (distance * electricityUseForVacantDrone), location = nearstation, maxWeight = drone.maxWeight, model = drone.model, status = DroneStatus.matance });
+            IDAL.DO.Station station = dali.displayStationByLocation(nearstation.latitude, nearstation.longitude);
+            UpdateStation(new Station() { id = station.Id, name = station.Name, location = new Location(station.Longitude, station.Lattitude), numFreeChargingStands = station.freeChargeSlots - 1 });
+            dali.AddDroneCharge(new IDAL.DO.DroneCharge() { droneId = drone.id, StationId = station.Id });
         }
 
+        public void releaseDroneFromCharging(int droneId, double chargingTime)
+        {
+            if (displayDroneToList(droneId).status != DroneStatus.matance) { throw new dronesStatusIsNotApplicable(); }
+            Drone drone = displayDrone(droneId);
+            UpdateDrone(new Drone() { id = drone.id, battery = drone.battery + (chargingTime * chargingRate), location = drone.location, maxWeight = drone.maxWeight, model = drone.model, status = DroneStatus.free });
+            IDAL.DO.Station station = dali.displayStationByLocation(drone.location.latitude, drone.location.longitude);
+            UpdateStation(new Station() { id = station.Id, name = station.Name, location = new Location(station.Longitude, station.Lattitude), numFreeChargingStands = station.freeChargeSlots + 1 });
+            dali.deleteDroneCharge(droneId);
+        }
         public IEnumerable<ParcelToList> displayFreeParcelList()
         {
             throw new NotImplementedException();
@@ -218,7 +240,7 @@ namespace BL
 
         public void UpdateDrone(Drone drone)
         {
-
+            //////////////////////////////////////////////////////////////I need update the dronelist
             IDAL.DO.Drone Ddrone = new IDAL.DO.Drone() { MaxWeight = (IDAL.DO.WeightCategories)drone.maxWeight, Model = drone.model };
             dali.UpdateDrone(Ddrone);
         }
@@ -238,10 +260,14 @@ namespace BL
             dali.UpdateParcel(parcel);
         }
 
-        public void UpdateStation(int stationId, int stationName, double stationLongitude, double stationLattitude, int chargeSlots)
+        public void UpdateStation(Station station)
         {
-            IDAL.DO.Station station = new IDAL.DO.Station { Id = stationId, Name = stationName, Longitude = stationLongitude, Lattitude = stationLattitude, ChargeSlots = chargeSlots };
-            dali.UpdateStation(station);
+            IDAL.DO.Station Dstation = dali.displayStation(station.id);
+            Dstation.freeChargeSlots = station.numFreeChargingStands;
+            Dstation.Lattitude = station.location.latitude;
+            Dstation.Longitude = station.location.longitude;
+            Dstation.Name = station.name;
+            dali.UpdateStation(Dstation);
         }
 
         public void UpdateStationName(Station station)
@@ -306,15 +332,15 @@ namespace BL
 
         List<IDAL.DO.Station> listFreeStation()
         {
-            List<IDAL.DO.Station> statioFree = new List<IDAL.DO.Station>();
+            List<IDAL.DO.Station> stationFree = new List<IDAL.DO.Station>();
             foreach(var station in dali.displayStationList())
             {
-                if (station.ChargeSlots != 0)
+                if (station.freeChargeSlots != 0)
                 {
-                    statioFree.Add(station);
+                    stationFree.Add(station);
                 }
             }
-            return statioFree;
+            return stationFree;
         }
     }
 }

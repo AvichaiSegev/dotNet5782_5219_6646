@@ -8,7 +8,7 @@ namespace IBL
 {
     namespace BO
     {
-        public class droneIsNotFree: Exception
+        public class dronesStatusIsNotApplicable : Exception
         {
 
         }
@@ -16,5 +16,15 @@ namespace IBL
         {
 
         }
+        public class IdDoesNotExist: Exception
+        {
+
+        }
+        public class NoSuiTablePackageFound: Exception
+        {
+
+        }
+
+
     }
 }

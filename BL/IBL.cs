@@ -16,7 +16,7 @@ namespace IBL
         void AddParcel(Parcel parcel, int senderId, int gettedId);
 
         //Update functions
-        void UpdateStation(int stationId, int stationName, double stationLongitude, double stationLattitude, int chargeSlots);
+        void UpdateStation(Station station);
         void UpdateStationName(Station station);
         void UpdateDrone(Drone drone);
         void UpdateDroneModel(Drone drone);
