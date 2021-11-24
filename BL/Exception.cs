@@ -18,13 +18,21 @@ namespace IBL
         }
         public class IdDoesNotExist: Exception
         {
+            public int ID;
+            public IdDoesNotExist(int id)
+            {
+                ID = id;
+            }
 
+            public override string ToString()
+            {
+                return "ERROR! id " + ID + " does not exist!\n";
+            }
         }
         public class NoSuiTablePackageFound: Exception
         {
 
         }
-
 
     }
 }
