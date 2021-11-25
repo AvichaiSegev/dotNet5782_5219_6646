@@ -186,11 +186,51 @@ namespace BL
 
         public void collectParcelByDrone(int droneId)
         {
-
-            Drone drone = displayDrone(droneId);
-            if()
+            DroneToList droneToList = displayDroneToList(droneId);
+            Parcel parcel = displayParcel(droneToList.parcelNumber);
+            Customer customer = displaycustomer(parcel.delivered.id);
+            if (droneToList.status != DroneStatus.delivery || parcel.droneInParcel.id != droneId || parcel.assignedParcelTime == DateTime.MinValue || parcel.collectedParcelTime != DateTime.MinValue)
+            {
+                throw new DroneDoesNotSuitable();
+            }
+            double distance = DistanceTo(droneToList.location.latitude, droneToList.location.longitude, customer.location.latitude, customer.location.longitude);
+            droneToList.battery = droneToList.battery - electricityUseForVacantDrone * distance;
+            droneToList.location = customer.location;
+            UpdateDrone(new Drone() { battery = droneToList.battery, id = droneToList.id, location = droneToList.location, maxWeight = (WeightCategories)droneToList.maxWeight, model = droneToList.model, parcel = new ParcelInTransfer(), status = droneToList.status });
+            parcel.collectedParcelTime = DateTime.Now;
+            UpdateParcel(parcel);
         }
 
+        public void provideParcelByDrone(int droneId)
+        {
+            DroneToList droneToList = displayDroneToList(droneId);
+            Parcel parcel = displayParcel(droneToList.parcelNumber);
+            Customer customer = displaycustomer(parcel.getted.id);
+            if (droneToList.status != DroneStatus.delivery || parcel.droneInParcel.id != droneId || parcel.collectedParcelTime == DateTime.MinValue || parcel.providedParcelTime != DateTime.MinValue)
+            {
+                throw new DroneDoesNotSuitable();
+            }
+            double distance = DistanceTo(droneToList.location.latitude, droneToList.location.longitude, customer.location.latitude, customer.location.longitude);
+            switch ((WeightCategories)parcel.weight)
+            {
+                case WeightCategories.light:
+                    droneToList.battery = droneToList.battery - electricityUseForLightParcel * distance;
+                    break;
+                case WeightCategories.medium:
+                    droneToList.battery = droneToList.battery - electricityUseForMediumParcel * distance;
+                    break;
+                case WeightCategories.liver:
+                    droneToList.battery = droneToList.battery - electricityUseForHeavyParcel * distance;
+                    break;
+                default:
+                    droneToList.battery = 0;
+                    break;
+            }
+            droneToList.location = customer.location;
+            UpdateDrone(new Drone() { battery = droneToList.battery, id = droneToList.id, location = droneToList.location, maxWeight = (WeightCategories)droneToList.maxWeight, model = droneToList.model, parcel = new ParcelInTransfer(), status = droneToList.status });
+            parcel.providedParcelTime = DateTime.Now;
+            UpdateParcel(parcel);
+        }
 
         public Customer displaycustomer(int Id)
         {
@@ -287,10 +327,6 @@ namespace BL
             throw new NotImplementedException();
         }
 
-        public void provideParcelByDrone(int droneId)
-        {
-            throw new NotImplementedException();
-        }
 
         DroneToList displayDroneToList(int droneId)
         {

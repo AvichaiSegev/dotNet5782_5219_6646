@@ -22,7 +22,7 @@ namespace IBL
         void UpdateDroneModel(Drone drone);
         void Updatecustomer(int customerId, string customerName, string customerPhone, double customerLongitude, double customerLattitude);
         void UpdatecustomerNameAndPhone(Customer customer);
-        void UpdateParcel(int parcelId, int senderId, int targetId, WeightCategories parcelWeight, Priorities priority);
+        void UpdateParcel(Parcel parcel);
         void sendDroneToCharging(int droneId);
         void releaseDroneFromCharging(int droneId, double chargingTime);
         void collectParcelByDrone(int droneId);
