@@ -18,6 +18,16 @@ namespace IBL
             public DroneStatus status { set; get; }
             public ParcelInTransfer parcel { set; get; }
             public Location location { set; get; }
+            public override string ToString()
+            {
+                return "Drone Id: " + this.id +
+                        "\nDrone model: " + this.model +
+                        "\nDrone maxWeight: " + this.maxWeight +
+                        "\nDrone battery: " + this.battery +
+                        "\nDrone status: " + this.status +
+                        "\nDrone longitude: " + this.location.longitude +
+                        "\nDrone lattitude: " + this.location.latitude;
+            }
         }
     }
 }

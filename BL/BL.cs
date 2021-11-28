@@ -93,7 +93,7 @@ namespace BL
                 double DBattery = 20 + 20 * randy.NextDouble();
                 Location Dlocation = new Location(dali.displayStation(stationId).Longitude, dali.displayStation(stationId).Lattitude);
 
-                droneList.Add(new DroneToList() { id = drone.id, maxWeight = drone.maxWeight, battery = DBattery, location = Dlocation, status = DroneStatus.matance, model = drone.model, parcelNumber = drone.parcel.id });
+                droneList.Add(new DroneToList() { id = drone.id, maxWeight = drone.maxWeight, battery = DBattery, location = Dlocation, status = DroneStatus.matance, model = drone.model });
                 IDAL.DO.Drone Ddrone = new IDAL.DO.Drone { Id = drone.id, MaxWeight = (IDAL.DO.WeightCategories)drone.maxWeight, Model = drone.model };
                 dali.AddDrone(Ddrone);
             }
@@ -240,8 +240,7 @@ namespace BL
             customer2.id = customer1.Id;
             customer2.name = customer1.Name;
             customer2.phone = customer1.Phone;
-            customer2.location.latitude = customer1.Lattitude;
-            customer2.location.longitude = customer1.Longitude;
+            customer2.location = new Location(customer1.Longitude, customer1.Lattitude);
             return customer2;
         }
 
@@ -295,9 +294,12 @@ namespace BL
             parcel2.collectedParcelTime = parcel1.Collected;
             parcel2.definedParcelTime = parcel1.Defined;
             parcel2.providedParcelTime = parcel1.Provided;
-            parcel2.getted.id = parcel1.TargetId;
-            parcel2.delivered.id = parcel1.SenderId;
-            parcel2.droneInParcel.id = parcel1.DroneId;
+            Customer customer = displaycustomer(parcel1.TargetId);
+            parcel2.getted = new CustomerInParcel() { id = customer.id, name = customer.name };
+            customer = displaycustomer(parcel1.SenderId);
+            parcel2.delivered = new CustomerInParcel() { id = customer.id, name = customer.name };
+            Drone drone = displayDrone(parcel1.DroneId);
+            parcel2.droneInParcel = new DroneInParcel() { id = drone.id, battery = drone.battery, location = drone.location };
             return parcel2;
         }
 
