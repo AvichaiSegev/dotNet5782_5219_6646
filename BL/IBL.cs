@@ -30,12 +30,12 @@ namespace IBL
         void assignParcelToDrone(int droneId);
         Station displayStation(int Id);
         Drone displayDrone(int Id);
-        Customer displaycustomer(int Id);
+        Customer displayCustomer(int Id);
        Parcel displayParcel(int Id);
         IEnumerable<StationToList> displayStationList();
         IEnumerable<StationToList> displayFreeStationList();
         IEnumerable<DroneToList> displayDroneList();
-        IEnumerable<CustomerToList> displaycustomerList();
+        IEnumerable<CustomerToList> displayCustomerList();
         IEnumerable<ParcelToList> displayParcelList();
         IEnumerable<ParcelToList> displayFreeParcelList();
 

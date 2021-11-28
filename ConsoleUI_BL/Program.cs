@@ -71,7 +71,6 @@ namespace ConsoleUI_BL
                                 {
                                     Console.WriteLine(error.Message);
                                 }
-                                ////////////////////////////////////////
                                 break;
                             //option 2: Add a drone:
                             case 2:
@@ -157,7 +156,7 @@ namespace ConsoleUI_BL
                                     logi.AddParcel(new Parcel() { Id = parcelId, priority = priority, weight = parcelWeight}, senderId, targetId);
                                 }
                                 catch(Exception error)
-                                    {
+                                {
                                     Console.WriteLine(error.Message);
                                 }
                                     break;
@@ -246,7 +245,14 @@ namespace ConsoleUI_BL
                                 int.TryParse(Console.ReadLine(), out droneId);
                                 Console.WriteLine("Enter charging Time: ");
                                 double.TryParse(Console.ReadLine(), out chargingTime);//chargingTime - Hours
-                                logi.releaseDroneFromCharging(droneId, chargingTime);
+                                try
+                                {
+                                    logi.releaseDroneFromCharging(droneId, chargingTime);
+                                }
+                                catch (Exception error)
+                                {
+                                    Console.WriteLine(error.Message);
+                                }
                                 break;
                             case 6:
                                 Console.WriteLine("Enter Drone Id: ");
@@ -263,39 +269,6 @@ namespace ConsoleUI_BL
                                 int.TryParse(Console.ReadLine(), out droneId);
                                 logi.provideParcelByDrone(droneId);
                                 break;
-                         //   //option 1: Assign a package to a drone:
-                         //   case 10:
-                         //       Console.WriteLine("Enter parcel Id: ");
-                         //       int.TryParse(Console.ReadLine(), out parcelId);
-                         //       logi.schedule(parcelId);
-                         //       break;
-                         //   //option 2: Collection of a package by a drone:
-                         //   case 20:
-                         //       Console.WriteLine("Enter parcel Id: ");
-                         //       int.TryParse(Console.ReadLine(), out parcelId);
-                         //       logi.pickUp(parcelId);
-                         //       break;
-                         //   //option 3: Delivery package to customer:
-                         //   case 30:
-                         //       Console.WriteLine("Enter parcel Id: ");
-                         //       int.TryParse(Console.ReadLine(), out parcelId);
-                         //       DAL.DalObject.DalObject.deliver(parcelId);
-                         //       break;
-                         //   //option 4: Sending a drone for charging at a base station:
-                         //   case 40:
-                         //       Console.WriteLine("Enter drone Id: ");
-                         //       int.TryParse(Console.ReadLine(), out droneId);
-                         //       Console.WriteLine("Choose one of the follow stations:");
-                         //       foreach (int item in logi.IdListForStations()) { Console.WriteLine("Station " + item); }
-                         //       int.TryParse(Console.ReadLine(), out stationId);
-                         //       DAL.DalObject.DalObject.charge(droneId, stationId);
-                         //       break;
-                         //   //option 5: Release drone from charging at base station: 
-                         //   case 50:
-                         //       Console.WriteLine("Enter drone Id: ");
-                         //       int.TryParse(Console.ReadLine(), out droneId);
-                         //       DAL.DalObject.DalObject.unCharge(droneId);
-                         //       break;
                             default:
                                 Console.WriteLine("INPUT ERROR!   try again");
                                 break;
@@ -329,7 +302,7 @@ namespace ConsoleUI_BL
                             case 3:
                                 Console.WriteLine("Enter the Id of the customer:");
                                 int.TryParse(Console.ReadLine(), out customerId);
-                                Customer customer = logi.displaycustomer(customerId);
+                                Customer customer = logi.displayCustomer(customerId);
                                 Console.WriteLine(customer.ToString());
                                 break;
                             //option 4: view a package:
@@ -366,7 +339,7 @@ namespace ConsoleUI_BL
                                 break;
                             //option 3: View customer list:
                             case 3:
-                                foreach (CustomerToList item in logi.displaycustomerList()) { Console.WriteLine(item); }
+                                foreach (CustomerToList item in logi.displayCustomerList()) { Console.WriteLine(item); }
                                 break;
                             //option 4: Displays the list of packages:
                             case 4:

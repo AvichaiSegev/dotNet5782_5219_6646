@@ -17,6 +17,14 @@ namespace IBL
             public Location location { set; get; }
             public List<ParcelAtTheCustomer> fromTheCustomer { set; get; }
             public List<ParcelAtTheCustomer> forTheCustomer { set; get; }
+            public override string ToString()
+            {
+                return "Customer Id: " + this.id +
+                        "\nCustomer name: " + this.name +
+                        "\nCustomer phone: " + this.phone +
+                        "\nCustomer latitude: " + this.location.latitude +
+                        "\nCustomer longitude: " + this.location.longitude;
+            }
         }
     }
 }
