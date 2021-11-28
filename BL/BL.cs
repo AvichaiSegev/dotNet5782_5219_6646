@@ -36,16 +36,17 @@ namespace BL
                     if (parcelDidNotDelivered.Collected != DateTime.MinValue && parcelDidNotDelivered.Provided == DateTime.MinValue) { drone1.location = new Location(dali.displayCustomer(parcelDidNotDelivered.SenderId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.SenderId).Longitude); }
                     double minBattery;
                     Location targetnearStation = nearStation(dali.displayCustomer(parcelDidNotDelivered.TargetId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.TargetId).Longitude);
+                    IDAL.DO.Customer customerTarget = dali.displayCustomer(parcelDidNotDelivered.TargetId);
                     switch ((WeightCategories)parcelDidNotDelivered.Weight)
                     {
                         case WeightCategories.light:
-                            minBattery = electricityUseForLightParcel * (DistanceTo(drone1.location.latitude, drone1.location.longitude, dali.displayCustomer(parcelDidNotDelivered.TargetId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.TargetId).Longitude) + DistanceTo(dali.displayCustomer(parcelDidNotDelivered.TargetId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.TargetId).Longitude, targetnearStation.latitude, targetnearStation.longitude));
+                            minBattery = electricityUseForLightParcel * (DistanceTo(drone1.location.latitude, drone1.location.longitude, customerTarget.Lattitude, customerTarget.Longitude) + DistanceTo(customerTarget.Lattitude, customerTarget.Longitude, targetnearStation.latitude, targetnearStation.longitude));
                             break;
                         case WeightCategories.medium:
-                            minBattery = electricityUseForMediumParcel * (DistanceTo(drone1.location.latitude, drone1.location.longitude, dali.displayCustomer(parcelDidNotDelivered.TargetId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.TargetId).Longitude) + DistanceTo(dali.displayCustomer(parcelDidNotDelivered.TargetId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.TargetId).Longitude, targetnearStation.latitude, targetnearStation.longitude));
+                            minBattery = electricityUseForMediumParcel * (DistanceTo(drone1.location.latitude, drone1.location.longitude, customerTarget.Lattitude, customerTarget.Longitude) + DistanceTo(customerTarget.Lattitude, customerTarget.Longitude, targetnearStation.latitude, targetnearStation.longitude));
                             break;
                         case WeightCategories.liver:
-                            minBattery = electricityUseForHeavyParcel * (DistanceTo(drone1.location.latitude, drone1.location.longitude, dali.displayCustomer(parcelDidNotDelivered.TargetId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.TargetId).Longitude) + DistanceTo(dali.displayCustomer(parcelDidNotDelivered.TargetId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.TargetId).Longitude, targetnearStation.latitude, targetnearStation.longitude));
+                            minBattery = electricityUseForHeavyParcel * (DistanceTo(drone1.location.latitude, drone1.location.longitude, customerTarget.Lattitude, customerTarget.Longitude) + DistanceTo(customerTarget.Lattitude, customerTarget.Longitude, targetnearStation.latitude, targetnearStation.longitude));
                             break;
                         default:
                             minBattery = 0;
@@ -104,7 +105,7 @@ namespace BL
 
         public void AddParcel(Parcel parcel, int senderId, int gettedId)
         {
-            IDAL.DO.Parcel DParcel = new IDAL.DO.Parcel { Id = parcel.Id, SenderId = senderId, TargetId = gettedId, Weight = (IDAL.DO.WeightCategories)parcel.weight, Priority = (IDAL.DO.Priorities)parcel.priority , DroneId = null, Defined = DateTime.Now, Assigned = DateTime.MinValue, Collected = DateTime.MinValue, Provided = DateTime.MinValue};
+            IDAL.DO.Parcel DParcel = new IDAL.DO.Parcel { Id = parcel.Id, SenderId = senderId, TargetId = gettedId, Weight = (IDAL.DO.WeightCategories)parcel.weight, Priority = (IDAL.DO.Priorities)parcel.priority , DroneId = int.MinValue, Defined = DateTime.Now, Assigned = DateTime.MinValue, Collected = DateTime.MinValue, Provided = DateTime.MinValue};
             dali.AddParcel(DParcel);
         }
 
@@ -336,8 +337,7 @@ namespace BL
             IDAL.DO.Station station1 = dali.displayStation(Id);
             Station station2 = new Station();
             station2.id = station1.Id;
-            station2.location.latitude = station1.Lattitude;
-            station2.location.longitude = station1.Longitude;
+            station2.location = new Location(station1.Longitude, station1.Lattitude);
             station2.name = station1.Name;
             station2.numFreeChargingStands = station1.freeChargeSlots;
             return station2;
@@ -358,7 +358,7 @@ namespace BL
         {
             if (!droneList.Any(x => x.id == droneId))
             {
-                throw new IdDoesNotExist();
+                throw new IdDoesNotExist(droneId);
             }
             return droneList.Find(x => x.id == droneId);
         }
@@ -482,7 +482,7 @@ namespace BL
             dist = Math.Acos(dist);
             dist = dist * 180 / Math.PI;
             dist = dist * 60 * 1.1515;
-            return dist * 1.609344;
+            return (dist * 1.609344)/1000;
         }
 
         List<IDAL.DO.Parcel> listParcelDelivered()
