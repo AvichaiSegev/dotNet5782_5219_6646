@@ -232,7 +232,7 @@ namespace BL
             UpdateParcel(parcel);
         }
 
-        public Customer displaycustomer(int Id)
+        public Customer displayCustomer(int Id)
         {
             IDAL.DO.Customer customer1 = dali.displayCustomer(Id);
             Customer customer2 = new Customer();
@@ -243,15 +243,41 @@ namespace BL
             customer2.location.longitude = customer1.Longitude;
             return customer2;
         }
-
-        public IEnumerable<CustomerToList> displaycustomerList()
+        public IEnumerable<CustomerToList> displayCustomerList()
         {
-            throw new NotImplementedException();
+            int assigned = 0, collected = 0, defined = 0;
+            List<CustomerToList> list1 = new List<CustomerToList>();
+            IEnumerable<IDAL.DO.Customer> list2 = dali.displayCustomerList();
+            foreach (var item in dali.displayParcelList())
+            {
+                if (item.Assigned != null) { assigned += 1; }
+                if(item.Collected != null) { collected += 1; }
+                if(item.Defined != null) { defined += 1; }
+            }
+            foreach (var item in list2){ list1.Add(new CustomerToList() { id = item.Id, name = item.Name, phone = item.Phone, parcelsWasSendedButDidntProvidedYet = defined, parcelsWasSendedAndprovided = assigned, parcelOnTheWay = assigned, parcelsGetted = collected }); }
+            return list1;
         }
 
         public Drone displayDrone(int Id)
         {
-            throw new NotImplementedException();
+            IDAL.DO.Drone drone1 = dali.displayDrone(Id);
+            Drone drone2 = new Drone();
+            drone2.id = drone1.Id;
+            switch ((WeightCategories)drone1.MaxWeight)
+            {
+                case WeightCategories.light:
+                    drone1.MaxWeight = IDAL.DO.WeightCategories.light;
+                    break;
+                case WeightCategories.liver:
+                    drone1.MaxWeight = IDAL.DO.WeightCategories.liver;
+                    break;
+                case WeightCategories.medium:
+                    drone1.MaxWeight = IDAL.DO.WeightCategories.medium;
+                    break;
+                default: break;
+            }
+            drone2.model = drone1.Model;
+            return drone2;
         }
 
         public IEnumerable<DroneToList> displayDroneList()
@@ -372,7 +398,6 @@ namespace BL
             IDAL.DO.Customer customer = new IDAL.DO.Customer { Id = customerId, Name = customerName, Phone = customerPhone, Lattitude = customerLattitude, Longitude = customerLongitude };
             dali.UpdateCustomer(customer);
         }
-
         public void UpdatecustomerNameAndPhone(Customer customer)
         {
             
