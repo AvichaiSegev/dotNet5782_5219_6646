@@ -267,13 +267,35 @@ namespace BL
             }
             DroneToList drone1 = new DroneToList();
             foreach(var drone in droneList) { if(drone.id == Id) { drone1 = drone; break; } }
-            Drone drone2 = new Drone() { id = drone1.id, battery = drone1.battery, location = drone1.location, maxWeight = drone1.maxWeight, model = drone1.model, parcel = new ParcelInTransfer() { id = drone1.parcelNumber }, status = drone1.status };
+            Drone drone2 = new Drone() { id = drone1.id, battery= drone1.battery, location = drone1.location, maxWeight = drone1.maxWeight, model = drone1.model, parcel = new ParcelInTransfer() { id = drone1.parcelNumber }, status = drone1.status };
             return drone2;
         }
 
         public IEnumerable<DroneToList> displayDroneList()
         {
-            throw new NotImplementedException();
+            int assigned = 0, collected = 0, defined = 0;
+            List<DroneToList> list1 = new List<DroneToList>();
+            IEnumerable<IDAL.DO.Drone> list2 = dali.displayDroneList();
+            DroneToList drone;
+            foreach (var item in list2) 
+            {
+            drone = new DroneToList() { id = item.Id, model = item.Model };
+                switch ((WeightCategories)item.MaxWeight)
+                {
+                    case WeightCategories.light:
+                        drone.maxWeight = IBL.BO.WeightCategories.light;
+                        break;
+                    case WeightCategories.liver:
+                        drone.maxWeight = IBL.BO.WeightCategories.liver;
+                        break;
+                    case WeightCategories.medium:
+                        drone.maxWeight = IBL.BO.WeightCategories.medium;
+                        break;
+                    default: break;
+                }
+            list1.Add(drone);
+            }
+            return list1;
         }
 
         public Parcel displayParcel(int Id)
@@ -329,7 +351,41 @@ namespace BL
 
         public IEnumerable<ParcelToList> displayParcelList()
         {
-            throw new NotImplementedException();
+            List<ParcelToList> list1 = new List<ParcelToList>();
+            IEnumerable<IDAL.DO.Parcel> list2 = dali.displayParcelList();
+            ParcelToList parcel = new ParcelToList();
+            foreach (var item in list2)
+            {
+                parcel.parcelId = item.Id;
+                switch ((WeightCategories)item.Weight)
+                {
+                    case WeightCategories.light:
+                        parcel.weight = IBL.BO.WeightCategories.light;
+                        break;
+                    case WeightCategories.medium:
+                        parcel.weight = IBL.BO.WeightCategories.medium;
+                        break;
+                    case WeightCategories.liver:
+                        parcel.weight = IBL.BO.WeightCategories.liver;
+                        break;
+                    default: break;
+                }
+                switch ((Priorities)item.Priority)
+                {
+                    case Priorities.emergency:
+                        parcel.priority = IBL.BO.Priorities.emergency;
+                        break;
+                    case Priorities.quick:
+                        parcel.priority = IBL.BO.Priorities.quick;
+                        break;
+                    case Priorities.regular:
+                        parcel.priority = IBL.BO.Priorities.regular;
+                        break;
+                    default: break;
+                }
+                list1.Add(parcel);
+            }
+            return list1;
         }
 
         public Station displayStation(int Id)
@@ -345,7 +401,17 @@ namespace BL
 
         public IEnumerable<StationToList> displayStationList()
         {
-            throw new NotImplementedException();
+            List<StationToList> list1 = new List<StationToList>();
+            IEnumerable<IDAL.DO.Station> list2 = dali.displayStationList();
+            StationToList station = new StationToList();
+            foreach (var item in list2)
+            {
+                station.id = item.Id;
+                station.name+=item.Name;
+                station.numFreeChargingStands = item.freeChargeSlots;
+                list1.Add(station);
+            }
+            return list1;
         }
 
         public double[] electricityUse()
