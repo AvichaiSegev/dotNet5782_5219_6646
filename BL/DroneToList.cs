@@ -25,7 +25,8 @@ namespace IBL
                         "\n     Drone max weight: " + this.maxWeight +
                         "\n     Drone battery: " + this.battery +
                         "\n     Drone status: " + this.status +
-                        "\n     Drone location: " + this.location +
+                        "\n     Drone latitude: " + this.location.latitude +
+                        "\n     Drone longitude: " + this.location.longitude +
                         "\n     Drone parcel number: " + this.parcelNumber;
             }
 
