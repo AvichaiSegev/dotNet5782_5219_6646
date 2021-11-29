@@ -14,6 +14,13 @@ namespace IBL
             public string name { set; get; }
             public int numFreeChargingStands { set; get; }
             public int numBusyChargingStands { set; get; }
+            public override string ToString()
+            {
+                return "Station Id: " + this.id +
+                        "\n     Station name: " + this.name +
+                        "\n     Station busy charge slots: " + numBusyChargingStands + 
+                        "\n     Station free charge slots: " + this.numFreeChargingStands;
+            }
         }
     }
 }

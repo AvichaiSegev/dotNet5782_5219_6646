@@ -223,7 +223,7 @@ namespace DAL
 
             public void AddDroneCharge(DroneCharge droneCharge)
             {
-                if (data.StationList.Any(x => x.Id == droneCharge.droneId))
+                if (data.DroneChargeList.Any(x => x.droneId == droneCharge.droneId))
                 {
                     throw new IdAlreadyExistException(droneCharge.droneId);
                 }
@@ -232,9 +232,9 @@ namespace DAL
 
             public void deleteDroneCharge(int Id)
             {
-                if (data.DroneChargeList.Any(x => x.droneId == Id))
+                if (!data.DroneChargeList.Any(x => x.droneId == Id))
                 {
-                    throw new IdAlreadyExistException(Id);
+                    throw new IdDoesNotExistException(Id);
                 }
                 data.DroneChargeList.Remove(displayDroneCharge(Id));
             }

@@ -239,7 +239,7 @@ namespace ConsoleUI_BL
                                 {
                                     Console.WriteLine(error.Message);
                                 }
-                        break;
+                                break;
                             case 5:
                                 Console.WriteLine("Enter Drone Id: ");
                                 int.TryParse(Console.ReadLine(), out droneId);
@@ -331,32 +331,34 @@ namespace ConsoleUI_BL
                         {
                             //option 1: Displays a list of base stations:
                             case 1:
-                                foreach (StationToList item in logi.displayStationList()) { Console.WriteLine(item); }
+                                foreach (StationToList item in logi.displayStationList()) { Console.WriteLine(item.ToString()); }
                                 break;
                             //option 2: Displays the list of drones:
                             case 2:
-                                foreach (DroneToList item in logi.displayDroneList()) { Console.WriteLine(item); }
+                                foreach (DroneToList item in logi.displayDroneList()) { Console.WriteLine(item.ToString()); }
                                 break;
                             //option 3: View customer list:
                             case 3:
-                                foreach (CustomerToList item in logi.displayCustomerList()) { Console.WriteLine(item); }
+                                foreach (CustomerToList item in logi.displayCustomerList()) { Console.WriteLine(item.ToString()); }
                                 break;
                             //option 4: Displays the list of packages:
                             case 4:
-                                foreach (ParcelToList item in logi.displayParcelList()) { Console.WriteLine(item); }
+                                foreach (ParcelToList item in logi.displayParcelList()) { Console.WriteLine(item.ToString()); }
                                 break;
                             //option 5: Displays a list of packages not yet associated with a drone:
                             case 5:
-                                foreach (ParcelToList item in logi.displayFreeParcelList()) { Console.WriteLine(item); }
+                                foreach (ParcelToList item in logi.displayFreeParcelList()) { Console.WriteLine(item.ToString()); }
                                 break;
                             //option 6: Display base stations with available charging stations:
                             case 6:
-                                foreach (StationToList item in logi.displayFreeStationList()) { Console.WriteLine(item); }
+                                foreach (StationToList item in logi.displayFreeStationList()) { Console.WriteLine(item.ToString()); }
                                 break;
                             default:
                                 Console.WriteLine("INPUT ERROR!   try again");
                                 break;
                         }
+                        break;
+                    case 5:
                         break;
                     default:
                         Console.WriteLine("INPUT ERROR!   try again");
