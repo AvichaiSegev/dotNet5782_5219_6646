@@ -456,11 +456,55 @@ namespace BL
         }
         public IEnumerable<ParcelToList> displayFreeParcelList()
         {
-            throw new NotImplementedException();
+            List<ParcelToList> list1 = new List<ParcelToList>();
+            IEnumerable<IDAL.DO.Parcel> list2 = dali.displayParcelList();
+            ParcelToList parcel = new ParcelToList();
+            foreach (var item in list2)
+            {
+                parcel.parcelId = item.Id;
+                switch ((WeightCategories)item.Weight)
+                {
+                    case WeightCategories.light:
+                        parcel.weight = IBL.BO.WeightCategories.light;
+                        break;
+                    case WeightCategories.medium:
+                        parcel.weight = IBL.BO.WeightCategories.medium;
+                        break;
+                    case WeightCategories.liver:
+                        parcel.weight = IBL.BO.WeightCategories.liver;
+                        break;
+                    default: break;
+                }
+                switch ((Priorities)item.Priority)
+                {
+                    case Priorities.emergency:
+                        parcel.priority = IBL.BO.Priorities.emergency;
+                        break;
+                    case Priorities.quick:
+                        parcel.priority = IBL.BO.Priorities.quick;
+                        break;
+                    case Priorities.regular:
+                        parcel.priority = IBL.BO.Priorities.regular;
+                        break;
+                    default: break;
+                }
+                if (item.Assigned == null) { list1.Add(parcel); }
+            }
+            return list1;
         }
         public IEnumerable<StationToList> displayFreeStationList()
         {
-            throw new NotImplementedException();
+            List<StationToList> list1 = new List<StationToList>();
+            IEnumerable<IDAL.DO.Station> list2 = dali.displayStationList();
+            StationToList station = new StationToList();
+            foreach (var item in list2)
+            {
+                station.id = item.Id;
+                station.name += item.Name;
+                station.numFreeChargingStands = item.freeChargeSlots;
+                if (item.freeChargeSlots > 0) { list1.Add(station); }
+            }
+            return list1;
         }
         public void Updatecustomer(int customerId, string customerName, string customerPhone, double customerLongitude, double customerLattitude)
         {
