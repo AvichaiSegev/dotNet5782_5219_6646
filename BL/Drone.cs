@@ -20,13 +20,24 @@ namespace IBL
             public Location location { set; get; }
             public override string ToString()
             {
+                if (parcel.id != int.MinValue)
+                {
+                    return "Drone Id: " + this.id +
+                            "\nDrone model: " + this.model +
+                            "\nDrone maxWeight: " + this.maxWeight +
+                            "\nDrone battery: " + this.battery +
+                            "\nDrone status: " + this.status +
+                            "\nDrone longitude: " + this.location.longitude +
+                            "\nDrone lattitude: " + this.location.latitude +
+                            "\nDrone parcel id: " + this.parcel.id;
+                }
                 return "Drone Id: " + this.id +
-                        "\nDrone model: " + this.model +
-                        "\nDrone maxWeight: " + this.maxWeight +
-                        "\nDrone battery: " + this.battery +
-                        "\nDrone status: " + this.status +
-                        "\nDrone longitude: " + this.location.longitude +
-                        "\nDrone lattitude: " + this.location.latitude;
+                           "\nDrone model: " + this.model +
+                           "\nDrone maxWeight: " + this.maxWeight +
+                           "\nDrone battery: " + this.battery +
+                           "\nDrone status: " + this.status +
+                           "\nDrone longitude: " + this.location.longitude +
+                           "\nDrone lattitude: " + this.location.latitude;
             }
         }
     }
