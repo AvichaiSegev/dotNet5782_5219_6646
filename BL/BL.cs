@@ -26,6 +26,7 @@ namespace BL
                 parcelDidNotDelivered.Id = -1;
                 foreach(var parcel in dali.displayParcelList()){
                     if (parcel.DroneId == drone.Id && parcel.Provided == DateTime.MinValue) {
+                        Console.WriteLine("par" + drone.Id + parcel.Id);
                         parcelDidNotDelivered = parcel;
                         break;
                     }
@@ -229,7 +230,7 @@ namespace BL
                     break;
             }
             droneToList.location = customer.location;
-            UpdateDrone(new Drone() { battery = droneToList.battery, id = droneToList.id, location = droneToList.location, maxWeight = (WeightCategories)droneToList.maxWeight, model = droneToList.model, parcel = new ParcelInTransfer(), status = droneToList.status });
+            UpdateDrone(new Drone() { battery = droneToList.battery, id = droneToList.id, location = droneToList.location, maxWeight = (WeightCategories)droneToList.maxWeight, model = droneToList.model, parcel = new ParcelInTransfer(), status = DroneStatus.free });
             parcel.providedParcelTime = DateTime.Now;
             UpdateParcel(parcel);
         }
@@ -251,9 +252,9 @@ namespace BL
             IEnumerable<IDAL.DO.Customer> list2 = dali.displayCustomerList();
             foreach (var item in dali.displayParcelList())
             {
-                if (item.Assigned != null) { assigned += 1; }
-                if(item.Collected != null) { collected += 1; }
-                if(item.Defined != null) { defined += 1; }
+                if (item.Assigned != DateTime.MinValue) { assigned += 1; }
+                if(item.Collected != DateTime.MinValue) { collected += 1; }
+                if(item.Defined != DateTime.MinValue) { defined += 1; }
             }
             foreach (var item in list2){ list1.Add(new CustomerToList() { id = item.Id, name = item.Name, phone = item.Phone, parcelsWasSendedButDidntProvidedYet = defined, parcelsWasSendedAndprovided = assigned, parcelOnTheWay = assigned, parcelsGetted = collected }); }
             return list1;
