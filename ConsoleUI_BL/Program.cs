@@ -191,7 +191,7 @@ namespace ConsoleUI_BL
                                 droneModel = Console.ReadLine();
                                 try
                                 {
-                                    logi.UpdateDroneModel(new Drone() { id = droneId, model = droneModel});
+                                    logi.UpdateDroneModel(new Drone() { id = droneId, model = droneModel });
                                 }
                                 catch(Exception error)
                                 {

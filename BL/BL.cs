@@ -53,6 +53,7 @@ namespace BL
                             break;
                     }
                     drone1.battery = randy.Next( (int)minBattery, 100);
+                    drone1.parcelNumber = parcelDidNotDelivered.Id;
                 }
                 else{
                     int booly = randy.Next(1, 2);
@@ -319,6 +320,10 @@ namespace BL
                 Drone drone = displayDrone(parcel1.DroneId);
                 parcel2.droneInParcel = new DroneInParcel() { id = drone.id, battery = drone.battery, location = drone.location };
             }
+            else
+            {
+                parcel2.droneInParcel = new DroneInParcel() { id = int.MinValue };
+            }
             return parcel2;
         }
 
@@ -413,8 +418,18 @@ namespace BL
         public void UpdateDrone(Drone drone)
         {
             DroneToList drone1 = new DroneToList() { id = drone.id, battery = drone.battery, model = drone.model, status = drone.status, parcelNumber = drone.parcel.id, location = drone.location, maxWeight = drone.maxWeight };
-            droneList.Add(drone1);
-            IDAL.DO.Drone Ddrone = new IDAL.DO.Drone() { MaxWeight = (IDAL.DO.WeightCategories)drone.maxWeight, Model = drone.model };
+            //droneList.Add(drone1);
+            if (!droneList.Any(x => x.id == drone.id))
+            {
+                throw new IdDoesNotExist(drone.id);
+            }
+            int i = 0;
+            while (droneList[i].id != drone.id)
+            {
+                i++;
+            }
+            droneList[i] = drone1;
+            IDAL.DO.Drone Ddrone = new IDAL.DO.Drone() { Id = drone.id, MaxWeight = (IDAL.DO.WeightCategories)drone.maxWeight, Model = drone.model };
             dali.UpdateDrone(Ddrone);
         }
 

@@ -24,11 +24,52 @@ namespace IBL
             public DateTime providedParcelTime { set; get; }
             public override string ToString()
             {
+                if (assignedParcelTime == DateTime.MinValue)
+                {
+                    return "Parcel Id: " + this.Id +
+                            "\nParcel weight: " + this.weight +
+                            "\nParcel sender name: " + this.delivered.name +
+                            "\nParcel getted name: " + this.getted.name +
+                            "\nParcel priority: " + this.priority;
+                }
+                else if(collectedParcelTime == DateTime.MinValue)
+                {
+                    return "Parcel Id: " + this.Id +
+                            "\nParcel weight: " + this.weight +
+                            "\nParcel sender name: " + this.delivered.name +
+                            "\nParcel getted name: " + this.getted.name +
+                            "\nParcel priority: " + this.priority +
+                            "\nParcel drone id: " + this.droneInParcel.id + 
+                            "\nparcel assigned time: " + this.assignedParcelTime;
+                }
+                else if (providedParcelTime == DateTime.MinValue)
+                {
+                    return "Parcel Id: " + this.Id +
+                            "\nParcel weight: " + this.weight +
+                            "\nParcel sender name: " + this.delivered.name +
+                            "\nParcel getted name: " + this.getted.name +
+                            "\nParcel priority: " + this.priority +
+                            "\nParcel drone id: " + this.droneInParcel.id +
+                            "\nparcel assigned time: " + this.assignedParcelTime + 
+                            "\nparcel collected time: " + this.collectedParcelTime;
+                }
+                else if (providedParcelTime != DateTime.MinValue)
+                {
+                    return "Parcel Id: " + this.Id +
+                            "\nParcel weight: " + this.weight +
+                            "\nParcel sender name: " + this.delivered.name +
+                            "\nParcel getted name: " + this.getted.name +
+                            "\nParcel priority: " + this.priority +
+                            "\nParcel drone id: " + this.droneInParcel.id +
+                            "\nparcel assigned time: " + this.assignedParcelTime +
+                            "\nparcel collected time: " + this.collectedParcelTime +
+                            "\nparcel provided time: " + this.providedParcelTime;
+                }
                 return "Parcel Id: " + this.Id +
-                        "\nParcel weight: " + this.weight +
-                        "\nParcel sender name: " + this.delivered.name +
-                        "\nParcel getted name: " + this.getted.name +
-                        "\nParcel priority: " + this.priority;
+                            "\nParcel weight: " + this.weight +
+                            "\nParcel sender name: " + this.delivered.name +
+                            "\nParcel getted name: " + this.getted.name +
+                            "\nParcel priority: " + this.priority;
             }
         }
     }
