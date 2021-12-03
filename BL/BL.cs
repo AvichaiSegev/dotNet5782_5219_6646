@@ -530,34 +530,37 @@ namespace BL
             ParcelToList parcel = new ParcelToList();
             foreach (var item in list2)
             {
-                parcel.parcelId = item.Id;
-                switch ((WeightCategories)item.Weight)
+                if (item.Assigned == DateTime.MinValue)
                 {
-                    case WeightCategories.light:
-                        parcel.weight = IBL.BO.WeightCategories.light;
-                        break;
-                    case WeightCategories.medium:
-                        parcel.weight = IBL.BO.WeightCategories.medium;
-                        break;
-                    case WeightCategories.liver:
-                        parcel.weight = IBL.BO.WeightCategories.liver;
-                        break;
-                    default: break;
+                    parcel.parcelId = item.Id;
+                    switch ((WeightCategories)item.Weight)
+                    {
+                        case WeightCategories.light:
+                            parcel.weight = IBL.BO.WeightCategories.light;
+                            break;
+                        case WeightCategories.medium:
+                            parcel.weight = IBL.BO.WeightCategories.medium;
+                            break;
+                        case WeightCategories.liver:
+                            parcel.weight = IBL.BO.WeightCategories.liver;
+                            break;
+                        default: break;
+                    }
+                    switch ((Priorities)item.Priority)
+                    {
+                        case Priorities.emergency:
+                            parcel.priority = IBL.BO.Priorities.emergency;
+                            break;
+                        case Priorities.quick:
+                            parcel.priority = IBL.BO.Priorities.quick;
+                            break;
+                        case Priorities.regular:
+                            parcel.priority = IBL.BO.Priorities.regular;
+                            break;
+                        default: break;
+                    }
+                    list1.Add(parcel);
                 }
-                switch ((Priorities)item.Priority)
-                {
-                    case Priorities.emergency:
-                        parcel.priority = IBL.BO.Priorities.emergency;
-                        break;
-                    case Priorities.quick:
-                        parcel.priority = IBL.BO.Priorities.quick;
-                        break;
-                    case Priorities.regular:
-                        parcel.priority = IBL.BO.Priorities.regular;
-                        break;
-                    default: break;
-                }
-                if (item.Assigned == DateTime.MinValue) { list1.Add(parcel); }
             }
             return list1;
         }
@@ -566,11 +569,14 @@ namespace BL
             List<StationToList> list1 = new List<StationToList>();
             foreach (var item in dali.displayStationList())
             {
-                StationToList station = new StationToList();
-                station.id = item.Id;
-                station.name += item.Name;
-                station.numFreeChargingStands = item.freeChargeSlots;
-                if (item.freeChargeSlots > 0) { list1.Add(station); }
+                if (item.freeChargeSlots > 0)
+                {
+                    StationToList station = new StationToList();
+                    station.id = item.Id;
+                    station.name += item.Name;
+                    station.numFreeChargingStands = item.freeChargeSlots;
+                    list1.Add(station);
+                }
             }
             return list1;
         }
