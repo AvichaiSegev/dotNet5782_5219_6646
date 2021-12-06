@@ -19,6 +19,7 @@ namespace PL
     /// </summary>
     public partial class DroneList : Window
     {
+
         IBL.IBL ibl;
         public DroneList(IBL.IBL V)
         {
