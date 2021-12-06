@@ -11,11 +11,11 @@ namespace IDAL
             public int TargetId { get; set; }
             public WeightCategories Weight { get; set; }
             public Priorities Priority { get; set; }
-            public DateTime Defined { get; set; }
+            public DateTime? Defined { get; set; }
             public int DroneId { get; set; }
-            public DateTime Assigned { get; set; }
-            public DateTime Collected { get; set; }
-            public DateTime Provided { get; set; }
+            public DateTime? Assigned { get; set; }
+            public DateTime? Collected { get; set; }
+            public DateTime? Provided { get; set; }
             public override string ToString()
             {
                 return "Parcel Id: " + this.Id +

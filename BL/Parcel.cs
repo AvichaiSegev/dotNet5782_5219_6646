@@ -18,13 +18,13 @@ namespace IBL
             public WeightCategories weight { set; get; }
             public Priorities priority { set; get; }
             public DroneInParcel droneInParcel { set; get; }
-            public DateTime definedParcelTime { set; get; }
-            public DateTime assignedParcelTime { set; get; }
-            public DateTime collectedParcelTime { set; get; }
-            public DateTime providedParcelTime { set; get; }
+            public DateTime? definedParcelTime { set; get; }
+            public DateTime? assignedParcelTime { set; get; }
+            public DateTime? collectedParcelTime { set; get; }
+            public DateTime? providedParcelTime { set; get; }
             public override string ToString()
             {
-                if (assignedParcelTime == DateTime.MinValue)
+                if (assignedParcelTime == null)
                 {
                     return "Parcel Id: " + this.Id +
                             "\nParcel weight: " + this.weight +
@@ -32,7 +32,7 @@ namespace IBL
                             "\nParcel getted name: " + this.getted.name +
                             "\nParcel priority: " + this.priority;
                 }
-                else if(collectedParcelTime == DateTime.MinValue)
+                else if(collectedParcelTime == null)
                 {
                     return "Parcel Id: " + this.Id +
                             "\nParcel weight: " + this.weight +
@@ -42,7 +42,7 @@ namespace IBL
                             "\nParcel drone id: " + this.droneInParcel.id + 
                             "\nparcel assigned time: " + this.assignedParcelTime;
                 }
-                else if (providedParcelTime == DateTime.MinValue)
+                else if (providedParcelTime == null)
                 {
                     return "Parcel Id: " + this.Id +
                             "\nParcel weight: " + this.weight +
@@ -53,7 +53,7 @@ namespace IBL
                             "\nparcel assigned time: " + this.assignedParcelTime + 
                             "\nparcel collected time: " + this.collectedParcelTime;
                 }
-                else if (providedParcelTime != DateTime.MinValue)
+                else if (providedParcelTime != null)
                 {
                     return "Parcel Id: " + this.Id +
                             "\nParcel weight: " + this.weight +

@@ -25,15 +25,15 @@ namespace BL
                 IDAL.DO.Parcel parcelDidNotDelivered = new IDAL.DO.Parcel();
                 parcelDidNotDelivered.Id = -1;
                 foreach(var parcel in dali.displayParcelList()){
-                    if (parcel.DroneId == drone.Id && parcel.Provided == DateTime.MinValue) {
+                    if (parcel.DroneId == drone.Id && parcel.Provided == null) {
                         parcelDidNotDelivered = parcel;
                         break;
                     }
                 }
                 if (parcelDidNotDelivered.Id != -1) {
                     drone1.status = DroneStatus.delivery;
-                    if (parcelDidNotDelivered.Assigned != DateTime.MinValue && parcelDidNotDelivered.Collected == DateTime.MinValue) { drone1.location = nearStation(dali.displayCustomer(parcelDidNotDelivered.SenderId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.SenderId).Longitude); }
-                    if (parcelDidNotDelivered.Collected != DateTime.MinValue && parcelDidNotDelivered.Provided == DateTime.MinValue) { drone1.location = new Location(dali.displayCustomer(parcelDidNotDelivered.SenderId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.SenderId).Longitude); }
+                    if (parcelDidNotDelivered.Assigned != null && parcelDidNotDelivered.Collected == null) { drone1.location = nearStation(dali.displayCustomer(parcelDidNotDelivered.SenderId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.SenderId).Longitude); }
+                    if (parcelDidNotDelivered.Collected != null && parcelDidNotDelivered.Provided == null) { drone1.location = new Location(dali.displayCustomer(parcelDidNotDelivered.SenderId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.SenderId).Longitude); }
                     double minBattery;
                     Location targetnearStation = nearStation(dali.displayCustomer(parcelDidNotDelivered.TargetId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.TargetId).Longitude);
                     IDAL.DO.Customer customerTarget = dali.displayCustomer(parcelDidNotDelivered.TargetId);
@@ -106,7 +106,7 @@ namespace BL
 
         public void AddParcel(Parcel parcel, int senderId, int gettedId)
         {
-            IDAL.DO.Parcel DParcel = new IDAL.DO.Parcel { Id = parcel.Id, SenderId = senderId, TargetId = gettedId, Weight = (IDAL.DO.WeightCategories)parcel.weight, Priority = (IDAL.DO.Priorities)parcel.priority , DroneId = int.MinValue, Defined = DateTime.Now, Assigned = DateTime.MinValue, Collected = DateTime.MinValue, Provided = DateTime.MinValue};
+            IDAL.DO.Parcel DParcel = new IDAL.DO.Parcel { Id = parcel.Id, SenderId = senderId, TargetId = gettedId, Weight = (IDAL.DO.WeightCategories)parcel.weight, Priority = (IDAL.DO.Priorities)parcel.priority , DroneId = int.MinValue, Defined = DateTime.Now, Assigned = null, Collected = null, Provided = null};
             dali.AddParcel(DParcel);
         }
 
@@ -192,7 +192,7 @@ namespace BL
             DroneToList droneToList = displayDroneToList(droneId);
             Parcel parcel = displayParcel(droneToList.parcelNumber);
             Customer customer = displayCustomer(parcel.delivered.id);
-            if (droneToList.status != DroneStatus.delivery || parcel.droneInParcel.id != droneId || parcel.assignedParcelTime == DateTime.MinValue || parcel.collectedParcelTime != DateTime.MinValue)
+            if (droneToList.status != DroneStatus.delivery || parcel.droneInParcel.id != droneId || parcel.assignedParcelTime == null || parcel.collectedParcelTime != null)
             {
                 throw new DroneDoesNotSuitable();
             }
@@ -209,7 +209,7 @@ namespace BL
             DroneToList droneToList = displayDroneToList(droneId);
             Parcel parcel = displayParcel(droneToList.parcelNumber);
             Customer customer = displayCustomer(parcel.getted.id);
-            if (droneToList.status != DroneStatus.delivery || parcel.droneInParcel.id != droneId || parcel.collectedParcelTime == DateTime.MinValue || parcel.providedParcelTime != DateTime.MinValue)
+            if (droneToList.status != DroneStatus.delivery || parcel.droneInParcel.id != droneId || parcel.collectedParcelTime == null || parcel.providedParcelTime != null)
             {
                 throw new DroneDoesNotSuitable();
             }
@@ -253,10 +253,10 @@ namespace BL
             int senderedButDidntProvided = 0, SenderedAndProvided = 0, onTheWay = 0, getted = 0;
                 foreach (var item1 in dali.displayParcelList())
                   {
-                      if(item1.SenderId == item.Id && item1.Collected != DateTime.MinValue && item1.Provided == DateTime.MinValue) { senderedButDidntProvided += 1; }
-                      if(item1.SenderId == item.Id && item1.Provided != DateTime.MinValue) { senderedButDidntProvided += 1; }
-                      if(item1.TargetId == item.Id && item1.Provided != DateTime.MinValue) { getted += 1; }
-                      if(item1.TargetId == item.Id && item1.Provided == DateTime.MinValue) { onTheWay += 1; }
+                      if(item1.SenderId == item.Id && item1.Collected != null && item1.Provided == null) { senderedButDidntProvided += 1; }
+                      if(item1.SenderId == item.Id && item1.Provided != null) { senderedButDidntProvided += 1; }
+                      if(item1.TargetId == item.Id && item1.Provided != null) { getted += 1; }
+                      if(item1.TargetId == item.Id && item1.Provided == null) { onTheWay += 1; }
                   }
                 list1.Add(new CustomerToList() { id = item.Id, name = item.Name, phone = item.Phone, parcelsWasSendedButDidntProvidedYet = senderedButDidntProvided, parcelsWasSendedAndprovided = SenderedAndProvided, parcelOnTheWay = onTheWay, parcelsGetted = getted });
                 
@@ -450,7 +450,7 @@ namespace BL
             ParcelToList parcel = new ParcelToList();
             foreach (var item in list2)
             {
-                if (item.Assigned == DateTime.MinValue)
+                if (item.Assigned == null)
                 {
                     parcel.parcelId = item.Id;
                     switch ((WeightCategories)item.Weight)
@@ -617,7 +617,7 @@ namespace BL
             List<IDAL.DO.Parcel> parcelDelivered = new List<IDAL.DO.Parcel>();
             foreach(var parcel in dali.displayParcelList())
             {
-                if(parcel.Provided != DateTime.MinValue)
+                if(parcel.Provided != null)
                 {
                     parcelDelivered.Add(parcel);
                 }
