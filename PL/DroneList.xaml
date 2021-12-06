@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="DroneList" Height="640" Width="800">
+        Title="DroneList" Height="640" Width="800"
+        Name ="DroneListWindow">
     <Grid Name ="MainGrid" Background="#222831">
         <Grid.RowDefinitions>
             <RowDefinition Height ="50*"/>
             <RowDefinition Height ="400*"/>
         </Grid.RowDefinitions>
-        <Grid Name ="UpGrid" Background="#393E46" HorizontalAlignment="Stretch" Height="auto" Grid.Row = "0" VerticalAlignment="Stretch" Width="auto">
+        <Grid Name ="UpGrid" Background="#222831" HorizontalAlignment="Stretch" Height="auto" Grid.Row = "0" VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="179"/>
                 <ColumnDefinition Width="0"/>
@@ -20,11 +21,12 @@
                 <ColumnDefinition Width="200*"/>
                 <ColumnDefinition Width="200*"/>
             </Grid.ColumnDefinitions >
-            <ComboBox x:Name ="A" Grid.ColumnSpan="3" FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <ComboBox x:Name ="A" SelectionChanged="A_SelectionChanged" Grid.ColumnSpan="3" FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <ComboBox Grid.Column="3" Name ="B" FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            <Button Content="Add drone" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Height="69" Width="200" FontFamily="Comic Sans MS" Background="#00ADB5" FontSize="20" Click="Button_Click_1"/>
+            <Button Content="Add drone" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Height="69" Width="198" FontFamily="Comic Sans MS" Background="#00ADB5" FontSize="20" Click="Button_Click_1"/>
+            <Button Content="Close" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Height="69" Width="198" FontFamily="Comic Sans MS" Background="#00ADB5" FontSize="20" Click="Button_Click_2"/>
         </Grid>
-        <ListView Grid.Row="1" Name="DronesListView" Background="#393E46" Foreground="#00ABD5" FontFamily="Comic Sans MS">
+        <ListView Grid.Row="1" Name="DronesListView" Background="#222831" Foreground="#00ABD5" MouseDoubleClick="DronesListView_MouseDoubleClick" FontFamily="Comic Sans MS">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>

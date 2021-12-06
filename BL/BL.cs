@@ -278,8 +278,11 @@ namespace BL
             return drone2;
         }
 
-        public IEnumerable<DroneToList> displayDroneList()
+        public IEnumerable<DroneToList> displayDroneList(string condition, int val)
         {
+            if (condition == "All") { return droneList; };
+            List<DroneToList> FinalDroneList = new List<DroneToList>();
+            if(condition == "DroneStatus"){ foreach (var item in droneList){ if ((int)item.status == val) { FinalDroneList.Add(item); } } }
             return droneList;
         }
 

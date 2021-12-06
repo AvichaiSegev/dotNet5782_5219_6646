@@ -19,16 +19,15 @@ namespace PL
     /// </summary>
     public partial class DroneList : Window
     {
+        IBL.IBL ibl;
         public DroneList(IBL.IBL V)
         {
             ibl = V;
             InitializeComponent();
-            DronesListView.ItemsSource = ibl.displayDroneList();
+            DronesListView.ItemsSource = ibl.displayDroneList("All", 0);
             A.ItemsSource = Enum.GetValues(typeof(IBL.BO.DroneStatus));
-            B.ItemsSource = Enum.GetValues(typeof(IBL.BO.Priorities));
+            B.ItemsSource = Enum.GetValues(typeof(IBL.BO.WeightCategories));
         }
-        IBL.IBL ibl;
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
@@ -36,7 +35,21 @@ namespace PL
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Drone d = new Drone(new BL.BL());
+            Drone d = new Drone(ibl);
+            d.Show();
+            this.Close();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e){ DroneListWindow.Close(); }
+
+        private void A_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {            
+            Drone d = new Drone(ibl, (IBL.BO.DroneToList)DronesListView.SelectedItem);
             d.Show();
         }
     }

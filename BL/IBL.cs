@@ -34,7 +34,7 @@ namespace IBL
        Parcel displayParcel(int Id);
         IEnumerable<StationToList> displayStationList();
         IEnumerable<StationToList> displayFreeStationList();
-        IEnumerable<DroneToList> displayDroneList();
+        IEnumerable<DroneToList> displayDroneList(string condition, int val);
         IEnumerable<CustomerToList> displayCustomerList();
         IEnumerable<ParcelToList> displayParcelList();
         IEnumerable<ParcelToList> displayFreeParcelList();

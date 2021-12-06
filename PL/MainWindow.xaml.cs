@@ -28,7 +28,8 @@ namespace PL
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            DroneList d = new DroneList(new BL.BL());
+            ibl = new BL.BL();
+            DroneList d = new DroneList(ibl);
             d.Show();
         }
     }
