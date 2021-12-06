@@ -19,9 +19,16 @@ namespace PL
     /// </summary>
     public partial class Drone : Window
     {
-        public Drone()
+        public Drone(IBL.IBL V)
         {
             InitializeComponent();
+            
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            IBL.BO.Drone D = new IBL.BO.Drone();
+
         }
     }
 }

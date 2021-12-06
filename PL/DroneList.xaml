@@ -6,22 +6,25 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="DroneList" Height="640" Width="800">
-    <Grid Name ="MainGrid">
+    <Grid Name ="MainGrid" Background="#222831">
         <Grid.RowDefinitions>
             <RowDefinition Height ="50*"/>
             <RowDefinition Height ="400*"/>
         </Grid.RowDefinitions>
-        <Grid Name ="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row = "0" VerticalAlignment="Stretch" Width="auto">
+        <Grid Name ="UpGrid" Background="#393E46" HorizontalAlignment="Stretch" Height="auto" Grid.Row = "0" VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="179"/>
+                <ColumnDefinition Width="0"/>
+                <ColumnDefinition Width="21*"/>
+                <ColumnDefinition Width="200*"/>
+                <ColumnDefinition Width="200*"/>
+                <ColumnDefinition Width="200*"/>
             </Grid.ColumnDefinitions >
-            <ComboBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name ="A"/>
-            <ComboBox VerticalAlignment="Stretch" Grid.Column="1" HorizontalAlignment="Stretch" Name ="B"/>
+            <ComboBox x:Name ="A" Grid.ColumnSpan="3" FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <ComboBox Grid.Column="3" Name ="B" FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Button Content="Add drone" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Height="69" Width="200" FontFamily="Comic Sans MS" Background="#00ADB5" FontSize="20" Click="Button_Click_1"/>
         </Grid>
-        <ListView Grid.Row="1" Name="DronesListView">
+        <ListView Grid.Row="1" Name="DronesListView" Background="#393E46" Foreground="#00ABD5" FontFamily="Comic Sans MS">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>

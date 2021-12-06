@@ -25,5 +25,11 @@ namespace PL
             InitializeComponent();
         }
         IBL.IBL ibl;
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            DroneList d = new DroneList(new BL.BL());
+            d.Show();
+        }
     }
 }

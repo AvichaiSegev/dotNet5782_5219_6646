@@ -19,9 +19,25 @@ namespace PL
     /// </summary>
     public partial class DroneList : Window
     {
-        public DroneList()
+        public DroneList(IBL.IBL V)
         {
+            ibl = V;
             InitializeComponent();
+            DronesListView.ItemsSource = ibl.displayDroneList();
+            A.ItemsSource = Enum.GetValues(typeof(IBL.BO.DroneStatus));
+            B.ItemsSource = Enum.GetValues(typeof(IBL.BO.Priorities));
+        }
+        IBL.IBL ibl;
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Drone d = new Drone(new BL.BL());
+            d.Show();
         }
     }
 }

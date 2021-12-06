@@ -71,7 +71,9 @@ namespace BL
                 {
                     List<IDAL.DO.Parcel> parcelDelivered = listParcelDelivered();
                     int parcelsDelivered = randy.Next(0, parcelDelivered.Count);
-                    IDAL.DO.Customer targetCutomer = new IDAL.DO.Customer (dali.displayCustomer(parcelDelivered[parcelsDelivered].TargetId));
+                    IDAL.DO.Customer targetCutomer = new IDAL.DO.Customer();
+                    if (parcelDelivered.Count != 0) { targetCutomer = new IDAL.DO.Customer(dali.displayCustomer(parcelDelivered[parcelsDelivered].TargetId)); }
+                    if (parcelDelivered.Count == 0) { targetCutomer = new IDAL.DO.Customer(); }
                     drone1.location = new Location (targetCutomer.Lattitude, targetCutomer.Longitude);
                     Location targetnearStation = nearStation(targetCutomer.Lattitude, targetCutomer.Longitude);
                     double destinationToNearStation = DistanceTo(drone1.location.latitude, drone1.location.longitude, targetCutomer.Lattitude, targetCutomer.Longitude);

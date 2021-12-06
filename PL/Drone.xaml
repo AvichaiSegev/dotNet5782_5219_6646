@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="Drone" Height="450" Width="800">
+        Title="Drone" Height="450" Width="800"
+        Background="#222831">
     <Grid>
-        
+        <Button Content="Add" HorizontalAlignment="Center" Margin="0,370,0,0" VerticalAlignment="Top" Background="#00FFF5" FontFamily="Comic Sans MS" FontSize="20" Width="200" Click="Button_Click"/>
+
     </Grid>
 </Window>
