@@ -138,6 +138,7 @@ namespace DAL
                     throw new IdAlreadyExistException(customer.Id);
                 }
                 data.CustomerList.Add(customer); }
+            //Function for add parcel:
             public void AddParcel(Parcel parcel) {
                 if (data.ParcelList.Any(x => x.Id == parcel.Id))
                 {
