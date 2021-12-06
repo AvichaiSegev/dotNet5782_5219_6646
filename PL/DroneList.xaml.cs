@@ -24,7 +24,7 @@ namespace PL
         {
             ibl = V;
             InitializeComponent();
-            DronesListView.ItemsSource = ibl.displayDroneList("All", 0);
+            DronesListView.ItemsSource = ibl.displayDroneList();
             A.ItemsSource = Enum.GetValues(typeof(IBL.BO.DroneStatus));
             B.ItemsSource = Enum.GetValues(typeof(IBL.BO.WeightCategories));
         }
