@@ -27,19 +27,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\benay\\.nuget\\packages\\": {}
+    "C:\\Users\\Avichai\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\benay\\source\\repos\\beya421\\dotNet5782_5219_6646\\BL\\BL.csproj",
+      "projectUniqueName": "C:\\Users\\Avichai\\Source\\Repos\\AvichaiSegev\\dotNet5782_5219_6646\\BL\\BL.csproj",
       "projectName": "BL",
-      "projectPath": "C:\\Users\\benay\\source\\repos\\beya421\\dotNet5782_5219_6646\\BL\\BL.csproj",
-      "packagesPath": "C:\\Users\\benay\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\benay\\source\\repos\\beya421\\dotNet5782_5219_6646\\BL\\obj\\",
+      "projectPath": "C:\\Users\\Avichai\\Source\\Repos\\AvichaiSegev\\dotNet5782_5219_6646\\BL\\BL.csproj",
+      "packagesPath": "C:\\Users\\Avichai\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Avichai\\Source\\Repos\\AvichaiSegev\\dotNet5782_5219_6646\\BL\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\benay\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Avichai\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -53,8 +58,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\benay\\source\\repos\\beya421\\dotNet5782_5219_6646\\DAL\\DAL.csproj": {
-              "projectPath": "C:\\Users\\benay\\source\\repos\\beya421\\dotNet5782_5219_6646\\DAL\\DAL.csproj"
+            "C:\\Users\\Avichai\\Source\\Repos\\AvichaiSegev\\dotNet5782_5219_6646\\DAL\\DAL.csproj": {
+              "projectPath": "C:\\Users\\Avichai\\Source\\Repos\\AvichaiSegev\\dotNet5782_5219_6646\\DAL\\DAL.csproj"
             }
           }
         }
