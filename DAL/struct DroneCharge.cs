@@ -1,13 +1,10 @@
 ﻿using System;
 
-namespace IDAL
+namespace DO
 {
-    namespace DO
+    public struct DroneCharge
     {
-        public struct DroneCharge
-        {
-            public int droneId { get; set; }//droneId   droneId
-            public int StationId { get; set; }
-        }
+        public int droneId { get; set; }//droneId   droneId
+        public int StationId { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDAL.DO;
+using DO;
 using DAL.DalObject;
 
 namespace DAL
@@ -49,7 +49,7 @@ namespace DAL
 
             }
         }
-        public class DalObject : IDAL.IDal
+        public class DalObject : DalApi.IDal
         {
             DataSource data;
             public DalObject()

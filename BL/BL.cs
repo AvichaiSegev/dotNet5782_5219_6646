@@ -26,7 +26,7 @@ namespace BL
                 DO.Parcel parcelDidNotDelivered = new DO.Parcel();
                 parcelDidNotDelivered.Id = -1;
                 foreach(var parcel in dali.displayParcelList()){
-                    if (parcel.DroneId == drone.Id && parcel.Provided == ) {
+                    if (parcel.DroneId == drone.Id && parcel.Provided == null) {
                         parcelDidNotDelivered = parcel;
                         break;
                     }
@@ -498,26 +498,26 @@ namespace BL
                 switch ((WeightCategories)item.Weight)
                 {
                     case WeightCategories.light:
-                        parcel.weight = IBL.BO.WeightCategories.light;
+                        parcel.weight = BO.WeightCategories.light;
                         break;
                     case WeightCategories.medium:
-                        parcel.weight = IBL.BO.WeightCategories.medium;
+                        parcel.weight = BO.WeightCategories.medium;
                         break;
                     case WeightCategories.liver:
-                        parcel.weight = IBL.BO.WeightCategories.liver;
+                        parcel.weight = BO.WeightCategories.liver;
                         break;
                     default: break;
                 }
                 switch ((Priorities)item.Priority)
                 {
                     case Priorities.emergency:
-                        parcel.priority = IBL.BO.Priorities.emergency;
+                        parcel.priority = BO.Priorities.emergency;
                         break;
                     case Priorities.quick:
-                        parcel.priority = IBL.BO.Priorities.quick;
+                        parcel.priority = BO.Priorities.quick;
                         break;
                     case Priorities.regular:
-                        parcel.priority = IBL.BO.Priorities.regular;
+                        parcel.priority = BO.Priorities.regular;
                         break;
                     default: break;
                 }
@@ -561,26 +561,26 @@ namespace BL
                     switch ((WeightCategories)item.Weight)
                     {
                         case WeightCategories.light:
-                            parcel.weight = IBL.BO.WeightCategories.light;
+                            parcel.weight = BO.WeightCategories.light;
                             break;
                         case WeightCategories.medium:
-                            parcel.weight = IBL.BO.WeightCategories.medium;
+                            parcel.weight = BO.WeightCategories.medium;
                             break;
                         case WeightCategories.liver:
-                            parcel.weight = IBL.BO.WeightCategories.liver;
+                            parcel.weight = BO.WeightCategories.liver;
                             break;
                         default: break;
                     }
                     switch ((Priorities)item.Priority)
                     {
                         case Priorities.emergency:
-                            parcel.priority = IBL.BO.Priorities.emergency;
+                            parcel.priority = BO.Priorities.emergency;
                             break;
                         case Priorities.quick:
-                            parcel.priority = IBL.BO.Priorities.quick;
+                            parcel.priority = BO.Priorities.quick;
                             break;
                         case Priorities.regular:
-                            parcel.priority = IBL.BO.Priorities.regular;
+                            parcel.priority = BO.Priorities.regular;
                             break;
                         default: break;
                     }
