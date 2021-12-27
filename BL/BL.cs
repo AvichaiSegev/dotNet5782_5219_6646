@@ -1,19 +1,20 @@
-﻿using IBL.BO;
-using IDAL;
+﻿using BO;
+using DalApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace BL
 {
-    public class BL : IBL.IBL
+    public class BL : BlApi.IBL
     {
         List<DroneToList> droneList = new List<DroneToList>();
         double electricityUseForVacantDrone, electricityUseForLightParcel, electricityUseForMediumParcel, electricityUseForHeavyParcel, chargingRate;
-        IDAL.IDal dali = new DAL.DalObject.DalObject();
+        DalApi.IDal dali;
         static readonly Random randy = new Random();
         public BL()//constractor
         {
+            dali = DalApi.DalFactory.GetDal();
             double[] electricity = dali.electricityUse();
             electricityUseForVacantDrone = electricity[0]; electricityUseForLightParcel = electricity[1]; electricityUseForMediumParcel = electricity[2]; electricityUseForHeavyParcel = electricity[3]; chargingRate = electricity[4];
             foreach(var drone in dali.displayDroneList())//Update drone list from the data base
@@ -22,10 +23,10 @@ namespace BL
                 drone1.id = drone.Id;
                 drone1.model = drone.Model;
                 drone1.maxWeight = (WeightCategories)drone.MaxWeight;
-                IDAL.DO.Parcel parcelDidNotDelivered = new IDAL.DO.Parcel();
+                DO.Parcel parcelDidNotDelivered = new DO.Parcel();
                 parcelDidNotDelivered.Id = -1;
                 foreach(var parcel in dali.displayParcelList()){
-                    if (parcel.DroneId == drone.Id && parcel.Provided == null) {
+                    if (parcel.DroneId == drone.Id && parcel.Provided == ) {
                         parcelDidNotDelivered = parcel;
                         break;
                     }
@@ -36,7 +37,7 @@ namespace BL
                     if (parcelDidNotDelivered.Collected != null && parcelDidNotDelivered.Provided == null) { drone1.location = new Location(dali.displayCustomer(parcelDidNotDelivered.SenderId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.SenderId).Longitude); }
                     double minBattery;
                     Location targetnearStation = nearStation(dali.displayCustomer(parcelDidNotDelivered.TargetId).Lattitude, dali.displayCustomer(parcelDidNotDelivered.TargetId).Longitude);
-                    IDAL.DO.Customer customerTarget = dali.displayCustomer(parcelDidNotDelivered.TargetId);
+                    DO.Customer customerTarget = dali.displayCustomer(parcelDidNotDelivered.TargetId);
                     switch ((WeightCategories)parcelDidNotDelivered.Weight)
                     {
                         case WeightCategories.light:
@@ -69,11 +70,11 @@ namespace BL
                 }
                 else if(drone1.status == DroneStatus.free)
                 {
-                    List<IDAL.DO.Parcel> parcelDelivered = listParcelDelivered();
+                    List<DO.Parcel> parcelDelivered = listParcelDelivered();
                     int parcelsDelivered = randy.Next(0, parcelDelivered.Count);
-                    IDAL.DO.Customer targetCutomer = new IDAL.DO.Customer();
-                    if (parcelDelivered.Count != 0) { targetCutomer = new IDAL.DO.Customer(dali.displayCustomer(parcelDelivered[parcelsDelivered].TargetId)); }
-                    if (parcelDelivered.Count == 0) { targetCutomer = new IDAL.DO.Customer(); }
+                    DO.Customer targetCutomer = new DO.Customer();
+                    if (parcelDelivered.Count != 0) { targetCutomer = new DO.Customer(dali.displayCustomer(parcelDelivered[parcelsDelivered].TargetId)); }
+                    if (parcelDelivered.Count == 0) { targetCutomer = new DO.Customer(); }
                     drone1.location = new Location (targetCutomer.Lattitude, targetCutomer.Longitude);
                     Location targetnearStation = nearStation(targetCutomer.Lattitude, targetCutomer.Longitude);
                     double destinationToNearStation = DistanceTo(drone1.location.latitude, drone1.location.longitude, targetCutomer.Lattitude, targetCutomer.Longitude);
@@ -82,10 +83,32 @@ namespace BL
                 droneList.Add(drone1);
             }
         }
+        
+        static BL() { }
+        private static BL instance;
+        static readonly object lockname = new object();
+
+        public static BL Instace
+        {
+            get
+            {
+                if(instance == null)
+                {
+                    lock (lockname)
+                    {
+                        if(instance == null)
+                        {
+                            instance = new BL();// Explanation required////////////
+                        }
+                    }
+                }
+                return instance;
+            }
+        }
         //Add functions
         public void Addcustomer(Customer customer)//Add customer
         {
-            IDAL.DO.Customer DCustomer = new IDAL.DO.Customer { Id = customer.id, Lattitude = customer.location.latitude, Longitude = customer.location.longitude, Name = customer.name, Phone = customer.phone};
+            DO.Customer DCustomer = new DO.Customer { Id = customer.id, Lattitude = customer.location.latitude, Longitude = customer.location.longitude, Name = customer.name, Phone = customer.phone};
             dali.AddCustomer(DCustomer);
         }
 
@@ -97,10 +120,10 @@ namespace BL
                 Location Dlocation = new Location(dali.displayStation(stationId).Longitude, dali.displayStation(stationId).Lattitude);
 
                 droneList.Add(new DroneToList() { id = drone.id, maxWeight = drone.maxWeight, battery = DBattery, location = Dlocation, status = DroneStatus.matance, model = drone.model });
-                IDAL.DO.Drone Ddrone = new IDAL.DO.Drone { Id = drone.id, MaxWeight = (IDAL.DO.WeightCategories)drone.maxWeight, Model = drone.model };
+                DO.Drone Ddrone = new DO.Drone { Id = drone.id, MaxWeight = (DO.WeightCategories)drone.maxWeight, Model = drone.model };
                 dali.AddDrone(Ddrone);
             }
-            catch (IDAL.DO.IdDoesNotExistException err)
+            catch (DO.IdDoesNotExistException err)
             {
                 throw new IdDoesNotExist(err.ID);
             }
@@ -108,25 +131,25 @@ namespace BL
 
         public void AddParcel(Parcel parcel, int senderId, int gettedId)//Add parcel
         {
-            IDAL.DO.Parcel DParcel = new IDAL.DO.Parcel { Id = parcel.Id, SenderId = senderId, TargetId = gettedId, Weight = (IDAL.DO.WeightCategories)parcel.weight, Priority = (IDAL.DO.Priorities)parcel.priority , DroneId = int.MinValue, Defined = DateTime.Now, Assigned = null, Collected = null, Provided = null};
+            DO.Parcel DParcel = new DO.Parcel { Id = parcel.Id, SenderId = senderId, TargetId = gettedId, Weight = (DO.WeightCategories)parcel.weight, Priority = (DO.Priorities)parcel.priority , DroneId = int.MinValue, Defined = DateTime.Now, Assigned = null, Collected = null, Provided = null};
             dali.AddParcel(DParcel);
         }
 
         public void AddStation(Station station)//Add station
         {
-            IDAL.DO.Station Dstation = new IDAL.DO.Station { Id = station.id, Name = station.name, Longitude = station.location.longitude, Lattitude = station.location.latitude, freeChargeSlots = station.numFreeChargingStands };
+            DO.Station Dstation = new DO.Station { Id = station.id, Name = station.name, Longitude = station.location.longitude, Lattitude = station.location.latitude, freeChargeSlots = station.numFreeChargingStands };
             dali.AddStation(Dstation);
             
         }
         //Update functions
         public void Updatecustomer(int customerId, string customerName, string customerPhone, double customerLongitude, double customerLattitude)//Update customer
         {
-            IDAL.DO.Customer customer = new IDAL.DO.Customer { Id = customerId, Name = customerName, Phone = customerPhone, Lattitude = customerLattitude, Longitude = customerLongitude };
+            DO.Customer customer = new DO.Customer { Id = customerId, Name = customerName, Phone = customerPhone, Lattitude = customerLattitude, Longitude = customerLongitude };
             dali.UpdateCustomer(customer);
         }
         public void UpdatecustomerNameAndPhone(Customer customer)//Update customer name and phone
         {
-            IDAL.DO.Customer Dcustomer = dali.displayCustomer(customer.id);
+            DO.Customer Dcustomer = dali.displayCustomer(customer.id);
             Dcustomer.Name = customer.name;
             Dcustomer.Phone = customer.phone;
             dali.UpdateCustomer(Dcustomer);
@@ -152,7 +175,7 @@ namespace BL
                 i++;
             }
             droneList[i] = drone1;
-            IDAL.DO.Drone Ddrone = new IDAL.DO.Drone() { Id = drone.id, MaxWeight = (IDAL.DO.WeightCategories)drone.maxWeight, Model = drone.model };
+            DO.Drone Ddrone = new DO.Drone() { Id = drone.id, MaxWeight = (DO.WeightCategories)drone.maxWeight, Model = drone.model };
             dali.UpdateDrone(Ddrone);
         }
 
@@ -170,12 +193,12 @@ namespace BL
 
         public void UpdateParcel(Parcel parcel)//Update parcel
         {
-            IDAL.DO.Parcel Dparcel = dali.displayParcel(parcel.Id);
-            Dparcel.Priority = (IDAL.DO.Priorities)parcel.priority;
+            DO.Parcel Dparcel = dali.displayParcel(parcel.Id);
+            Dparcel.Priority = (DO.Priorities)parcel.priority;
             Dparcel.Provided = parcel.providedParcelTime;
             Dparcel.SenderId = parcel.delivered.id;
             Dparcel.TargetId = parcel.getted.id;
-            Dparcel.Weight = (IDAL.DO.WeightCategories)parcel.weight;
+            Dparcel.Weight = (DO.WeightCategories)parcel.weight;
             Dparcel.DroneId = parcel.droneInParcel.id;
             Dparcel.Defined = parcel.definedParcelTime;
             Dparcel.Collected = parcel.collectedParcelTime;
@@ -185,7 +208,7 @@ namespace BL
 
         public void UpdateStation(Station station)//Update station
         {
-            IDAL.DO.Station Dstation = dali.displayStation(station.id);
+            DO.Station Dstation = dali.displayStation(station.id);
             Dstation.freeChargeSlots = station.numFreeChargingStands;
             Dstation.Lattitude = station.location.latitude;
             Dstation.Longitude = station.location.longitude;
@@ -195,7 +218,7 @@ namespace BL
 
         public void UpdateStationName(Station station)//Update station name
         {
-            IDAL.DO.Station Dstation = dali.displayStation(station.id);
+            DO.Station Dstation = dali.displayStation(station.id);
             Dstation.Name = station.name;
             dali.UpdateStation(Dstation);
         }
@@ -223,7 +246,7 @@ namespace BL
             double closestDistance = double.MaxValue;
             foreach(var parcel in dali.displayParcelList())
             {
-                if (parcel.Weight <= (IDAL.DO.WeightCategories)drone.maxWeight)
+                if (parcel.Weight <= (DO.WeightCategories)drone.maxWeight)
                 {
                     Location senderL = new Location(dali.displayCustomer(parcel.SenderId).Longitude, dali.displayCustomer(parcel.SenderId).Lattitude);
                     Location targetL = new Location(dali.displayCustomer(parcel.TargetId).Longitude, dali.displayCustomer(parcel.TargetId).Lattitude);
@@ -330,9 +353,9 @@ namespace BL
             double distanceAbility = drone.battery / electricityUseForVacantDrone;
             if (distanceAbility < distance) { throw new dontHaveMuchBattery(); }
             UpdateDrone(new Drone() { id = drone.id, battery = drone.battery - (distance * electricityUseForVacantDrone), location = nearstation, maxWeight = drone.maxWeight, model = drone.model, status = DroneStatus.matance });
-            IDAL.DO.Station station = dali.displayStationByLocation(nearstation.latitude, nearstation.longitude);
+            DO.Station station = dali.displayStationByLocation(nearstation.latitude, nearstation.longitude);
             UpdateStation(new Station() { id = station.Id, name = station.Name, location = new Location(station.Longitude, station.Lattitude), numFreeChargingStands = station.freeChargeSlots - 1 });
-            dali.AddDroneCharge(new IDAL.DO.DroneCharge() { droneId = drone.id, StationId = station.Id });
+            dali.AddDroneCharge(new DO.DroneCharge() { droneId = drone.id, StationId = station.Id });
         }
 
         public void releaseDroneFromCharging(int droneId, double chargingTime)//Release drone from charging
@@ -346,14 +369,14 @@ namespace BL
             double extraBattery = chargingTime * chargingRate;
             if (drone.battery + extraBattery > 100) { extraBattery = 100 - drone.battery; }
             UpdateDrone(new Drone() { id = drone.id, battery = drone.battery + extraBattery, location = drone.location, maxWeight = drone.maxWeight, model = drone.model, status = DroneStatus.free });
-            IDAL.DO.Station station = dali.displayStationByLocation(drone.location.latitude, drone.location.longitude);
+            DO.Station station = dali.displayStationByLocation(drone.location.latitude, drone.location.longitude);
             UpdateStation(new Station() { id = station.Id, name = station.Name, location = new Location(station.Longitude, station.Lattitude), numFreeChargingStands = station.freeChargeSlots + 1 });
             dali.deleteDroneCharge(droneId);
         }
         //Display functions
         public Customer displayCustomer(int Id)//display customer
         {
-            IDAL.DO.Customer customer1 = dali.displayCustomer(Id);
+            DO.Customer customer1 = dali.displayCustomer(Id);
             Customer customer2 = new Customer();
             customer2.id = customer1.Id;
             customer2.name = customer1.Name;
@@ -381,7 +404,7 @@ namespace BL
         }
         public Station displayStation(int Id)//display station
         {
-            IDAL.DO.Station station1 = dali.displayStation(Id);
+            DO.Station station1 = dali.displayStation(Id);
             Station station2 = new Station();
             station2.id = station1.Id;
             station2.location = new Location(station1.Longitude, station1.Lattitude);
@@ -402,32 +425,32 @@ namespace BL
         }
         public Parcel displayParcel(int Id)//display parcel
         {
-            IDAL.DO.Parcel parcel1 = dali.displayParcel(Id);
+            DO.Parcel parcel1 = dali.displayParcel(Id);
             Parcel parcel2 = new Parcel();
             parcel2.Id = parcel1.Id;
             switch ((WeightCategories)parcel1.Weight)
             {
                 case WeightCategories.light:
-                    parcel1.Weight = IDAL.DO.WeightCategories.light;
+                    parcel1.Weight = DO.WeightCategories.light;
                     break;
                 case WeightCategories.medium:
-                    parcel1.Weight = IDAL.DO.WeightCategories.medium;
+                    parcel1.Weight = DO.WeightCategories.medium;
                     break;
                 case WeightCategories.liver:
-                    parcel1.Weight = IDAL.DO.WeightCategories.liver;
+                    parcel1.Weight = DO.WeightCategories.liver;
                     break;
                 default:break;
             }
             switch ((Priorities)parcel1.Priority)
             {
                 case Priorities.emergency:
-                    parcel1.Priority = IDAL.DO.Priorities.emergency;
+                    parcel1.Priority = DO.Priorities.emergency;
                     break;
                 case Priorities.quick:
-                    parcel1.Priority = IDAL.DO.Priorities.quick;
+                    parcel1.Priority = DO.Priorities.quick;
                     break;
                 case Priorities.regular:
-                    parcel1.Priority = IDAL.DO.Priorities.regular;
+                    parcel1.Priority = DO.Priorities.regular;
                     break;
                 default: break;
             }
@@ -528,7 +551,7 @@ namespace BL
         public IEnumerable<ParcelToList> displayFreeParcelList()//display free parcel list
         {
             List<ParcelToList> list1 = new List<ParcelToList>();
-            IEnumerable<IDAL.DO.Parcel> list2 = dali.displayParcelList();
+            IEnumerable<DO.Parcel> list2 = dali.displayParcelList();
             ParcelToList parcel = new ParcelToList();
             foreach (var item in list2)
             {
@@ -585,7 +608,7 @@ namespace BL
         //Help mathods
         Location nearStation(double latitude, double longitude)//calculating where is the closest station
         {
-            IDAL.DO.Station nearStation = new IDAL.DO.Station();
+            DO.Station nearStation = new DO.Station();
             double distance = double.MaxValue;
             foreach(var station in dali.displayStationList())
             {
@@ -613,9 +636,9 @@ namespace BL
             return (dist * 1.609344)/1000;
         }
 
-        List<IDAL.DO.Parcel> listParcelDelivered()
+        List<DO.Parcel> listParcelDelivered()
         {
-            List<IDAL.DO.Parcel> parcelDelivered = new List<IDAL.DO.Parcel>();
+            List<DO.Parcel> parcelDelivered = new List<DO.Parcel>();
             foreach(var parcel in dali.displayParcelList())
             {
                 if(parcel.Provided != null)
@@ -636,9 +659,9 @@ namespace BL
             return counter;
         }
 
-        List<IDAL.DO.Station> listFreeStation()
+        List<DO.Station> listFreeStation()
         {
-            List<IDAL.DO.Station> stationFree = new List<IDAL.DO.Station>();
+            List<DO.Station> stationFree = new List<DO.Station>();
             foreach(var station in dali.displayStationList())
             {
                 if (station.freeChargeSlots != 0)
