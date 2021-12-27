@@ -51,8 +51,32 @@ namespace DAL
         }
         public class DalObject : IDAL.IDal
         {
-            DataSource data = new DataSource();
-            
+            DataSource data;
+            public DalObject()
+            {
+                data = new DataSource();
+            }
+
+            static DalObject() { }
+            private static DalObject instace;
+            static readonly object lockname = new object();
+            public static DalObject Instace
+            {
+                get
+                {
+                    if (instace == null)
+                    {
+                        lock (lockname)
+                        {
+                            if(instace == null)
+                            {
+                                instace = new DalObject();
+                            }
+                        }
+                    }
+                    return instace;
+                }
+            }
             //Run "initialize" in the constructor: 
 
             //Create function for display objects:
