@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDAL.DO;
+using DO;
 using DAL.DalObject;
 
 namespace DAL
@@ -49,10 +49,34 @@ namespace DAL
 
             }
         }
-        public class DalObject : IDAL.IDal
+        public class DalObject : DalApi.IDal
         {
-            DataSource data = new DataSource();
-            
+            DataSource data;
+            public DalObject()
+            {
+                data = new DataSource();
+            }
+
+            static DalObject() { }
+            private static DalObject instace;
+            static readonly object lockname = new object();
+            public static DalObject Instace
+            {
+                get
+                {
+                    if (instace == null)
+                    {
+                        lock (lockname)
+                        {
+                            if(instace == null)
+                            {
+                                instace = new DalObject();
+                            }
+                        }
+                    }
+                    return instace;
+                }
+            }
             //Run "initialize" in the constructor: 
 
             //Create function for display objects:

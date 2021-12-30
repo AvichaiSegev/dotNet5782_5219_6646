@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IBL.BO;
+using BO;
 
-namespace IBL
+namespace BO
 {
-    namespace BO
+    public class DroneInParcel
     {
-        public class DroneInParcel
-        {
-            public int id { set; get; }
-            public double battery { set; get; }
-            public Location location { set; get; }
-        }
+        public int id { set; get; }
+        public double battery { set; get; }
+        public Location location { set; get; }
     }
 }

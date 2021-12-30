@@ -4,38 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL
+namespace BO
 {
-    namespace BO
+    public class dronesStatusIsNotApplicable : Exception
     {
-        public class dronesStatusIsNotApplicable : Exception
-        {
 
-        }
-        public class dontHaveMuchBattery: Exception
-        {
+    }
+    public class dontHaveMuchBattery: Exception
+    {
 
-        }
-        public class IdDoesNotExist: Exception
+    }
+    public class IdDoesNotExist: Exception
+    {
+        public int ID;
+        public IdDoesNotExist(int id)
         {
-            public int ID;
-            public IdDoesNotExist(int id)
-            {
-                ID = id;
-            }
-
-            public override string ToString()
-            {
-                return "ERROR! id " + ID + " does not exist!\n";
-            }
+            ID = id;
         }
-        public class NoSuiTablePackageFound: Exception
+
+        public override string ToString()
         {
-
+            return "ERROR! id " + ID + " does not exist!\n";
         }
-        public class DroneDoesNotSuitable: Exception
-        {
+    }
+    public class NoSuiTablePackageFound: Exception
+    {
 
-        }
+    }
+    public class DroneDoesNotSuitable: Exception
+    {
+
     }
 }
