@@ -20,6 +20,7 @@ namespace PL
     public partial class Drone : Window
     {
         BlApi.IBL ibl;
+        BO.Drone drone;
         public Drone(BlApi.IBL V)
         {
             InitializeComponent();
@@ -31,6 +32,19 @@ namespace PL
             TextBlock2.Visibility = Visibility.Visible;
             model.Visibility = Visibility.Visible;
             id.Visibility = Visibility.Visible;
+            IdText.Visibility = Visibility.Hidden;
+            ModelText.Visibility = Visibility.Hidden;
+            LongitudeText1.Visibility = Visibility.Hidden;
+            LongitudeText2.Visibility = Visibility.Hidden;
+            LattitudeText1.Visibility = Visibility.Hidden;
+            LattitudeText2.Visibility = Visibility.Hidden;
+            OkButton.Visibility = Visibility.Hidden;
+            WeightText1.Visibility = Visibility.Hidden;
+            WeightText2.Visibility = Visibility.Hidden;
+            BatteryText1.Visibility = Visibility.Hidden;
+            BatteryText2.Visibility = Visibility.Hidden;
+            StatusText1.Visibility = Visibility.Hidden;
+            StatusText2.Visibility = Visibility.Hidden;
             A.ItemsSource = Enum.GetValues(typeof(BO.DroneStatus));
             B.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
             ibl = V;
@@ -40,6 +54,13 @@ namespace PL
             InitializeComponent();
             ibl = V;
             IdText.Text = "" + _drone.id;
+            ModelText.Text = _drone.model;
+            LongitudeText2.Text = "" + _drone.location.longitude;
+            LattitudeText2.Text = "" + _drone.location.latitude;
+            WeightText2.Text = "" + _drone.maxWeight;
+            BatteryText2.Text = "" + _drone.battery;
+            StatusText2.Text = "" + _drone.status;
+            drone = _drone;
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -83,5 +104,11 @@ namespace PL
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e) { DroneWindow.Close(); DroneList d = new(ibl); d.Show(); }
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            drone.model = ModelText.Text;
+            ibl.UpdateDrone(drone);
+            DroneWindow.Close();
+        }
     }
 }

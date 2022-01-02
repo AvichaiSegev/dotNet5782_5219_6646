@@ -23,8 +23,9 @@
             </Grid.ColumnDefinitions >
             <ComboBox x:Name ="A" SelectionChanged="A_SelectionChanged" Grid.ColumnSpan="3" FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <ComboBox Grid.Column="3" SelectionChanged="B_SelectionChanged" Name ="B" FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            <Button Content="Add drone" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Height="69" Width="198" FontFamily="Comic Sans MS" Background="#00ADB5" FontSize="20" Click="Button_Click_1"/>
-            <Button Content="Close" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Height="69" Width="198" FontFamily="Comic Sans MS" Background="#00ADB5" FontSize="20" Click="Button_Click_2"/>
+            <Button Content="Add drone" Grid.Column="4" VerticalAlignment="Center" Height="69" FontFamily="Comic Sans MS" Background="#00ADB5" FontSize="20" Click="Button_Click_1" Margin="0,0,67,0" Width="128"/>
+            <Button Content="Close" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Width="270" FontFamily="Comic Sans MS" Background="#00ADB5" FontSize="20" Click="Button_Click_2" Margin="130,0,0,0" Grid.ColumnSpan="2"/>
+            <Button x:Name="RefreshButton" Content="Refresh" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32" Width="270" FontFamily="Comic Sans MS" Background="#00ADB5" FontSize="20" Click="Button_Click_3" Margin="130,35,0,0" Grid.ColumnSpan="2"/>
         </Grid>
         <ListView Grid.Row="1" Name="DronesListView" Background="#222831" Foreground="#00ABD5" MouseDoubleClick="DronesListView_MouseDoubleClick" FontFamily="Comic Sans MS">
             <ListView.View>
