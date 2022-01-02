@@ -19,19 +19,17 @@ namespace PL
     /// </summary>
     public partial class DroneList : Window
     {
+        private BO.WeightCategories? WC = null;
+        private BO.DroneStatus? DS = null;
 
-        IBL.IBL ibl;
-        public DroneList(IBL.IBL V)
+        BlApi.IBL ibl;
+        public DroneList(BlApi.IBL V)
         {
             ibl = V;
             InitializeComponent();
             DronesListView.ItemsSource = ibl.displayDroneList();
-            A.ItemsSource = Enum.GetValues(typeof(IBL.BO.DroneStatus));
-            B.ItemsSource = Enum.GetValues(typeof(IBL.BO.WeightCategories));
-        }
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
+            A.ItemsSource = Enum.GetValues(typeof(BO.DroneStatus));
+            B.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -45,12 +43,18 @@ namespace PL
 
         private void A_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            DS = (BO.DroneStatus)A.SelectedIndex;
+            DronesListView.ItemsSource = ibl.displayDroneListFiltered(WC, DS);
+        }
+        private void B_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            WC = (BO.WeightCategories)B.SelectedIndex;
+            DronesListView.ItemsSource = ibl.displayDroneListFiltered(WC, DS);
         }
 
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {            
-            Drone d = new Drone(ibl, (IBL.BO.DroneToList)DronesListView.SelectedItem);
+            Drone d = new Drone(ibl, ibl.displayDrone(((BO.DroneToList)DronesListView.SelectedItem).id));
             d.Show();
         }
     }

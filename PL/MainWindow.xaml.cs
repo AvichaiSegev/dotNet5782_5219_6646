@@ -24,7 +24,7 @@ namespace PL
         {
             InitializeComponent();
         }
-        IBL.IBL ibl;
+        BlApi.IBL ibl;
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

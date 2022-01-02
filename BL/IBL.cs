@@ -35,6 +35,7 @@ namespace BlApi
         IEnumerable<StationToList> displayStationList();
         IEnumerable<StationToList> displayFreeStationList();
         IEnumerable<DroneToList> displayDroneList();
+        IEnumerable<DroneToList> displayDroneListFiltered(BO.WeightCategories? WC, BO.DroneStatus? DS);
         IEnumerable<CustomerToList> displayCustomerList();
         IEnumerable<ParcelToList> displayParcelList();
         IEnumerable<ParcelToList> displayFreeParcelList();

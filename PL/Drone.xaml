@@ -13,10 +13,10 @@
         <ComboBox x:Name ="B" Visibility="Hidden" FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,81,0,294"/>
         <Button x:Name="AddButton" Visibility="Hidden" Content="Add" HorizontalAlignment="Center" Margin="0,362,0,0" VerticalAlignment="Top" Background="#00ADB5" FontFamily="Comic Sans MS" FontSize="20" Width="200" Click="Button_Click"/>
         <Button Name="CloseButton" Visibility="Hidden" Content="Close" HorizontalAlignment="Center" Margin="0,399,0,0" VerticalAlignment="Top" Background="#00ADB5" FontFamily="Comic Sans MS" FontSize="15" Width="100" Click="Button_Click_1"/>
-        <TextBlock Name="TextBlock1" Visibility="Hidden" HorizontalAlignment="Left" Margin="10,187,0,0" Text="Model:" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="102" FontFamily="Comic Sans MS" FontSize="20"/>
-        <TextBlock Name="TextBlock2" Visibility="Hidden" HorizontalAlignment="Left" Margin="10,242,0,0" Text="ID:" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="102" FontFamily="Comic Sans MS" FontSize="20" RenderTransformOrigin="0.484,1.603"/>
+        <TextBlock Name="TextBlock1" HorizontalAlignment="Left" Margin="10,187,0,0" Text="Model:" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="102" FontFamily="Comic Sans MS" FontSize="20"/>
+        <TextBlock Name="TextBlock2" HorizontalAlignment="Left" Margin="10,242,0,0" Text="ID:" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="102" FontFamily="Comic Sans MS" FontSize="20" RenderTransformOrigin="0.484,1.603"/>
         <TextBox x:Name="model" Visibility="Hidden" HorizontalAlignment="Left" Margin="94,187,0,0" Background="#00FFF5" TextWrapping="Wrap" VerticalAlignment="Top" Width="706" Height="30" RenderTransformOrigin="0.5,0.5" FontFamily="Comic Sans MS" FontSize="20"/>
         <TextBox Name ="id" Visibility="Hidden" HorizontalAlignment="Left" Margin="94,242,0,0" Background="#00FFF5" TextWrapping="Wrap" VerticalAlignment="Top" Width="706" Height="30" RenderTransformOrigin="0.5,0.5" FontFamily="Comic Sans MS" FontSize="20"/>
-        <TextBlock Text="Information" TextWrapping="Wrap" Margin="0,23,0,33" TextAlignment="Center" FontFamily="Comic Sans MS" FontSize="40"/>
+        <TextBlock Name="IdText" Text="0" HorizontalAlignment="Left" Margin="47,242,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="79" FontFamily="Comic Sans MS" FontSize="20" RenderTransformOrigin="0.484,1.603"/>
     </Grid>
 </Window>

@@ -10,7 +10,7 @@ namespace DalApi
     {
         public static IDal GetDal()
         {
-            return DAL.DalObject.DalObject.Instance;
+            return DAL.DalObject.DalObject.Instace;
         }
 
     }
