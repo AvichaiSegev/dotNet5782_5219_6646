@@ -50,13 +50,18 @@ namespace PL
         private void A_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             P = (BO.Priorities)A.SelectedIndex;
-            parcelsListView.ItemsSource = ibl.displayParcelListFiltered(W, P);
+            parcelsListView.ItemsSource = ibl.displayParcelListFiltered(W, P, null);
         }
 
         private void B_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             W = (BO.WeightCategories)B.SelectedIndex;
-            parcelsListView.ItemsSource = ibl.displayParcelListFiltered(W, P);
+            parcelsListView.ItemsSource = ibl.displayParcelListFiltered(W, P, null);
+        }
+
+        private void DoButton_Click(object sender, RoutedEventArgs e)
+        {
+            parcelsListView.ItemsSource = ibl.displayParcelListFiltered(FirstDate.SelectedDate, SecondDate.SelectedDate);
         }
     }
 }

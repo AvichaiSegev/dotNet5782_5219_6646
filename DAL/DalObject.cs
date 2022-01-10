@@ -139,7 +139,8 @@ namespace DAL
             public IEnumerable<Drone> displayDroneList() { return data.DroneList; }
             public IEnumerable<Customer> displayCustomerList() { return data.CustomerList; }
             public IEnumerable<Parcel> displayParcelList() { return data.ParcelList; }
-            
+            public IEnumerable<Parcel> displayParcelList(Predicate<Parcel> predicate) { return data.ParcelList.FindAll(predicate); }
+
             //Create function for add objects to the list:
             public void AddStation(Station station)
             {

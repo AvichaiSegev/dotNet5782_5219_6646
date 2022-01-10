@@ -17,7 +17,7 @@ namespace BL
             dali = DalApi.DalFactory.GetDal();
             double[] electricity = dali.electricityUse();
             electricityUseForVacantDrone = electricity[0]; electricityUseForLightParcel = electricity[1]; electricityUseForMediumParcel = electricity[2]; electricityUseForHeavyParcel = electricity[3]; chargingRate = electricity[4];
-            foreach(var drone in dali.displayDroneList())//Update drone list from the data base
+            foreach (var drone in dali.displayDroneList())//Update drone list from the data base
             {
                 DroneToList drone1 = new DroneToList();
                 drone1.id = drone.Id;
@@ -25,7 +25,7 @@ namespace BL
                 drone1.maxWeight = (WeightCategories)drone.MaxWeight;
                 DO.Parcel parcelDidNotDelivered = new DO.Parcel();
                 parcelDidNotDelivered.Id = -1;
-                foreach(var parcel in dali.displayParcelList()){
+                foreach (var parcel in dali.displayParcelList()) {
                     if (parcel.DroneId == drone.Id && parcel.Provided == null) {
                         parcelDidNotDelivered = parcel;
                         break;
@@ -53,37 +53,37 @@ namespace BL
                             minBattery = 0;
                             break;
                     }
-                    drone1.battery = randy.Next( (int)minBattery, 100);
+                    drone1.battery = randy.Next((int)minBattery, 100);
                     drone1.parcelNumber = parcelDidNotDelivered.Id;
                 }
-                else{
+                else {
                     int booly = randy.Next(1, 2);
                     if (booly == 1) { drone1.status = DroneStatus.free; }
                     if (booly == 2) { drone1.status = DroneStatus.matance; }
                 }
-                if(drone1.status == DroneStatus.matance)
+                if (drone1.status == DroneStatus.matance)
                 {
                     int numStation = randy.Next(1, stationsAmount());
                     int i = 0;
                     foreach (var station in dali.displayStationList()) { if (i == numStation) { drone1.location = new Location(station.Longitude, station.Lattitude); i++; } }//random location for drone1
                     drone1.battery = randy.Next(0, 20);
                 }
-                else if(drone1.status == DroneStatus.free)
+                else if (drone1.status == DroneStatus.free)
                 {
                     List<DO.Parcel> parcelDelivered = listParcelDelivered();
                     int parcelsDelivered = randy.Next(0, parcelDelivered.Count);
                     DO.Customer targetCutomer = new DO.Customer();
                     if (parcelDelivered.Count != 0) { targetCutomer = new DO.Customer(dali.displayCustomer(parcelDelivered[parcelsDelivered].TargetId)); }
                     if (parcelDelivered.Count == 0) { targetCutomer = new DO.Customer(); }
-                    drone1.location = new Location (targetCutomer.Lattitude, targetCutomer.Longitude);
+                    drone1.location = new Location(targetCutomer.Lattitude, targetCutomer.Longitude);
                     Location targetnearStation = nearStation(targetCutomer.Lattitude, targetCutomer.Longitude);
                     double destinationToNearStation = DistanceTo(drone1.location.latitude, drone1.location.longitude, targetCutomer.Lattitude, targetCutomer.Longitude);
-                    drone1.battery = 100 - randy.NextDouble() * (int)electricityUseForVacantDrone*destinationToNearStation ;
+                    drone1.battery = 100 - randy.NextDouble() * (int)electricityUseForVacantDrone * destinationToNearStation;
                 }
                 droneList.Add(drone1);
             }
         }
-        
+
         static BL() { }
         private static BL instance;
         static readonly object lockname = new object();
@@ -92,11 +92,11 @@ namespace BL
         {
             get
             {
-                if(instance == null)
+                if (instance == null)
                 {
                     lock (lockname)
                     {
-                        if(instance == null)
+                        if (instance == null)
                         {
                             instance = new BL();// Explanation required////////////
                         }
@@ -108,7 +108,7 @@ namespace BL
         //Add functions
         public void Addcustomer(Customer customer)//Add customer
         {
-            DO.Customer DCustomer = new DO.Customer { Id = customer.id, Lattitude = customer.location.latitude, Longitude = customer.location.longitude, Name = customer.name, Phone = customer.phone};
+            DO.Customer DCustomer = new DO.Customer { Id = customer.id, Lattitude = customer.location.latitude, Longitude = customer.location.longitude, Name = customer.name, Phone = customer.phone };
             dali.AddCustomer(DCustomer);
         }
 
@@ -131,7 +131,7 @@ namespace BL
 
         public void AddParcel(Parcel parcel, int senderId, int gettedId)//Add parcel
         {
-            DO.Parcel DParcel = new DO.Parcel { Id = parcel.Id, SenderId = senderId, TargetId = gettedId, Weight = (DO.WeightCategories)parcel.weight, Priority = (DO.Priorities)parcel.priority , DroneId = int.MinValue, Defined = DateTime.Now, Assigned = null, Collected = null, Provided = null};
+            DO.Parcel DParcel = new DO.Parcel { Id = parcel.Id, SenderId = senderId, TargetId = gettedId, Weight = (DO.WeightCategories)parcel.weight, Priority = (DO.Priorities)parcel.priority, DroneId = int.MinValue, Defined = DateTime.Now, Assigned = null, Collected = null, Provided = null };
             dali.AddParcel(DParcel);
         }
 
@@ -139,7 +139,7 @@ namespace BL
         {
             DO.Station Dstation = new DO.Station { Id = station.id, Name = station.name, Longitude = station.location.longitude, Lattitude = station.location.latitude, freeChargeSlots = station.numFreeChargingStands };
             dali.AddStation(Dstation);
-            
+
         }
         //Update functions
         public void Updatecustomer(int customerId, string customerName, string customerPhone, double customerLongitude, double customerLattitude)//Update customer
@@ -160,7 +160,7 @@ namespace BL
             DroneToList drone1;
             if (drone.parcel == null)
             {
-                 drone1 = new DroneToList() { id = drone.id, battery = drone.battery, model = drone.model, status = drone.status, parcelNumber = int.MinValue, location = drone.location, maxWeight = drone.maxWeight };
+                drone1 = new DroneToList() { id = drone.id, battery = drone.battery, model = drone.model, status = drone.status, parcelNumber = int.MinValue, location = drone.location, maxWeight = drone.maxWeight };
             }
             else
                 drone1 = new DroneToList() { id = drone.id, battery = drone.battery, model = drone.model, status = drone.status, parcelNumber = drone.parcel.id, location = drone.location, maxWeight = drone.maxWeight };
@@ -229,10 +229,10 @@ namespace BL
             if (parcel.Id == -1)
             {
                 parcel = assignAParcelToDrone(drone, Priorities.quick);
-                if(parcel.Id == -1)
+                if (parcel.Id == -1)
                 {
                     parcel = assignAParcelToDrone(drone, Priorities.regular);
-                    if(parcel.Id == -1) { throw new NoSuiTablePackageFound(); }
+                    if (parcel.Id == -1) { throw new NoSuiTablePackageFound(); }
                 }
             }
             UpdateDrone(new Drone() { id = drone.id, battery = drone.battery, location = drone.location, maxWeight = drone.maxWeight, model = drone.model, status = DroneStatus.delivery, parcel = new ParcelInTransfer() { id = parcel.Id, getter = parcel.getted, sender = parcel.delivered, collection = displayCustomer(parcel.delivered.id).location, target = displayCustomer(parcel.getted.id).location, priority = parcel.priority, status = false, weight = parcel.weight } });
@@ -242,9 +242,9 @@ namespace BL
         }
         Parcel assignAParcelToDrone(Drone drone, Priorities priority)//Assign parcel to drone - Internal function
         {
-            Parcel Bparcel = new Parcel(){ Id = -1};
+            Parcel Bparcel = new Parcel() { Id = -1 };
             double closestDistance = double.MaxValue;
-            foreach(var parcel in dali.displayParcelList())
+            foreach (var parcel in dali.displayParcelList())
             {
                 if (parcel.Weight <= (DO.WeightCategories)drone.maxWeight)
                 {
@@ -304,7 +304,7 @@ namespace BL
             double distance = DistanceTo(droneToList.location.latitude, droneToList.location.longitude, customer.location.latitude, customer.location.longitude);
             droneToList.battery = droneToList.battery - electricityUseForVacantDrone * distance;
             droneToList.location = customer.location;
-            UpdateDrone(new Drone() { battery = droneToList.battery, id = droneToList.id, location = droneToList.location, maxWeight = (WeightCategories)droneToList.maxWeight, model = droneToList.model, parcel = new ParcelInTransfer() { id = droneToList.parcelNumber}, status = droneToList.status });
+            UpdateDrone(new Drone() { battery = droneToList.battery, id = droneToList.id, location = droneToList.location, maxWeight = (WeightCategories)droneToList.maxWeight, model = droneToList.model, parcel = new ParcelInTransfer() { id = droneToList.parcelNumber }, status = droneToList.status });
             parcel.collectedParcelTime = DateTime.Now;
             UpdateParcel(parcel);
         }
@@ -387,18 +387,18 @@ namespace BL
         public IEnumerable<CustomerToList> displayCustomerList()//display customer list
         {
             List<CustomerToList> list1 = new List<CustomerToList>();
-            
-            foreach (var item in dali.displayCustomerList()){
-            int senderedButDidntProvided = 0, SenderedAndProvided = 0, onTheWay = 0, getted = 0;
+
+            foreach (var item in dali.displayCustomerList()) {
+                int senderedButDidntProvided = 0, SenderedAndProvided = 0, onTheWay = 0, getted = 0;
                 foreach (var item1 in dali.displayParcelList())
-                  {
-                      if(item1.SenderId == item.Id && item1.Collected != null && item1.Provided == null) { senderedButDidntProvided += 1; }
-                      if(item1.SenderId == item.Id && item1.Provided != null) { senderedButDidntProvided += 1; }
-                      if(item1.TargetId == item.Id && item1.Provided != null) { getted += 1; }
-                      if(item1.TargetId == item.Id && item1.Provided == null) { onTheWay += 1; }
-                  }
+                {
+                    if (item1.SenderId == item.Id && item1.Collected != null && item1.Provided == null) { senderedButDidntProvided += 1; }
+                    if (item1.SenderId == item.Id && item1.Provided != null) { senderedButDidntProvided += 1; }
+                    if (item1.TargetId == item.Id && item1.Provided != null) { getted += 1; }
+                    if (item1.TargetId == item.Id && item1.Provided == null) { onTheWay += 1; }
+                }
                 list1.Add(new CustomerToList() { id = item.Id, name = item.Name, phone = item.Phone, parcelsWasSendedButDidntProvidedYet = senderedButDidntProvided, parcelsWasSendedAndprovided = SenderedAndProvided, parcelOnTheWay = onTheWay, parcelsGetted = getted });
-                
+
             }
             return list1;
         }
@@ -419,8 +419,8 @@ namespace BL
                 throw new IdDoesNotExist(Id);
             }
             DroneToList drone1 = new DroneToList();
-            foreach(var drone in droneList) { if(drone.id == Id) { drone1 = drone; break; } }
-            Drone drone2 = new Drone() { id = drone1.id, battery= drone1.battery, location = drone1.location, maxWeight = drone1.maxWeight, model = drone1.model, parcel = new ParcelInTransfer() { id = drone1.parcelNumber }, status = drone1.status };
+            foreach (var drone in droneList) { if (drone.id == Id) { drone1 = drone; break; } }
+            Drone drone2 = new Drone() { id = drone1.id, battery = drone1.battery, location = drone1.location, maxWeight = drone1.maxWeight, model = drone1.model, parcel = new ParcelInTransfer() { id = drone1.parcelNumber }, status = drone1.status };
             return drone2;
         }
         public Parcel displayParcel(int Id)//display parcel
@@ -439,7 +439,7 @@ namespace BL
                 case WeightCategories.liver:
                     parcel1.Weight = DO.WeightCategories.liver;
                     break;
-                default:break;
+                default: break;
             }
             switch ((Priorities)parcel1.Priority)
             {
@@ -490,10 +490,49 @@ namespace BL
         {
             return droneList.FindAll(x => (WC is null || x.maxWeight == WC) && (DS is null || x.status == DS));
         }
-        public IEnumerable<ParcelToList> displayParcelListFiltered(BO.WeightCategories? W, BO.Priorities? P)
+        public IEnumerable<ParcelToList> displayParcelListFiltered(BO.WeightCategories? W, BO.Priorities? P, DateTime? D)
         {
-            IEnumerable<ParcelToList> parcelList = this.displayParcelList();
+            IEnumerable<ParcelToList> parcelList = displayParcelList();
             return parcelList.Where(x => (W is null || x.weight == W) && (P is null || x.priority == P));
+        }
+        public IEnumerable<ParcelToList> displayParcelListFiltered(DateTime? date1, DateTime? date2)
+        {
+            List<ParcelToList> list1 = new List<ParcelToList>();
+            foreach (var item in dali.displayParcelList(x => ((x.Defined >= date1 && x.Defined <= date2))))
+            {
+                ParcelToList parcel = new ParcelToList();
+                parcel.parcelId = item.Id;
+                parcel.deliveredCustomerName = displayCustomer(item.SenderId).name;
+                parcel.gettedCustomerName = displayCustomer(item.TargetId).name;
+                switch ((WeightCategories)item.Weight)
+                {
+                    case WeightCategories.light:
+                        parcel.weight = BO.WeightCategories.light;
+                        break;
+                    case WeightCategories.medium:
+                        parcel.weight = BO.WeightCategories.medium;
+                        break;
+                    case WeightCategories.liver:
+                        parcel.weight = BO.WeightCategories.liver;
+                        break;
+                    default: break;
+                }
+                switch ((Priorities)item.Priority)
+                {
+                    case Priorities.emergency:
+                        parcel.priority = BO.Priorities.emergency;
+                        break;
+                    case Priorities.quick:
+                        parcel.priority = BO.Priorities.quick;
+                        break;
+                    case Priorities.regular:
+                        parcel.priority = BO.Priorities.regular;
+                        break;
+                    default: break;
+                }
+                list1.Add(parcel);
+            }
+            return list1;
         }
         public IEnumerable<ParcelToList> displayParcelList()//display parcel
         {

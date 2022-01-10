@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace PL
 {
-    /// <summary>
-    /// Interaction logic for Drone.xaml
-    /// </summary>
     public partial class Drone : Window
     {
         BlApi.IBL ibl;
@@ -24,6 +21,8 @@ namespace PL
         public Drone(BlApi.IBL V)
         {
             InitializeComponent();
+            DataContext = this;
+            drone = new BO.Drone();
             A.Visibility = Visibility.Visible;
             B.Visibility = Visibility.Visible;
             AddButton.Visibility = Visibility.Visible;
@@ -32,6 +31,7 @@ namespace PL
             TextBlock2.Visibility = Visibility.Visible;
             model.Visibility = Visibility.Visible;
             id.Visibility = Visibility.Visible;
+            StationID.Visibility = Visibility.Visible;
             IdText.Visibility = Visibility.Hidden;
             ModelText.Visibility = Visibility.Hidden;
             LongitudeText1.Visibility = Visibility.Hidden;
@@ -45,6 +45,7 @@ namespace PL
             BatteryText2.Visibility = Visibility.Hidden;
             StatusText1.Visibility = Visibility.Hidden;
             StatusText2.Visibility = Visibility.Hidden;
+            drone.status = BO.DroneStatus.free;
             A.ItemsSource = Enum.GetValues(typeof(BO.DroneStatus));
             B.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
             ibl = V;
@@ -52,6 +53,7 @@ namespace PL
         public Drone(BlApi.IBL V, BO.Drone _drone)
         {
             InitializeComponent();
+            DataContext = this;
             ibl = V;
             IdText.Text = "" + _drone.id;
             ModelText.Text = _drone.model;
@@ -61,11 +63,14 @@ namespace PL
             BatteryText2.Text = "" + _drone.battery;
             StatusText2.Text = "" + _drone.status;
             drone = _drone;
+            if (drone.status == BO.DroneStatus.free)
+            {
+                ChangeButton1.Content = "Assign to parcel";
+            }
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             BO.Drone D = new BO.Drone();
-            int StationId = 0;
             D.model = model.Text;
             if(id.Text != "")D.id = Convert.ToInt32(id.Text);
             else { D.id = 0; }
@@ -97,7 +102,8 @@ namespace PL
                 default:
                     break;
             }
-            ibl.AddDrone(D, StationId);
+            
+            ibl.AddDrone(D, int.Parse(StationID.Text));
             DroneWindow.Close();
             DroneList d = new(ibl);
             d.Show();

@@ -14,12 +14,18 @@ using System.Windows.Shapes;
 
 namespace PL
 {
+
     public partial class Parcel : Window
     {
         BlApi.IBL ibl;
+        public BO.Parcel parcel { get; set; }
         public Parcel(BlApi.IBL V)
         {
             InitializeComponent();
+            DataContext = this;
+            A.ItemsSource = Enum.GetValues(typeof(BO.Priorities));
+            B.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
+            parcel = new BO.Parcel();
             ibl = V;
         }
         public Parcel(BlApi.IBL V, BO.Parcel parcel)
@@ -27,5 +33,12 @@ namespace PL
             InitializeComponent();
             ibl = V;
         }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e){ ParcelWindow.Close(); }
     }
 }

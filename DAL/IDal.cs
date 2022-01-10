@@ -32,5 +32,6 @@ namespace DalApi
         void deleteDroneCharge(int Id);
         double[] electricityUse();
 
+        IEnumerable<Parcel> displayParcelList(Predicate<Parcel> predicate);
     }
 }
