@@ -9,8 +9,8 @@
         Background="#222831"
         Name ="DroneWindow">
     <Grid>
-        <ComboBox x:Name ="A" SelectedItem="{Binding drone.status}" Visibility="Hidden"  FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,0,375"/>
-        <ComboBox x:Name ="B" Visibility="Hidden" FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,81,0,294"/>
+        <ComboBox x:Name ="A" SelectedItem="{Binding Path=status}" Visibility="Hidden"  FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,0,375"/>
+        <ComboBox x:Name ="B" SelectedItem="{Binding Path=maxWeight}" Visibility="Hidden" FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,81,0,294"/>
         <Button x:Name="AddButton" Visibility="Hidden" Content="Add" HorizontalAlignment="Center" Margin="0,342,0,0" VerticalAlignment="Top" Background="#00ADB5" FontFamily="Comic Sans MS" FontSize="20" Width="200" Click="Button_Click"/>
         <Button Name="CloseButton" Visibility="Hidden" Content="Close" HorizontalAlignment="Left" Margin="347,374,0,0" VerticalAlignment="Top" Background="#00ADB5" FontFamily="Comic Sans MS" FontSize="15" Width="100" Click="Button_Click_1"/>
         <TextBlock Name="TextBlock1" HorizontalAlignment="Left" Margin="10,237,0,0" Text="Model:" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="102" FontFamily="Comic Sans MS" FontSize="20"/>

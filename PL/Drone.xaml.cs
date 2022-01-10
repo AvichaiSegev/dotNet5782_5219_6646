@@ -21,7 +21,6 @@ namespace PL
         public Drone(BlApi.IBL V)
         {
             InitializeComponent();
-            DataContext = this;
             drone = new BO.Drone();
             A.Visibility = Visibility.Visible;
             B.Visibility = Visibility.Visible;
@@ -44,14 +43,15 @@ namespace PL
             BatteryText2.Visibility = Visibility.Hidden;
             StatusText1.Visibility = Visibility.Hidden;
             StatusText2.Visibility = Visibility.Hidden;
-            drone.status = BO.DroneStatus.free;
             A.ItemsSource = Enum.GetValues(typeof(BO.DroneStatus));
             B.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
+            DataContext = drone;
             ibl = V;
         }
         public Drone(BlApi.IBL V, BO.Drone _drone)
         {
             InitializeComponent();
+            DataContext = this;
             ibl = V;
             IdText.Text = "" + _drone.id;
             ModelText.Text = _drone.model;

@@ -22,10 +22,10 @@ namespace PL
         public Parcel(BlApi.IBL V)
         {
             InitializeComponent();
+            DataContext = this;
             A.ItemsSource = Enum.GetValues(typeof(BO.Priorities));
             B.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
             parcel = new BO.Parcel();
-            parcel.Id = 96;
             ibl = V;
         }
         public Parcel(BlApi.IBL V, BO.Parcel parcel)
