@@ -20,9 +20,11 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
+        enum State { drones, stations, parcels, customers }
         public MainWindow()
         {
             InitializeComponent();
+            state.ItemsSource = Enum.GetValues(typeof(State));
         }
         BlApi.IBL ibl;
 
@@ -30,7 +32,9 @@ namespace PL
         {
             ibl = new BL.BL();
             DroneList d = new DroneList(ibl);
-            d.Show();
+            StationList s = new StationList(ibl);
+            if (state.SelectedIndex == 0) { d.Show(); }
+            if (state.SelectedIndex == 1) { s.Show(); }
         }
     }
 }

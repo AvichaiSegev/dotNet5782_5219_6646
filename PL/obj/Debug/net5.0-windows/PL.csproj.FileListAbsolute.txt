@@ -29,3 +29,7 @@ C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-win
 C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-windows\ref\PL.dll
 C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-windows\PL.pdb
 C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-windows\PL.genruntimeconfig.cache
+C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-windows\StationList.g.cs
+C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-windows\StationList.baml
+C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-windows\Station.g.cs
+C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-windows\Station.baml
