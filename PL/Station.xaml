@@ -13,7 +13,7 @@
             <ColumnDefinition Width="31*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" Margin="300,342,0,0" VerticalAlignment="Top" Background="#00ADB5" FontFamily="Comic Sans MS" FontSize="20" Width="200" Click="AddButton_Click"/>
+        <Button x:Name="AddButton" Content="Add"  HorizontalAlignment="Left" Margin="300,342,0,0" VerticalAlignment="Top" Background="#00ADB5" FontFamily="Comic Sans MS" FontSize="20" Width="200" Click="AddButton_Click" Height="31.7"/>
         <Button Name="CloseButton" Content="Close" HorizontalAlignment="Left" Margin="347,374,0,0" VerticalAlignment="Top" Background="#00ADB5" FontFamily="Comic Sans MS" FontSize="15" Width="100" Click="CloseButton_Click"/>
         <TextBlock Name="TextBlock1" HorizontalAlignment="Left" Margin="0,76,0,0" Text="Name:" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="102" FontFamily="Comic Sans MS" FontSize="20"/>
         <TextBlock Name="TextBlock2" HorizontalAlignment="Left" Margin="0,26,0,0" Text="ID:" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="102" FontFamily="Comic Sans MS" FontSize="20" RenderTransformOrigin="0.484,1.603"/>

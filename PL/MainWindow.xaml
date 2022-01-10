@@ -8,6 +8,6 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid Background="#222831">
         <Button Content="Start" Background="#00ADB5" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.417,1.956" Click="Button_Click" Width="200" Height="30" FontFamily="Comic Sans MS" FontSize="22"/>
-        <ComboBox Name="state"  Margin="300,217,300,162" FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <ComboBox Name="state"  Margin="300,222,300,157" FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
     </Grid>
 </Window>

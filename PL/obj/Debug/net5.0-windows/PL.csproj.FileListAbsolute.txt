@@ -33,3 +33,7 @@ C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-win
 C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-windows\StationList.baml
 C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-windows\Station.g.cs
 C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-windows\Station.baml
+C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-windows\CustomerList.g.cs
+C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-windows\CustomerList.baml
+C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-windows\Customer.g.cs
+C:\Users\benay\source\repos\beya421\dotNet5782_5219_6646\PL\obj\Debug\net5.0-windows\Customer.baml

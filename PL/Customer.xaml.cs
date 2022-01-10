@@ -14,25 +14,27 @@ using System.Windows.Shapes;
 
 namespace PL
 {
-    public partial class Station : Window
+    public partial class Customer : Window
     {
         BlApi.IBL ibl;
-        public BO.Station station { get; set; }
+        public BO.Customer customer { get; set; }
         bool AOU;
-        public Station(BlApi.IBL V)
+        public Customer(BlApi.IBL V)
         {
             InitializeComponent();
             AOU = true;
             DataContext = this;
-            station = new BO.Station();
-            station.location = new BO.Location(0, 0);
+            customer = new BO.Customer();
+            customer.location = new BO.Location(0, 0);
             ibl = V;
+            customer.name = "-";
+            customer.phone = "-";
         }
-        public Station(BlApi.IBL V, BO.Station _station)
+        public Customer(BlApi.IBL V, BO.Customer _customer)
         {
             InitializeComponent();
             AOU = false;
-            station = _station;
+            customer = _customer;
             DataContext = this;
             ibl = V;
             name.IsReadOnly = true;
@@ -44,10 +46,11 @@ namespace PL
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            if (AOU) { ibl.AddStation(station); }
-            if (!AOU) { ibl.UpdateStation(station); }
-            StationWindow.Close();
+            if (AOU) { ibl.Addcustomer(customer); }
+            if (!AOU) { ibl.Updatecustomer(customer.id, customer.name, customer.phone, customer.location.longitude, customer.location.latitude); }
+            CustomerWindow.Close();
         }
-        private void CloseButton_Click(object sender, RoutedEventArgs e){ StationWindow.Close();}
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e){ CustomerWindow.Close(); }
     }
 }
