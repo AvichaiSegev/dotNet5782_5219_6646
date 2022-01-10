@@ -34,8 +34,10 @@ namespace PL
             DroneList d = new DroneList(ibl);
             StationList s = new StationList(ibl);
             CustomerList c = new CustomerList(ibl);
+            ParcelList p = new ParcelList(ibl);
             if (state.SelectedIndex == 0) { d.Show(); }
             if (state.SelectedIndex == 1) { s.Show(); }
+            if (state.SelectedIndex == 2) { p.Show(); }
             if (state.SelectedIndex == 3) { c.Show(); }
         }
     }

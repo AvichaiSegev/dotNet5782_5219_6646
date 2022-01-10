@@ -490,6 +490,11 @@ namespace BL
         {
             return droneList.FindAll(x => (WC is null || x.maxWeight == WC) && (DS is null || x.status == DS));
         }
+        public IEnumerable<ParcelToList> displayParcelListFiltered(BO.WeightCategories? W, BO.Priorities? P)
+        {
+            IEnumerable<ParcelToList> parcelList = this.displayParcelList();
+            return parcelList.Where(x => (W is null || x.weight == W) && (P is null || x.priority == P));
+        }
         public IEnumerable<ParcelToList> displayParcelList()//display parcel
         {
             List<ParcelToList> list1 = new List<ParcelToList>();

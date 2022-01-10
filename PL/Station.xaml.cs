@@ -41,7 +41,6 @@ namespace PL
             lattitude.IsReadOnly = true;
             AddButton.Content = "Update";
         }
-
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             if (AOU) { ibl.AddStation(station); }

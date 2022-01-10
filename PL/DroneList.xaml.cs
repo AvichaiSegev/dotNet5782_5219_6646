@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace PL
 {
-    /// <summary>
-    /// Interaction logic for DroneList.xaml
-    /// </summary>
     public partial class DroneList : Window
     {
         private BO.WeightCategories? WC = null;
