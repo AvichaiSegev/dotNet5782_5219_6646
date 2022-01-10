@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace PL
 {
-    /// <summary>
-    /// Interaction logic for Drone.xaml
-    /// </summary>
     public partial class Drone : Window
     {
         BlApi.IBL ibl;
@@ -24,6 +21,8 @@ namespace PL
         public Drone(BlApi.IBL V)
         {
             InitializeComponent();
+            DataContext = this;
+            drone = new BO.Drone();
             A.Visibility = Visibility.Visible;
             B.Visibility = Visibility.Visible;
             AddButton.Visibility = Visibility.Visible;
@@ -45,6 +44,7 @@ namespace PL
             BatteryText2.Visibility = Visibility.Hidden;
             StatusText1.Visibility = Visibility.Hidden;
             StatusText2.Visibility = Visibility.Hidden;
+            drone.status = BO.DroneStatus.free;
             A.ItemsSource = Enum.GetValues(typeof(BO.DroneStatus));
             B.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
             ibl = V;

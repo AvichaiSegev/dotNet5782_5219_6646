@@ -14,14 +14,18 @@ using System.Windows.Shapes;
 
 namespace PL
 {
+
     public partial class Parcel : Window
     {
         BlApi.IBL ibl;
+        public BO.Parcel parcel { get; set; }
         public Parcel(BlApi.IBL V)
         {
             InitializeComponent();
             A.ItemsSource = Enum.GetValues(typeof(BO.Priorities));
             B.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
+            parcel = new BO.Parcel();
+            parcel.Id = 96;
             ibl = V;
         }
         public Parcel(BlApi.IBL V, BO.Parcel parcel)
