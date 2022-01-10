@@ -47,6 +47,6 @@ namespace PL
             if (!AOU) { ibl.UpdateStation(station); }
             StationWindow.Close();
         }
-        private void CloseButton_Click(object sender, RoutedEventArgs e){ StationWindow.Close();}
+        private void CloseButton_Click(object sender, RoutedEventArgs e){ StationWindow.Close(); }
     }
 }

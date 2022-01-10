@@ -30,8 +30,11 @@
             <Button x:Name="RefreshButton" Content="Refresh" Grid.Column="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32" Width="270" FontFamily="Comic Sans MS" Background="#00ADB5" FontSize="20" Click="Button_Click_3" Margin="130,35,0,0" Grid.ColumnSpan="2"/>
         </Grid>
         <Grid Name ="SecondGrid" Background="#393E46" Grid.Row = "0" Height="50" Margin="0,69,0,505" Grid.RowSpan="2">
-            <TextBlock Name="From" HorizontalAlignment="Left" Text="From:" TextWrapping="Wrap" VerticalAlignment="Center" Height="50" Width="60" FontFamily="Comic Sans MS" FontSize="18" Margin="10,0,0,0"/>
-            <TextBlock Name="Until" HorizontalAlignment="Left" Text="Untill:" TextWrapping="Wrap" VerticalAlignment="Center" Height="50" Width="60" FontFamily="Comic Sans MS" FontSize="18" Margin="225,0,0,0"/>
+            <TextBlock Name="From" HorizontalAlignment="Left" Text="Defined from:" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="126" FontFamily="Comic Sans MS" FontSize="16"/>
+            <TextBlock Name="Until" HorizontalAlignment="Left" Text="Untill:" TextWrapping="Wrap" VerticalAlignment="Center" Height="50" Width="60" FontFamily="Comic Sans MS" FontSize="18" Margin="226,0,0,0"/>
+            <DatePicker FontFamily="Comic Sans MS" FontSize="10" Name="FirstDate" Margin="108,0,579,0"/>
+            <DatePicker FontFamily="Comic Sans MS" FontSize="10" Name="SecondDate" Margin="282,0,405,0"/>
+            <Button x:Name="DoButton" Content="Do it" HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Width="50" FontFamily="Comic Sans MS" Background="#00ADB5" FontSize="14" Click="DoButton_Click" Margin="396,1,0,0"/>
         </Grid>
         <ListView Name="parcelsListView" Background="#222831" Foreground="#00ABD5" MouseDoubleClick="ParcelsListView_MouseDoubleClick" FontFamily="Comic Sans MS" Margin="0,25,0,0" Grid.Row="1">
             <ListView.View>

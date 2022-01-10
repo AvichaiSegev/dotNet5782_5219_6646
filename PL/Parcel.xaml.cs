@@ -20,6 +20,8 @@ namespace PL
         public Parcel(BlApi.IBL V)
         {
             InitializeComponent();
+            A.ItemsSource = Enum.GetValues(typeof(BO.Priorities));
+            B.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
             ibl = V;
         }
         public Parcel(BlApi.IBL V, BO.Parcel parcel)
@@ -27,5 +29,12 @@ namespace PL
             InitializeComponent();
             ibl = V;
         }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e){ ParcelWindow.Close(); }
     }
 }

@@ -38,8 +38,10 @@ namespace BlApi
         IEnumerable<DroneToList> displayDroneListFiltered(BO.WeightCategories? WC, BO.DroneStatus? DS);
         IEnumerable<CustomerToList> displayCustomerList();
         IEnumerable<ParcelToList> displayParcelList();
-        IEnumerable<ParcelToList> displayParcelListFiltered(BO.WeightCategories? W, BO.Priorities? P);
+        IEnumerable<ParcelToList> displayParcelListFiltered(BO.WeightCategories? W, BO.Priorities? P, DateTime? D);
         IEnumerable<ParcelToList> displayFreeParcelList();
+        IEnumerable<ParcelToList> displayParcelListFiltered(DateTime? date1, DateTime? date2);
+
 
 
         double[] electricityUse();
