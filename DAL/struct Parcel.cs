@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace DO
 {
@@ -14,6 +15,7 @@ namespace DO
         public DateTime? Assigned { get; set; }
         public DateTime? Collected { get; set; }
         public DateTime? Provided { get; set; }
+        
         public override string ToString()
         {
             return "Parcel Id: " + this.Id +

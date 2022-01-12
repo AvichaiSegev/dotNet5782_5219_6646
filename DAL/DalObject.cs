@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DO;
 using DAL.DalObject;
+using System.Runtime.CompilerServices;
 
 namespace DAL
 {
@@ -19,6 +20,7 @@ namespace DAL
             internal List<Customer> CustomerList = new List<Customer>();
             internal List<Parcel> ParcelList = new List<Parcel>();
             internal List<DroneCharge> DroneChargeList = new List<DroneCharge>();
+            
             public DataSource() => Initialize();
             
             //Create function for initialize the lists:
@@ -51,6 +53,7 @@ namespace DAL
         public class DalObject : DalApi.IDal
         {
             DataSource data;
+            
             public DalObject()
             {
                 data = new DataSource();
@@ -79,6 +82,7 @@ namespace DAL
             //Run "initialize" in the constructor: 
 
             //Create function for display objects:
+            
             public Station displayStation(int Id)
             {
                 if (!data.StationList.Any(x => x.Id == Id))
@@ -88,6 +92,7 @@ namespace DAL
                 foreach (Station item in data.StationList){ if (item.Id == Id) { return item; } }
                 return new Station { Id = -1, Name = -1, Longitude = -1, Lattitude = -1, freeChargeSlots = -1 };
             }
+            
             public Drone displayDrone(int Id)
             {
                 if (!data.DroneList.Any(x => x.Id == Id))
@@ -97,6 +102,7 @@ namespace DAL
                 foreach (Drone item in data.DroneList){ if (item.Id == Id) { return item; } }
                 return new Drone { Id = -1, Model = "None", MaxWeight = WeightCategories.light};
             }
+            
             public DroneCharge displayDroneCharge(int Id)
             {
                 if (!data.DroneChargeList.Any(x => x.droneId == Id))
@@ -106,6 +112,7 @@ namespace DAL
                 foreach (DroneCharge item in data.DroneChargeList) { if (item.droneId == Id) { return item; } }
                 return new DroneCharge { droneId = -1, StationId = -1 };
             }
+            
             public Customer displayCustomer(int Id)
             {
                 if (!data.CustomerList.Any(x => x.Id == Id))
@@ -115,6 +122,7 @@ namespace DAL
                 foreach (Customer item in data.CustomerList){ if (item.Id == Id) { return item; } }
                 return new Customer { Id = -1, Name = "None", Phone = "0", Longitude = 0, Lattitude = 0 };
             }
+            
             public Parcel displayParcel(int Id)
             {
                 if (!data.ParcelList.Any(x => x.Id == Id))
@@ -125,6 +133,7 @@ namespace DAL
                 return new Parcel { Id = -1, SenderId = -1, TargetId = -1, Weight = WeightCategories.light, Priority = Priorities.regular, Defined = DateTime.Now, Assigned = DateTime.Now, Collected = DateTime.Now, Provided = DateTime.Now, DroneId = -1 };
             }
 
+            
             public Station displayStationByLocation(double latitude, double longitude)
             {
                 if (!data.StationList.Any(x => x.Lattitude == latitude && x.Longitude == longitude))
@@ -135,6 +144,7 @@ namespace DAL
                 return new Station { Id = -1, Name = -1, Longitude = -1, Lattitude = -1, freeChargeSlots = -1 };
             }
             //Create function for create list of the available stations:
+            
             public List<int> IdListForStations()
             {
                 List<int> list = new List<int>();
@@ -143,13 +153,19 @@ namespace DAL
             }
 
             //Create functions for display list of object:
+            
             public IEnumerable<Station> displayStationList() { return data.StationList; }
+            
             public IEnumerable<Drone> displayDroneList() { return data.DroneList; }
+            
             public IEnumerable<Customer> displayCustomerList() { return data.CustomerList; }
+            
             public IEnumerable<Parcel> displayParcelList() { return data.ParcelList; }
+            
             public IEnumerable<Parcel> displayParcelList(Predicate<Parcel> predicate) { return data.ParcelList.FindAll(predicate); }
 
             //Create function for add objects to the list:
+            
             public void AddStation(Station station)
             {
                 if (data.StationList.Any(x => x.Id == station.Id))
@@ -157,6 +173,7 @@ namespace DAL
                     throw new IdAlreadyExistException(station.Id);
                 }
                 data.StationList.Add(station); }
+            
             public void AddDrone(Drone drone)
             {
                 if (data.DroneList.Any(x => x.Id == drone.Id))
@@ -164,6 +181,7 @@ namespace DAL
                     throw new IdAlreadyExistException(drone.Id);
                 }
                 data.DroneList.Add(drone); }
+            
             public void AddCustomer(Customer customer)
             {
                 if (data.CustomerList.Any(x => x.Id == customer.Id))
@@ -172,6 +190,7 @@ namespace DAL
                 }
                 data.CustomerList.Add(customer); }
             //Function for add parcel:
+            
             public void AddParcel(Parcel parcel) {
                 if (data.ParcelList.Any(x => x.Id == parcel.Id))
                 {
@@ -180,6 +199,7 @@ namespace DAL
                 data.ParcelList.Add(parcel); }
 
             //Create function for update objects in the list:
+            
             public void UpdateStation(Station station)
             {
                 if (!data.StationList.Any(x => x.Id == station.Id))
@@ -192,7 +212,7 @@ namespace DAL
                 }
                 data.StationList[i] = station;
             }
-
+            
             public void UpdateDrone(Drone drone)
             {
                 if (!data.DroneList.Any(x => x.Id == drone.Id))
@@ -206,6 +226,7 @@ namespace DAL
                 data.DroneList[i] = drone;
             }
 
+            
             public void UpdateCustomer(Customer customer)
             {
                 if (!data.CustomerList.Any(x => x.Id == customer.Id))
@@ -220,6 +241,7 @@ namespace DAL
                 data.CustomerList[i] = customer;
             }
 
+            
             public void UpdateParcel(Parcel parcel)
             {
                 if (!data.ParcelList.Any(x => x.Id == parcel.Id))
@@ -234,19 +256,21 @@ namespace DAL
                 data.ParcelList[i] = parcel;
             }
 
+            
             public double[] electricityUse()
             {
 
                 return new double[]{ 1, 1, 5, 10, 15 }; //Charging per minute
             }
 
-           
 
+            
             public IEnumerable<DroneCharge> displayDroneChargeList()
             {
                 return data.DroneChargeList;
             }
 
+            
             public void AddDroneCharge(DroneCharge droneCharge)
             {
                 if (data.DroneChargeList.Any(x => x.droneId == droneCharge.droneId))
@@ -256,6 +280,7 @@ namespace DAL
                 data.DroneChargeList.Add(droneCharge);
             }
 
+            
             public void deleteDroneCharge(int Id)
             {
                 if (!data.DroneChargeList.Any(x => x.droneId == Id))

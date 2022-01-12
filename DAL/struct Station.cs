@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace DO
 {
@@ -9,6 +10,7 @@ namespace DO
         public double Longitude { get; set; }
         public double Lattitude { get; set; }
         public int freeChargeSlots { get; set; }
+        
         public override string ToString()
         {
             return "Station Id: " + this.Id +

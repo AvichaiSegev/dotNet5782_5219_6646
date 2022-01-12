@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using System.Xml;
+using System.Runtime.CompilerServices;
+using BlApi;
 
 namespace BL
 {
@@ -110,12 +112,14 @@ namespace BL
             }
         }
         //Add functions
-        public void Addcustomer(Customer customer)//Add customer
+        
+        void Addcustomer(Customer customer)//Add customer
         {
             DO.Customer DCustomer = new DO.Customer { Id = customer.id, Lattitude = customer.location.latitude, Longitude = customer.location.longitude, Name = customer.name, Phone = customer.phone };
             dali.AddCustomer(DCustomer);
         }
 
+        
         public void AddDrone(Drone drone, int stationId)//Add drone
         {
             try
@@ -133,12 +137,15 @@ namespace BL
             }
         }
 
+
+        
         public void AddParcel(Parcel parcel, int senderId, int gettedId)//Add parcel
         {
             DO.Parcel DParcel = new DO.Parcel { Id = parcel.Id, SenderId = senderId, TargetId = gettedId, Weight = (DO.WeightCategories)parcel.weight, Priority = (DO.Priorities)parcel.priority, DroneId = int.MinValue, Defined = DateTime.Now, Assigned = null, Collected = null, Provided = null };
             dali.AddParcel(DParcel);
         }
 
+        
         public void AddStation(Station station)//Add station
         {
             DO.Station Dstation = new DO.Station { Id = station.id, Name = station.name, Longitude = station.location.longitude, Lattitude = station.location.latitude, freeChargeSlots = station.numFreeChargingStands };
@@ -146,11 +153,13 @@ namespace BL
 
         }
         //Update functions
+        
         public void Updatecustomer(int customerId, string customerName, string customerPhone, double customerLongitude, double customerLattitude)//Update customer
         {
             DO.Customer customer = new DO.Customer { Id = customerId, Name = customerName, Phone = customerPhone, Lattitude = customerLattitude, Longitude = customerLongitude };
             dali.UpdateCustomer(customer);
         }
+        
         public void UpdatecustomerNameAndPhone(Customer customer)//Update customer name and phone
         {
             DO.Customer Dcustomer = dali.displayCustomer(customer.id);
@@ -159,6 +168,7 @@ namespace BL
             dali.UpdateCustomer(Dcustomer);
         }
 
+        
         public void UpdateDrone(Drone drone)//Update drone
         {
             DroneToList drone1;
@@ -183,6 +193,7 @@ namespace BL
             dali.UpdateDrone(Ddrone);
         }
 
+        
         public void UpdateDroneModel(Drone drone)//Update drone model
         {
             DroneToList drone1 = displayDroneToList(drone.id);
@@ -195,6 +206,7 @@ namespace BL
 
         }
 
+        
         public void UpdateParcel(Parcel parcel)//Update parcel
         {
             DO.Parcel Dparcel = dali.displayParcel(parcel.Id);
@@ -210,6 +222,7 @@ namespace BL
             dali.UpdateParcel(Dparcel);
         }
 
+        
         public void UpdateStation(Station station)//Update station
         {
             DO.Station Dstation = dali.displayStation(station.id);
@@ -220,12 +233,14 @@ namespace BL
             dali.UpdateStation(Dstation);
         }
 
+        
         public void UpdateStationName(Station station)//Update station name
         {
             DO.Station Dstation = dali.displayStation(station.id);
             Dstation.Name = station.name;
             dali.UpdateStation(Dstation);
         }
+        
         public void assignParcelToDrone(int droneId)//Assign parcel to drone
         {
             Drone drone = displayDrone(droneId);
@@ -296,6 +311,7 @@ namespace BL
             return Bparcel;
         }
 
+        
         public void collectParcelByDrone(int droneId)//Collect parcel by drone
         {
             DroneToList droneToList = displayDroneToList(droneId);
@@ -313,6 +329,8 @@ namespace BL
             UpdateParcel(parcel);
         }
 
+
+        
         public void provideParcelByDrone(int droneId)//Provide parcel by drone
         {
             DroneToList droneToList = displayDroneToList(droneId);
@@ -344,6 +362,7 @@ namespace BL
             UpdateParcel(parcel);
         }
 
+        
         public void sendDroneToCharging(int droneId)//Send drone to charging
         {
             if (!droneList.Any(x => x.id == droneId))
@@ -364,6 +383,7 @@ namespace BL
             dali.AddDroneCharge(new DO.DroneCharge() { droneId = drone.id, StationId = station.Id });
         }
 
+        
         public void releaseDroneFromCharging(int droneId, double chargingTime)//Release drone from charging
         {
             if (!droneList.Any(x => x.id == droneId))
@@ -390,6 +410,7 @@ namespace BL
             customer2.location = new Location(customer1.Longitude, customer1.Lattitude);
             return customer2;
         }
+        
         public IEnumerable<CustomerToList> displayCustomerList()//display customer list
         {
             List<CustomerToList> list1 = new List<CustomerToList>();
@@ -408,6 +429,7 @@ namespace BL
             }
             return list1;
         }
+        
         public Station displayStation(int Id)//display station
         {
             DO.Station station1 = dali.displayStation(Id);
@@ -418,6 +440,7 @@ namespace BL
             station2.numFreeChargingStands = station1.freeChargeSlots;
             return station2;
         }
+        
         public Drone displayDrone(int Id)//display drone
         {
             if (!droneList.Any(x => x.id == Id))
@@ -429,6 +452,7 @@ namespace BL
             Drone drone2 = new Drone() { id = drone1.id, battery = drone1.battery, location = drone1.location, maxWeight = drone1.maxWeight, model = drone1.model, parcel = new ParcelInTransfer() { id = drone1.parcelNumber }, status = drone1.status };
             return drone2;
         }
+        
         public Parcel displayParcel(int Id)//display parcel
         {
             DO.Parcel parcel1 = dali.displayParcel(Id);
@@ -488,19 +512,24 @@ namespace BL
             return droneList.Find(x => x.id == droneId);
         }
         //Display list functions
+        
         public IEnumerable<DroneToList> displayDroneList()//display drone list
         {
             return droneList;
         }
+
+        
         public IEnumerable<DroneToList> displayDroneListFiltered(BO.WeightCategories? WC, BO.DroneStatus? DS)
         {
             return droneList.FindAll(x => (WC is null || x.maxWeight == WC) && (DS is null || x.status == DS));
         }
+        
         public IEnumerable<ParcelToList> displayParcelListFiltered(BO.WeightCategories? W, BO.Priorities? P, DateTime? D)
         {
             IEnumerable<ParcelToList> parcelList = displayParcelList();
             return parcelList.Where(x => (W is null || x.weight == W) && (P is null || x.priority == P));
         }
+        
         public IEnumerable<ParcelToList> displayParcelListFiltered(DateTime? date1, DateTime? date2)
         {
             List<ParcelToList> list1 = new List<ParcelToList>();
@@ -540,6 +569,7 @@ namespace BL
             }
             return list1;
         }
+        
         public IEnumerable<ParcelToList> displayParcelList()//display parcel
         {
             List<ParcelToList> list1 = new List<ParcelToList>();
@@ -581,6 +611,7 @@ namespace BL
         }
 
 
+        
         public IEnumerable<StationToList> displayStationList()//dispaly station list
         {
             List<StationToList> list1 = new List<StationToList>();
@@ -595,10 +626,12 @@ namespace BL
             return list1;
         }
 
+        
         public double[] electricityUse()
         {
             throw new NotImplementedException();
         }
+
 
 
         
@@ -643,6 +676,7 @@ namespace BL
             }
             return list1;
         }
+        
         public IEnumerable<StationToList> displayFreeStationList()//Display free station list
         {
             List<StationToList> list1 = new List<StationToList>();
@@ -725,5 +759,15 @@ namespace BL
             }
             return stationFree;
         }
+
+        void IBL.Addcustomer(Customer customer)
+        {
+            throw new NotImplementedException();
+        }
+        void ActSimulator(int DroneID, Action WPFUpdate, Func<bool> StopCheck)
+        {
+
+        }
+
     }
 }
