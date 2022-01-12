@@ -40,5 +40,6 @@ namespace PL
             if (state.SelectedIndex == 2) { p.Show(); }
             if (state.SelectedIndex == 3) { c.Show(); }
         }
+        private void Close_Click(object sender, RoutedEventArgs e){ Main.Close(); }
     }
 }

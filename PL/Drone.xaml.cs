@@ -32,6 +32,7 @@ namespace PL
             model.Visibility = Visibility.Visible;
             id.Visibility = Visibility.Visible;
             StationID.Visibility = Visibility.Visible;
+            StationText.Visibility = Visibility.Visible;
             IdText.Visibility = Visibility.Hidden;
             ModelText.Visibility = Visibility.Hidden;
             LongitudeText1.Visibility = Visibility.Hidden;
@@ -45,6 +46,9 @@ namespace PL
             BatteryText2.Visibility = Visibility.Hidden;
             StatusText1.Visibility = Visibility.Hidden;
             StatusText2.Visibility = Visibility.Hidden;
+            ChangeButton1.Visibility = Visibility.Hidden;
+            ChangeButton2.Visibility = Visibility.Hidden;
+            ChargingTime.Visibility = Visibility.Hidden;
             drone.status = BO.DroneStatus.free;
             A.ItemsSource = Enum.GetValues(typeof(BO.DroneStatus));
             B.ItemsSource = Enum.GetValues(typeof(BO.WeightCategories));
@@ -133,7 +137,6 @@ namespace PL
             if (!double.TryParse(ChargingTime.Text, out D)) { D = 0; }
             if (drone.status == BO.DroneStatus.free) { ibl.sendDroneToCharging(drone.id); }
             else if (drone.status == BO.DroneStatus.matance) { ibl.releaseDroneFromCharging(drone.id, D); }
-
         }
     }
 }

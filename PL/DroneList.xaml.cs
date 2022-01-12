@@ -37,11 +37,11 @@ namespace PL
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e){ DroneListWindow.Close(); }
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void Button_Click_3(object sender, RoutedEventArgs e){ DronesListView.Items.Refresh(); }
+        private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            DronesListView.Items.Refresh();
-        }
 
+        }
 
         private void A_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
