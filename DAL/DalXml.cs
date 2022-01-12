@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using DalApi;
 using DO;
@@ -17,28 +18,23 @@ namespace DAL
         {
 
             XmlSerializer droSer = new XmlSerializer(typeof(List<Drone>));
-            XmlReader droReader = new XmlTextReader(@"Data\Drones.xml");
             List<Drone> droData;
             XmlSerializer staSer = new XmlSerializer(typeof(List<Station>));
-            XmlReader staReader = new XmlTextReader(@"Data\Stations.xml");
             List<Station> staData;
             XmlSerializer cusSer = new XmlSerializer(typeof(List<Customer>));
-            XmlReader cusReader = new XmlTextReader(@"Data\Customers.xml");
             List<Customer> cusData;
             XmlSerializer parSer = new XmlSerializer(typeof(List<Parcel>));
-            XmlReader parReader = new XmlTextReader(@"Data\Parcels.xml");
             List<Parcel> parData;
-            XmlSerializer droCharSer = new XmlSerializer(typeof(List<DroneCharge>));
-            XmlReader droCharReader = new XmlTextReader(@"Data\DroneCharges.xml");
-            List<DroneCharge> droCharData;
 
-            TextWriter cusWriter = new StreamWriter(@"Data\Customers.xml");
-            TextWriter droWriter = new StreamWriter(@"Data\Drones.xml");
-            TextWriter staWriter = new StreamWriter(@"Data\Stations.xml");
-            TextWriter parWriter = new StreamWriter(@"Data\Parcels.xml");
-            TextWriter droCharWriter = new StreamWriter(@"Data\DroneCharges.xml");
-            //singelton
+
+            //XmlSerializer droCharSer = new XmlSerializer(typeof(List<DroneCharge>));
+            //XmlReader droCharReader = new XmlTextReader(@"Data\DroneCharges.xml");
+            //List<DroneCharge> droCharData;
+
             
+
+            //singelton
+
             static DalXml() { }
             private static DalXml instace;
             static readonly object lockname = new object();
@@ -61,6 +57,7 @@ namespace DAL
             }
             public void AddCustomer(Customer customer)
             {
+                XmlReader cusReader = new XmlTextReader(@"Data\Customers.xml");
                 cusData = (List<Customer>)cusSer.Deserialize(cusReader);
                 cusReader.Close();
                 if (cusData.Any(x => x.Id == customer.Id))
@@ -69,12 +66,14 @@ namespace DAL
                 }
                 cusData.Add(customer);
 
+                TextWriter cusWriter = new StreamWriter(@"Data\Customers.xml");
                 cusSer.Serialize(cusWriter, cusData);
                 cusWriter.Close();
             }
 
             public void AddDrone(Drone drone)
             {
+                XmlReader droReader = new XmlTextReader(@"Data\Drones.xml");
                 droData = (List<Drone>)droSer.Deserialize(droReader);
                 droReader.Close();
                 if (droData.Any(x => x.Id == drone.Id))
@@ -83,26 +82,30 @@ namespace DAL
                 }
                 droData.Add(drone);
 
+                TextWriter droWriter = new StreamWriter(@"Data\Drones.xml");
                 droSer.Serialize(droWriter, droData);
                 droWriter.Close();
             }
 
             public void AddDroneCharge(DroneCharge droneCharge)
             {
-                droCharData = (List<DroneCharge>)droCharSer.Deserialize(droCharReader);
-                droCharReader.Close();
-                if (droCharData.Any(x => x.droneId == droneCharge.droneId))
+                XElement droCharData = XElement.Load(@"Data\DroneCharges.xml");
+
+                if (droCharData.Elements().Any(x => int.Parse(x.Element("droneId").Value) == droneCharge.droneId))
                 {
                     throw new IdAlreadyExistException(droneCharge.droneId);
                 }
-                droCharData.Add(droneCharge);
+                droCharData.Add(new XElement("DroneCharge", new XElement[] {
+                    new XElement("droneId", droneCharge.droneId),
+                    new XElement("StationId", droneCharge.StationId)
+                }));
 
-                droCharSer.Serialize(droCharWriter, droCharData);
-                droCharWriter.Close();
+                droCharData.Save(@"Data\DroneCharges.xml");
             }
 
             public void AddParcel(Parcel parcel)
             {
+                XmlReader parReader = new XmlTextReader(@"Data\Parcels.xml");
                 parData = (List<Parcel>)parSer.Deserialize(parReader);
                 parReader.Close();
                 if (parData.Any(x => x.Id == parcel.Id))
@@ -111,12 +114,14 @@ namespace DAL
                 }
                 parData.Add(parcel);
 
+                TextWriter parWriter = new StreamWriter(@"Data\Parcels.xml");
                 parSer.Serialize(parWriter, parData);
                 parWriter.Close();
             }
 
             public void AddStation(Station station)
             {
+                XmlReader staReader = new XmlTextReader(@"Data\Stations.xml");
                 staData = (List<Station>)staSer.Deserialize(staReader);
                 staReader.Close();
                 if (staData.Any(x => x.Id == station.Id))
@@ -125,26 +130,29 @@ namespace DAL
                 }
                 staData.Add(station);
 
+                TextWriter staWriter = new StreamWriter(@"Data\Stations.xml");
                 staSer.Serialize(staWriter, staData);
                 staWriter.Close();
             }
 
             public void deleteDroneCharge(int Id)
             {
-                droCharData = (List<DroneCharge>)droCharSer.Deserialize(droCharReader);
-                staReader.Close();
-                if (!droCharData.Any(x => x.droneId == Id))
+                XElement droCharData = XElement.Load(@"Data\DroneCharges.xml");
+
+                if (!droCharData.Elements().Any(x => int.Parse(x.Element("droneId").Value) == Id))
                 {
-                    throw new IdDoesNotExistException(Id);
+                    throw new IdAlreadyExistException(Id);
                 }
-                droCharData.Remove(displayDroneCharge(Id));
-                staSer.Serialize(staWriter, staData);
-                staWriter.Close();
+                droCharData.Elements().Where(el => int.Parse(el.Element("droneId").Value) == Id).Remove();
+
+                droCharData.Save(@"Data\DroneCharges.xml");
             }
 
             public Customer displayCustomer(int Id)
             {
-                cusData = (List <Customer>) cusSer.Deserialize(cusReader);
+                XmlReader cusReader = new XmlTextReader(@"Data\Customers.xml");
+                cusData = (List<Customer>)cusSer.Deserialize(cusReader);
+                cusReader.Close();
                 if (!cusData.Any(x => x.Id == Id))
                 {
                     throw new IdDoesNotExistException(Id);
@@ -154,7 +162,9 @@ namespace DAL
             }
             public Drone displayDrone(int Id)
             {
+                XmlReader droReader = new XmlTextReader(@"Data\Drones.xml");
                 droData = (List<Drone>)droSer.Deserialize(droReader);
+                droReader.Close();
                 if (!droData.Any(x => x.Id == Id))
                 {
                     throw new IdDoesNotExistException(Id);
@@ -164,16 +174,22 @@ namespace DAL
             }
             public DroneCharge displayDroneCharge(int Id)
             {
-                if (!droCharData.Any(x => x.droneId == Id))
+                XElement droCharData = XElement.Load(@"Data\DroneCharges.xml");
+                if (!droCharData.Elements().Any(x => int.Parse(x.Element("droneId").Value) == Id))
                 {
                     throw new IdDoesNotExistException(Id);
                 }
-                foreach (DroneCharge item in droCharData) { if (item.droneId == Id) { return item; } }
-                return new DroneCharge { droneId = -1, StationId = -1 };
+                XElement xes = droCharData.Elements().Where(el => int.Parse(el.Element("droneId").Value) == Id).First();
+                return new DroneCharge() { droneId = int.Parse(xes.Element("droneId").Value), StationId = int.Parse(xes.Element("stationId").Value) };
+
+                droCharData.Save(@"Data\DroneCharges.xml");
             }
 
             public Parcel displayParcel(int Id)
             {
+                XmlReader parReader = new XmlTextReader(@"Data\Parcels.xml");
+                parData = (List<Parcel>)parSer.Deserialize(parReader);
+                parReader.Close();
                 if (!parData.Any(x => x.Id == Id))
                 {
                     throw new IdDoesNotExistException(Id);
@@ -183,6 +199,9 @@ namespace DAL
             }
             public Station displayStation(int Id)
             {
+                XmlReader staReader = new XmlTextReader(@"Data\Stations.xml");
+                staData = (List<Station>)staSer.Deserialize(staReader);
+                staReader.Close();
                 if (!staData.Any(x => x.Id == Id))
                 {
                     throw new IdDoesNotExistException(Id);
@@ -192,6 +211,9 @@ namespace DAL
             }
             public Station displayStationByLocation(double latitude, double longitude)
             {
+                XmlReader staReader = new XmlTextReader(@"Data\Stations.xml");
+                staData = (List<Station>)staSer.Deserialize(staReader);
+                staReader.Close();
                 if (!staData.Any(x => x.Lattitude == latitude && x.Longitude == longitude))
                 {
                     throw new LocationDoesNotExistException();
@@ -200,21 +222,46 @@ namespace DAL
                 return new Station { Id = -1, Name = -1, Longitude = -1, Lattitude = -1, freeChargeSlots = -1 };
             }
 
-            public IEnumerable<Customer> displayCustomerList(){ return cusData; }
+            public IEnumerable<Customer> displayCustomerList(){
+                XmlReader cusReader = new XmlTextReader(@"Data\Customers.xml");
+                cusData = (List<Customer>)cusSer.Deserialize(cusReader);
+                cusReader.Close();
+                return cusData; }
 
 
-            public IEnumerable<DroneCharge> displayDroneChargeList() { return droCharData; }
+            public IEnumerable<DroneCharge> displayDroneChargeList()
+            {
+                XElement droCharData = XElement.Load(@"Data\DroneCharges.xml");
+                return droCharData.Elements().Select(p => new DroneCharge() { droneId = int.Parse(p.Element("droneId").Value), StationId = int.Parse(p.Element("stationId").Value) });
+            }
 
-            public IEnumerable<Drone> displayDroneList() { return droData; }
+            public IEnumerable<Drone> displayDroneList()
+            {
+                XmlReader droReader = new XmlTextReader(@"Data\Drones.xml");
+                droData = (List<Drone>)droSer.Deserialize(droReader);
+                droReader.Close();
+                return droData; }
 
 
-            public IEnumerable<Parcel> displayParcelList() { return parData; }
+            public IEnumerable<Parcel> displayParcelList() {
+                XmlReader parReader = new XmlTextReader(@"Data\Parcels.xml");
+                parData = (List<Parcel>)parSer.Deserialize(parReader);
+                parReader.Close();
+                return parData; }
 
-            public IEnumerable<Parcel> displayParcelList(Predicate<Parcel> predicate) { return parData.FindAll(predicate); }
+            public IEnumerable<Parcel> displayParcelList(Predicate<Parcel> predicate) {
+                XmlReader parReader = new XmlTextReader(@"Data\Parcels.xml");
+                parData = (List<Parcel>)parSer.Deserialize(parReader);
+                parReader.Close();
+                return parData.FindAll(predicate); }
 
 
 
-            public IEnumerable<Station> displayStationList() { return staData; }
+            public IEnumerable<Station> displayStationList() {
+                XmlReader staReader = new XmlTextReader(@"Data\Stations.xml");
+                staData = (List<Station>)staSer.Deserialize(staReader);
+                staReader.Close();
+                return staData; }
 
             public double[] electricityUse()
             {
@@ -223,6 +270,7 @@ namespace DAL
 
             public void UpdateCustomer(Customer customer)
             {
+                XmlReader cusReader = new XmlTextReader(@"Data\Customers.xml");
                 cusData = (List<Customer>)cusSer.Deserialize(cusReader);
                 cusReader.Close();
                 if (!cusData.Any(x => x.Id == customer.Id))
@@ -235,12 +283,14 @@ namespace DAL
                     i++;
                 }
                 cusData[i] = customer;
+                TextWriter cusWriter = new StreamWriter(@"Data\Customers.xml");
                 cusSer.Serialize(cusWriter, cusData);
                 cusWriter.Close();
             }
 
             public void UpdateDrone(Drone drone)
             {
+                XmlReader droReader = new XmlTextReader(@"Data\Drones.xml");
                 droData = (List<Drone>)droSer.Deserialize(droReader);
                 droReader.Close();
                 if (!droData.Any(x => x.Id == drone.Id))
@@ -253,12 +303,14 @@ namespace DAL
                     i++;
                 }
                 droData[i] = drone;
+                TextWriter droWriter = new StreamWriter(@"Data\Drones.xml");
                 droSer.Serialize(droWriter, droData);
                 droWriter.Close();
             }
 
             public void UpdateParcel(Parcel parcel)
             {
+                XmlReader parReader = new XmlTextReader(@"Data\Parcels.xml");
                 parData = (List<Parcel>)parSer.Deserialize(parReader);
                 parReader.Close();
                 if (!parData.Any(x => x.Id == parcel.Id))
@@ -271,12 +323,14 @@ namespace DAL
                     i++;
                 }
                 parData[i] = parcel;
+                TextWriter parWriter = new StreamWriter(@"Data\Parcels.xml");
                 parSer.Serialize(parWriter, parData);
                 parWriter.Close();
             }
 
             public void UpdateStation(Station station)
             {
+                XmlReader staReader = new XmlTextReader(@"Data\Stations.xml");
                 staData = (List<Station>)staSer.Deserialize(staReader);
                 staReader.Close();
                 if (!staData.Any(x => x.Id == station.Id))
@@ -289,6 +343,7 @@ namespace DAL
                     i++;
                 }
                 staData[i] = station;
+                TextWriter staWriter = new StreamWriter(@"Data\Stations.xml");
                 staSer.Serialize(staWriter, staData);
                 staWriter.Close();
             }

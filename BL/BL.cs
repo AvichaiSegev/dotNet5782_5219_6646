@@ -2,7 +2,10 @@
 using DalApi;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
+using System.Xml;
 
 namespace BL
 {
@@ -81,6 +84,7 @@ namespace BL
                     drone1.battery = 100 - randy.NextDouble() * (int)electricityUseForVacantDrone * destinationToNearStation;
                 }
                 droneList.Add(drone1);
+
             }
         }
 
