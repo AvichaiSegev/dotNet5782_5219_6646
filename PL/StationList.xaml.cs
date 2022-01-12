@@ -42,7 +42,6 @@ namespace PL
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             StationListWindow.Close();
-            ibl = new BL.BL();
             StationList s = new StationList(ibl);
             s.Show();
         }

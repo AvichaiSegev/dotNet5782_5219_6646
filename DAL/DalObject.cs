@@ -46,7 +46,6 @@ namespace DAL
             internal class Config
             {
                 internal double electricityUseForClearing, electricityUseForLight, electricityUseForMedium, electricityUseForLiver, ChargingRate;
-
             }
         }
         public class DalObject : DalApi.IDal

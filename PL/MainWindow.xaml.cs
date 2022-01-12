@@ -30,7 +30,7 @@ namespace PL
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ibl = new BL.BL();
+            ibl = BlApi.BlFactory.GetBl();
             DroneList d = new DroneList(ibl);
             StationList s = new StationList(ibl);
             CustomerList c = new CustomerList(ibl);

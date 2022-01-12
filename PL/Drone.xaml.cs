@@ -67,6 +67,9 @@ namespace PL
             {
                 ChangeButton1.Content = "Assign to parcel";
             }
+            if (drone.status == BO.DroneStatus.delivery) { ChangeButton2.Visibility = Visibility.Hidden; ChargingTime.Visibility = Visibility.Hidden; }
+            if (drone.status == BO.DroneStatus.free) { ChangeButton2.Content = "Send to charge"; ChargingTime.Visibility = Visibility.Hidden; }
+            if (drone.status == BO.DroneStatus.matance) { ChangeButton2.Content = "Release from charge"; }
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -102,7 +105,6 @@ namespace PL
                 default:
                     break;
             }
-            
             ibl.AddDrone(D, int.Parse(StationID.Text));
             DroneWindow.Close();
             DroneList d = new(ibl);
@@ -115,6 +117,23 @@ namespace PL
             drone.model = ModelText.Text;
             ibl.UpdateDrone(drone);
             DroneWindow.Close();
+        }
+        private void ChangeButton1_Click(object sender, RoutedEventArgs e)
+        {
+            if (drone.status == BO.DroneStatus.free)
+            {
+                ibl.assignParcelToDrone(drone.id);                
+            }
+            if(drone.status == BO.DroneStatus.delivery) { }
+        }
+
+        private void ChangeButton2_Click(object sender, RoutedEventArgs e)
+        {
+            double D;
+            if (!double.TryParse(ChargingTime.Text, out D)) { D = 0; }
+            if (drone.status == BO.DroneStatus.free) { ibl.sendDroneToCharging(drone.id); }
+            else if (drone.status == BO.DroneStatus.matance) { ibl.releaseDroneFromCharging(drone.id, D); }
+
         }
     }
 }
