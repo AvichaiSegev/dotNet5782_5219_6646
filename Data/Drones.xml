@@ -5,4 +5,9 @@
     <Model>benaya12345678</Model>
     <MaxWeight>light</MaxWeight>
   </Drone>
+  <Drone>
+    <Id>123</Id>
+    <Model>123</Model>
+    <MaxWeight>medium</MaxWeight>
+  </Drone>
 </ArrayOfDrone>
