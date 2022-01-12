@@ -42,7 +42,6 @@ namespace PL
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             parcelListWindow.Close();
-            ibl = new BL.BL();
             ParcelList p = new ParcelList(ibl);
             p.Show();
         }

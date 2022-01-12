@@ -39,10 +39,7 @@ namespace PL
         private void Button_Click_2(object sender, RoutedEventArgs e){ DroneListWindow.Close(); }
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            DroneListWindow.Close();
-            ibl = new BL.BL();
-            DroneList d = new DroneList(ibl);
-            d.Show();
+            DronesListView.Items.Refresh();
         }
 
 

@@ -39,7 +39,6 @@ namespace PL
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             CustomerListWindow.Close();
-            ibl = new BL.BL();
             CustomerList c = new CustomerList(ibl);
             c.Show();
         }

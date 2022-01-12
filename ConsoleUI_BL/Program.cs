@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BL;
-using IBL.BO;
+using BO;
 
 
 namespace ConsoleUI_BL
@@ -15,7 +15,7 @@ namespace ConsoleUI_BL
             int.TryParse(Console.ReadLine(), out Choice);
             return Choice;
         }
-        static private IBL.IBL logi = new BL.BL();
+        static private BlApi.IBL logi = BlApi.BlFactory.GetBl();
         public static void Main(string[] args)
         {
             int firstChoice = 0, secondChoice;

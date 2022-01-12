@@ -12,7 +12,7 @@ namespace BL
         double electricityUseForVacantDrone, electricityUseForLightParcel, electricityUseForMediumParcel, electricityUseForHeavyParcel, chargingRate;
         DalApi.IDal dali;
         static readonly Random randy = new Random();
-        public BL()//constractor
+        internal BL()//constractor
         {
             dali = DalApi.DalFactory.GetDal();
             double[] electricity = dali.electricityUse();
@@ -346,13 +346,15 @@ namespace BL
             {
                 throw new IdDoesNotExist(droneId);
             }
-            if (displayDroneToList(droneId).status != DroneStatus.free) { throw new dronesStatusIsNotApplicable(); }
-            Drone drone = displayDrone(droneId);
+            DroneToList drone = displayDroneToList(droneId);
+            if (drone.status != DroneStatus.free) { throw new dronesStatusIsNotApplicable(); }
             Location nearstation = nearStation(drone.location.latitude, drone.location.longitude);
             double distance = DistanceTo(drone.location.latitude, drone.location.longitude, nearstation.latitude, nearstation.longitude);
             double distanceAbility = drone.battery / electricityUseForVacantDrone;
             if (distanceAbility < distance) { throw new dontHaveMuchBattery(); }
-            UpdateDrone(new Drone() { id = drone.id, battery = drone.battery - (distance * electricityUseForVacantDrone), location = nearstation, maxWeight = drone.maxWeight, model = drone.model, status = DroneStatus.matance });
+            drone.battery -= (distance * electricityUseForVacantDrone);
+            drone.location = nearstation;
+            drone.status = DroneStatus.matance;
             DO.Station station = dali.displayStationByLocation(nearstation.latitude, nearstation.longitude);
             UpdateStation(new Station() { id = station.Id, name = station.Name, location = new Location(station.Longitude, station.Lattitude), numFreeChargingStands = station.freeChargeSlots - 1 });
             dali.AddDroneCharge(new DO.DroneCharge() { droneId = drone.id, StationId = station.Id });
