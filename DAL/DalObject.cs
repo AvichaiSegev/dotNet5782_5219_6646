@@ -97,6 +97,15 @@ namespace DAL
                 foreach (Drone item in data.DroneList){ if (item.Id == Id) { return item; } }
                 return new Drone { Id = -1, Model = "None", MaxWeight = WeightCategories.light};
             }
+            public DroneCharge displayDroneCharge(int Id)
+            {
+                if (!data.DroneChargeList.Any(x => x.droneId == Id))
+                {
+                    throw new IdDoesNotExistException(Id);
+                }
+                foreach (DroneCharge item in data.DroneChargeList) { if (item.droneId == Id) { return item; } }
+                return new DroneCharge { droneId = -1, StationId = -1 };
+            }
             public Customer displayCustomer(int Id)
             {
                 if (!data.CustomerList.Any(x => x.Id == Id))
@@ -231,15 +240,7 @@ namespace DAL
                 return new double[]{ 1, 1, 5, 10, 15 }; //Charging per minute
             }
 
-            public DroneCharge displayDroneCharge(int Id)
-            {
-                if (!data.DroneChargeList.Any(x => x.droneId == Id))
-                {
-                    throw new IdDoesNotExistException(Id);
-                }
-                foreach (DroneCharge item in data.DroneChargeList) { if (item.droneId == Id) { return item; } }
-                return new DroneCharge { droneId = -1, StationId = -1 };
-            }
+           
 
             public IEnumerable<DroneCharge> displayDroneChargeList()
             {
