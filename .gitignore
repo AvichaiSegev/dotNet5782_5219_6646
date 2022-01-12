@@ -350,3 +350,5 @@ MigrationBackup/
 .ionide/
 .vscode/launch.json
 .vscode/tasks.json
+BL/bin/Debug/net5.0/BL.dll
+BL/obj/BL.csproj.nuget.dgspec.json
