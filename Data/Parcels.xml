@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfParcel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Parcel>
+    <Id>1</Id>
+    <SenderId>1</SenderId>
+    <TargetId>1</TargetId>
+    <Weight>light</Weight>
+    <Priority>regular</Priority>
+    <Defined>0001-01-01T00:00:00</Defined>
+    <DroneId>1</DroneId>
+    <Assigned>0001-01-01T00:00:00</Assigned>
+    <Collected>0001-01-01T00:00:00</Collected>
+    <Provided>0001-01-01T00:00:00</Provided>
+  </Parcel>
+</ArrayOfParcel>
