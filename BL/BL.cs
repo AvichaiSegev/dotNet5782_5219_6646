@@ -400,7 +400,7 @@ namespace BL
             UpdateStation(new Station() { id = station.Id, name = station.Name, location = new Location(station.Longitude, station.Lattitude), numFreeChargingStands = station.freeChargeSlots + 1 });
             dali.deleteDroneCharge(droneId);
         }
-        //Display functions
+        //Display functionsF
         public Customer displayCustomer(int Id)//display customer
         {
             DO.Customer customer1 = dali.displayCustomer(Id);
