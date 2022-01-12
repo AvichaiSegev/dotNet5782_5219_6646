@@ -12,8 +12,15 @@ namespace BL
         int DELAY = 500;
         Simulator(BL bl, int DroneID, Action WPFUpdate, Func<bool> StopCheck)
         {
-            while(true)
+            Drone drone;
+            while(!StopCheck())
             {
+                drone = bl.displayDrone(DroneID);
+                switch (drone.status)
+                {
+                    default:
+                        break;
+                }
                 Thread.Sleep(DELAY);
             }
         }
