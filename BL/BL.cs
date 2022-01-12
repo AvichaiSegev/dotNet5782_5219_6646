@@ -770,5 +770,9 @@ namespace BL
 
         }
 
+        void IBL.ActSimulator(int DroneID, Action WPFUpdate, Func<bool> StopCheck)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
