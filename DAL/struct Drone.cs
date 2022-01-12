@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace DO
 {
@@ -7,6 +8,7 @@ namespace DO
         public int Id { get; set; }
         public string Model { get; set; }
         public WeightCategories MaxWeight { get; set; }
+        
         public override string ToString()
         {
             return "Drone Id: " + this.Id +

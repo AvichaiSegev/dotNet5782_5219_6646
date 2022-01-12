@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using DalApi;
 using DO;
+using System.Runtime.CompilerServices;
 
 namespace DAL
 {
@@ -68,6 +69,7 @@ namespace DAL
                     return instace;
                 }
             }
+            
             public void AddCustomer(Customer customer)
             {
                 XmlReader cusReader = new XmlTextReader(@"Data\Customers.xml");
@@ -84,6 +86,7 @@ namespace DAL
                 cusWriter.Close();
             }
 
+            
             public void AddDrone(Drone drone)
             {
                 XmlReader droReader = new XmlTextReader(@"Data\Drones.xml");
@@ -100,6 +103,7 @@ namespace DAL
                 droWriter.Close();
             }
 
+            
             public void AddDroneCharge(DroneCharge droneCharge)
             {
                 XElement droCharData = XElement.Load(@"Data\DroneCharges.xml");
@@ -116,6 +120,7 @@ namespace DAL
                 droCharData.Save(@"Data\DroneCharges.xml");
             }
 
+            
             public void AddParcel(Parcel parcel)
             {
                 XmlReader parReader = new XmlTextReader(@"Data\Parcels.xml");
@@ -132,6 +137,7 @@ namespace DAL
                 parWriter.Close();
             }
 
+            
             public void AddStation(Station station)
             {
                 XmlReader staReader = new XmlTextReader(@"Data\Stations.xml");
@@ -148,6 +154,7 @@ namespace DAL
                 staWriter.Close();
             }
 
+            
             public void deleteDroneCharge(int Id)
             {
                 XElement droCharData = XElement.Load(@"Data\DroneCharges.xml");
@@ -161,6 +168,7 @@ namespace DAL
                 droCharData.Save(@"Data\DroneCharges.xml");
             }
 
+            
             public Customer displayCustomer(int Id)
             {
                 XmlReader cusReader = new XmlTextReader(@"Data\Customers.xml");
@@ -173,6 +181,7 @@ namespace DAL
                 foreach (Customer item in cusData) { if (item.Id == Id) { return item; } }
                 return new Customer { Id = -1, Name = "None", Phone = "0", Longitude = 0, Lattitude = 0 };
             }
+            
             public Drone displayDrone(int Id)
             {
                 XmlReader droReader = new XmlTextReader(@"Data\Drones.xml");
@@ -185,6 +194,7 @@ namespace DAL
                 foreach (Drone item in droData) { if (item.Id == Id) { return item; } }
                 return new Drone { Id = -1, Model = "None", MaxWeight = WeightCategories.light };
             }
+            
             public DroneCharge displayDroneCharge(int Id)
             {
                 XElement droCharData = XElement.Load(@"Data\DroneCharges.xml");
@@ -198,6 +208,7 @@ namespace DAL
                 droCharData.Save(@"Data\DroneCharges.xml");
             }
 
+            
             public Parcel displayParcel(int Id)
             {
                 XmlReader parReader = new XmlTextReader(@"Data\Parcels.xml");
@@ -210,6 +221,7 @@ namespace DAL
                 foreach (Parcel item in parData) { if (item.Id == Id) { return item; } }
                 return new Parcel { Id = -1, SenderId = -1, TargetId = -1, Weight = WeightCategories.light, Priority = Priorities.regular, Defined = DateTime.Now, Assigned = DateTime.Now, Collected = DateTime.Now, Provided = DateTime.Now, DroneId = -1 };
             }
+            
             public Station displayStation(int Id)
             {
                 XmlReader staReader = new XmlTextReader(@"Data\Stations.xml");
@@ -222,6 +234,7 @@ namespace DAL
                 foreach (Station item in staData) { if (item.Id == Id) { return item; } }
                 return new Station { Id = -1, Name = -1, Longitude = -1, Lattitude = -1, freeChargeSlots = -1 };
             }
+            
             public Station displayStationByLocation(double latitude, double longitude)
             {
                 XmlReader staReader = new XmlTextReader(@"Data\Stations.xml");
@@ -235,6 +248,7 @@ namespace DAL
                 return new Station { Id = -1, Name = -1, Longitude = -1, Lattitude = -1, freeChargeSlots = -1 };
             }
 
+            
             public IEnumerable<Customer> displayCustomerList(){
                 XmlReader cusReader = new XmlTextReader(@"Data\Customers.xml");
                 cusData = (List<Customer>)cusSer.Deserialize(cusReader);
@@ -242,12 +256,14 @@ namespace DAL
                 return cusData; }
 
 
+            
             public IEnumerable<DroneCharge> displayDroneChargeList()
             {
                 XElement droCharData = XElement.Load(@"Data\DroneCharges.xml");
                 return droCharData.Elements().Select(p => new DroneCharge() { droneId = int.Parse(p.Element("droneId").Value), StationId = int.Parse(p.Element("stationId").Value) });
             }
 
+            
             public IEnumerable<Drone> displayDroneList()
             {
                 XmlReader droReader = new XmlTextReader(@"Data\Drones.xml");
@@ -255,13 +271,14 @@ namespace DAL
                 droReader.Close();
                 return droData; }
 
-
+            
             public IEnumerable<Parcel> displayParcelList() {
                 XmlReader parReader = new XmlTextReader(@"Data\Parcels.xml");
                 parData = (List<Parcel>)parSer.Deserialize(parReader);
                 parReader.Close();
                 return parData; }
 
+            
             public IEnumerable<Parcel> displayParcelList(Predicate<Parcel> predicate) {
                 XmlReader parReader = new XmlTextReader(@"Data\Parcels.xml");
                 parData = (List<Parcel>)parSer.Deserialize(parReader);
@@ -270,17 +287,20 @@ namespace DAL
 
 
 
+            
             public IEnumerable<Station> displayStationList() {
                 XmlReader staReader = new XmlTextReader(@"Data\Stations.xml");
                 staData = (List<Station>)staSer.Deserialize(staReader);
                 staReader.Close();
                 return staData; }
 
+            
             public double[] electricityUse()
             {
                 return new double[] { 1, 1, 5, 10, 15 }; //Charging per minute
             }
 
+            
             public void UpdateCustomer(Customer customer)
             {
                 XmlReader cusReader = new XmlTextReader(@"Data\Customers.xml");
@@ -301,6 +321,7 @@ namespace DAL
                 cusWriter.Close();
             }
 
+            
             public void UpdateDrone(Drone drone)
             {
                 XmlReader droReader = new XmlTextReader(@"Data\Drones.xml");
@@ -321,6 +342,7 @@ namespace DAL
                 droWriter.Close();
             }
 
+            
             public void UpdateParcel(Parcel parcel)
             {
                 XmlReader parReader = new XmlTextReader(@"Data\Parcels.xml");
@@ -341,6 +363,7 @@ namespace DAL
                 parWriter.Close();
             }
 
+            
             public void UpdateStation(Station station)
             {
                 XmlReader staReader = new XmlTextReader(@"Data\Stations.xml");

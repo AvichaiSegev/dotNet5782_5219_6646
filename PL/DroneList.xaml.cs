@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Runtime.CompilerServices;
 
 namespace PL
 {
@@ -33,7 +34,6 @@ namespace PL
         {
             Drone d = new Drone(ibl);
             d.Show();
-            this.Close();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e){ DroneListWindow.Close(); }

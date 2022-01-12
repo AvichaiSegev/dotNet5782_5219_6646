@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BO;
+using System.Runtime.CompilerServices;
 
 namespace BlApi
 {
@@ -42,7 +43,7 @@ namespace BlApi
         IEnumerable<ParcelToList> displayFreeParcelList();
         IEnumerable<ParcelToList> displayParcelListFiltered(DateTime? date1, DateTime? date2);
 
-
+        void ActSimulator(int DroneID, Action WPFUpdate, Func<bool> StopCheck);
 
         double[] electricityUse();
     }

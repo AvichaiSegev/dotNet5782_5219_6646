@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Runtime.CompilerServices;
 
 namespace PL
 {
@@ -111,11 +112,9 @@ namespace PL
             }
             ibl.AddDrone(D, int.Parse(StationID.Text));
             DroneWindow.Close();
-            DroneList d = new(ibl);
-            d.Show();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e) { DroneWindow.Close(); DroneList d = new(ibl); d.Show(); }
+        private void Button_Click_1(object sender, RoutedEventArgs e) { DroneWindow.Close(); }
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             drone.model = ModelText.Text;
