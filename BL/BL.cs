@@ -378,7 +378,7 @@ namespace BL
             drone.battery -= (distance * electricityUseForVacantDrone);
             drone.location = nearstation;
             drone.status = DroneStatus.matance;
-            UpdateDrone(new Drone() { id = drone.id, battery = drone.battery, location = drone.location, maxWeight = drone.maxWeight, model = drone.model, parcel = new ParcelInTransfer() { id = drone.parcelNumber }, status = DroneStatus.matance});
+            UpdateDrone(new Drone() { id = drone.id, battery = drone.battery, location = drone.location, maxWeight = drone.maxWeight, model = drone.model, status = DroneStatus.matance, parcel = new ParcelInTransfer() { id = drone.parcelNumber} });
             DO.Station station = dali.displayStationByLocation(nearstation.latitude, nearstation.longitude);
             UpdateStation(new Station() { id = station.Id, name = station.Name, location = new Location(station.Longitude, station.Lattitude), numFreeChargingStands = station.freeChargeSlots - 1 });
             dali.AddDroneCharge(new DO.DroneCharge() { droneId = drone.id, StationId = station.Id });
