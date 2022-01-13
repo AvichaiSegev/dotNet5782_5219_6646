@@ -150,7 +150,11 @@ namespace PL
         {
             if (drone.status == BO.DroneStatus.free)
             {
-                ibl.assignParcelToDrone(drone.id);
+                BO.Parcel parcel = ibl.assignParcelToDrone(drone.id);
+                BO.Location send = ibl.displayCustomer(parcel.delivered.id).location;
+                BO.Location recieved = ibl.displayCustomer(parcel.getted.id).location;
+                drone.parcel = new ParcelInTransfer() { id = parcel.Id, sender = parcel.delivered, getter = parcel.getted, priority = parcel.priority, status = false, collection = send, target = recieved, distance = ibl.DistanceTo(send.latitude, send.longitude, recieved.latitude, recieved.longitude), weight = parcel.weight };
+                drone.status = BO.DroneStatus.delivery;
             }
             else if(drone.status == BO.DroneStatus.delivery)
             {
@@ -158,12 +162,10 @@ namespace PL
                 {
                     ibl.collectParcelByDrone(drone.id);
                 }
-                else
+                else if(ibl.displayParcel(drone.parcel.id).providedParcelTime == DateTime.MinValue)
                 {
-                    if(ibl.displayParcel(drone.parcel.id).providedParcelTime == DateTime.MinValue)
-                    {
-                        ibl.provideParcelByDrone(drone.id);
-                    }
+                    ibl.provideParcelByDrone(drone.id);
+                    drone.status = BO.DroneStatus.free;
                 }
             }
         }
