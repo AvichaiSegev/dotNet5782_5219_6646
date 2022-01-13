@@ -90,10 +90,10 @@ namespace PL
             StatusText2.Text = "" + _drone.status;
             drone = _drone;
             if (drone.status == BO.DroneStatus.free){ ChangeButton1.Content = "Assign to parcel"; }
-            //if (drone.parcel != null && ibl.displayParcel(drone.parcel.id).collectedParcelTime == DateTime.MinValue) { ChangeButton1.Content = "Clollect parcel";  }
+            if (drone.parcel != null && ibl.displayParcel(drone.parcel.id).collectedParcelTime == DateTime.MinValue) { ChangeButton1.Content = "Clollect parcel";  }
             else
             {
-                //if (ibl.displayParcel(drone.parcel.id).providedParcelTime == DateTime.MinValue) { ChangeButton1.Content = "Provide parcel"; }
+                if (ibl.displayParcel(drone.parcel.id).providedParcelTime == DateTime.MinValue) { ChangeButton1.Content = "Provide parcel"; }
             }
             if (drone.status == BO.DroneStatus.delivery) { ChangeButton2.Visibility = Visibility.Hidden; ChargingTime.Visibility = Visibility.Hidden; }
             if (drone.status == BO.DroneStatus.free) { ChangeButton2.Content = "Send to charge"; ChargingTime.Visibility = Visibility.Hidden; }
@@ -121,6 +121,7 @@ namespace PL
             if(id.Text != "")D.id = Convert.ToInt32(id.Text);
             else { D.id = 0; }
             D.status = (BO.DroneStatus)0;
+            D.battery = 20;
             switch (B.SelectedIndex)
             {
                 case 0:

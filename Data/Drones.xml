@@ -10,4 +10,24 @@
     <Model>54</Model>
     <MaxWeight>light</MaxWeight>
   </Drone>
+  <Drone>
+    <Id>987689</Id>
+    <Model>jhmyfm23</Model>
+    <MaxWeight>medium</MaxWeight>
+  </Drone>
+  <Drone>
+    <Id>123456789</Id>
+    <Model>benaya!!</Model>
+    <MaxWeight>light</MaxWeight>
+  </Drone>
+  <Drone>
+    <Id>12345</Id>
+    <Model>brhnhgfd</Model>
+    <MaxWeight>light</MaxWeight>
+  </Drone>
+  <Drone>
+    <Id>191919</Id>
+    <Model>bbbbbbb</Model>
+    <MaxWeight>liver</MaxWeight>
+  </Drone>
 </ArrayOfDrone>
