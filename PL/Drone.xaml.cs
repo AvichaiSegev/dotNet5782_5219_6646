@@ -90,8 +90,8 @@ namespace PL
             StatusText2.Text = "" + _drone.status;
             drone = _drone;
             if (drone.status == BO.DroneStatus.free){ ChangeButton1.Content = "Assign to parcel"; }
-            if (drone.parcel != null && ibl.displayParcel(drone.parcel.id).collectedParcelTime == DateTime.MinValue) { ChangeButton1.Content = "Clollect parcel";  }
-            else
+            if (drone.parcel.id != 0 && ibl.displayParcel(drone.parcel.id).collectedParcelTime == DateTime.MinValue) { ChangeButton1.Content = "Clollect parcel";  }
+            else if (drone.parcel.id != 0)
             {
                 if (ibl.displayParcel(drone.parcel.id).providedParcelTime == DateTime.MinValue) { ChangeButton1.Content = "Provide parcel"; }
             }
