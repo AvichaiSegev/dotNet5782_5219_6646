@@ -17,7 +17,7 @@ namespace BL
         public double electricityUseForVacantDrone, electricityUseForLightParcel, electricityUseForMediumParcel, electricityUseForHeavyParcel, chargingRate;
         DalApi.IDal dali;
         static readonly Random randy = new Random();
-        public BL()//constractor
+        private BL()//constractor
         {
             dali = DalApi.DalFactory.GetDal();
             double[] electricity = dali.electricityUse();
