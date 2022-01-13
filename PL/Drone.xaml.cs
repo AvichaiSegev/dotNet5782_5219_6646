@@ -48,7 +48,6 @@ namespace PL
             id.Visibility = Visibility.Visible;
             StationID.Visibility = Visibility.Visible;
             StationText.Visibility = Visibility.Visible;
-            CheckText.Visibility = Visibility.Hidden;
             IdText.Visibility = Visibility.Hidden;
             ModelText.Visibility = Visibility.Hidden;
             LongitudeText1.Visibility = Visibility.Hidden;
@@ -79,7 +78,6 @@ namespace PL
             worker.WorkerReportsProgress = true;
             worker.ProgressChanged += ScreenWork;
             worker.RunWorkerCompleted += CompletedWork;
-            CheckText.Visibility = Visibility.Hidden;
             ibl = V;
             IdText.Text = "" + _drone.id;
             ModelText.Text = _drone.model;
@@ -90,7 +88,7 @@ namespace PL
             StatusText2.Text = "" + _drone.status;
             drone = _drone;
             if (drone.status == BO.DroneStatus.free){ ChangeButton1.Content = "Assign to parcel"; }
-            if (drone.parcel.id != 0 && ibl.displayParcel(drone.parcel.id).collectedParcelTime == DateTime.MinValue) { ChangeButton1.Content = "Clollect parcel";  }
+            else if (drone.parcel.id != 0 && ibl.displayParcel(drone.parcel.id).collectedParcelTime == DateTime.MinValue) { ChangeButton1.Content = "Clollect parcel";  }
             else if (drone.parcel.id != 0)
             {
                 if (ibl.displayParcel(drone.parcel.id).providedParcelTime == DateTime.MinValue) { ChangeButton1.Content = "Provide parcel"; }
@@ -174,8 +172,9 @@ namespace PL
         {
             double D;
             if (!double.TryParse(ChargingTime.Text, out D)) { D = 0; }
-            if (drone.status == BO.DroneStatus.free) { ibl.sendDroneToCharging(drone.id); drone.status = BO.DroneStatus.matance; ChangeButton2.Visibility = Visibility.Hidden; CheckText.Visibility = Visibility.Visible; }
-            else if (drone.status == BO.DroneStatus.matance) { ibl.releaseDroneFromCharging(drone.id, D); drone.status = BO.DroneStatus.free; ChangeButton2.Visibility = Visibility.Hidden; ChargingTime.Visibility = Visibility.Hidden; CheckText.Visibility = Visibility.Visible; }
+            if (drone.status == BO.DroneStatus.free) { ibl.sendDroneToCharging(drone.id); drone.status = BO.DroneStatus.matance; ChangeButton2.Visibility = Visibility.Hidden; }
+            else if (drone.status == BO.DroneStatus.matance) { ibl.releaseDroneFromCharging(drone.id, D); drone.status = BO.DroneStatus.free; ChangeButton2.Visibility = Visibility.Hidden; ChargingTime.Visibility = Visibility.Hidden; }
+            DroneWindow.Close();
         }
         private void HideUpdate()
         {

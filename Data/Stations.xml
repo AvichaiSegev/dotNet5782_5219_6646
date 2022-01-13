@@ -5,7 +5,7 @@
     <Name>1</Name>
     <Longitude>1</Longitude>
     <Lattitude>1</Lattitude>
-    <freeChargeSlots>-42</freeChargeSlots>
+    <freeChargeSlots>-46</freeChargeSlots>
   </Station>
   <Station>
     <Id>123467890</Id>

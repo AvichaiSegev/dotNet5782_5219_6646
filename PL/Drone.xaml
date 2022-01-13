@@ -34,7 +34,6 @@
         <TextBlock Name="StatusText2" Text="{Binding drone.status}" HorizontalAlignment="Left" Margin="347,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="79" FontFamily="Comic Sans MS" FontSize="20" RenderTransformOrigin="0.484,1.603"/>
         <Button Name="ChangeButton1" HorizontalAlignment="Left" Margin="10,298,0,0" VerticalAlignment="Top" Background="#00ADB5" FontFamily="Comic Sans MS" FontSize="15" Width="180" Click="ChangeButton1_Click" Height="44"/>
         <Button Name="ChangeButton2" HorizontalAlignment="Left" Margin="217,296,0,0" VerticalAlignment="Top" Background="#00ADB5" FontFamily="Comic Sans MS" FontSize="15" Width="180" Click="ChangeButton2_Click" Height="46"/>
-        <TextBlock Name="CheckText" Text="Check!" HorizontalAlignment="Left" Margin="279,303,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="79" FontFamily="Comic Sans MS" FontSize="20" RenderTransformOrigin="0.484,1.603"/>
         <TextBox Name ="ChargingTime" HorizontalAlignment="Left" Margin="217,344,0,0" Background="#00FFF5" TextWrapping="Wrap" VerticalAlignment="Top" Width="183" Height="30" RenderTransformOrigin="0.5,0.5" FontFamily="Comic Sans MS" FontSize="20"/>
         <Button x:Name="Simulator" Content="Simulator" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32" Width="211" FontFamily="Comic Sans MS" Background="#00ADB5" FontSize="20" Click="Simulator_Button" Margin="557,375,0,0" RenderTransformOrigin="0.356,-0.509"/>
     </Grid>

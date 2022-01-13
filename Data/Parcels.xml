@@ -8,8 +8,8 @@
     <Priority>regular</Priority>
     <Defined>0001-01-01T00:00:00</Defined>
     <DroneId>1</DroneId>
-    <Assigned>2022-01-13T15:14:13.5425702+02:00</Assigned>
-    <Collected>0001-01-01T00:00:00</Collected>
-    <Provided>0001-01-01T00:00:00</Provided>
+    <Assigned>2022-01-13T15:56:54.7460567+02:00</Assigned>
+    <Collected>2022-01-13T15:28:59.5026608+02:00</Collected>
+    <Provided>2022-01-13T15:58:02.5117487+02:00</Provided>
   </Parcel>
 </ArrayOfParcel>
