@@ -336,7 +336,7 @@ namespace BL
             DroneToList droneToList = displayDroneToList(droneId);
             Parcel parcel = displayParcel(droneToList.parcelNumber);
             Customer customer = displayCustomer(parcel.getted.id);
-            if (droneToList.status != DroneStatus.delivery || parcel.droneInParcel.id != droneId || parcel.collectedParcelTime == null || parcel.providedParcelTime != null)
+            if (droneToList.status != DroneStatus.delivery || parcel.droneInParcel.id != droneId || parcel.collectedParcelTime == DateTime.MinValue || parcel.providedParcelTime != DateTime.MinValue)
             {
                 throw new DroneDoesNotSuitable();
             }

@@ -30,9 +30,11 @@ namespace PL
             parcel.delivered = new BO.CustomerInParcel();
             parcel.getted = new BO.CustomerInParcel();
         }
-        public Parcel(BlApi.IBL V, BO.Parcel parcel)
+        public Parcel(BlApi.IBL V, BO.Parcel _parcel)
         {
             InitializeComponent();
+            parcel = _parcel;
+            DataContext = this;
             ibl = V;
         }
 
