@@ -1,11 +1,2 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<DroneCharge>
-  <DroneCharge>
-    <droneId>1</droneId>
-    <StationId>1</StationId>
-  </DroneCharge>
-  <DroneCharge>
-    <droneId>12</droneId>
-    <StationId>1</StationId>
-  </DroneCharge>
-</DroneCharge>
+<DroneCharge />

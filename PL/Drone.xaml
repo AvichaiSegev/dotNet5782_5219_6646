@@ -9,7 +9,7 @@
         Background="#222831"
         Name ="DroneWindow">
     <Grid>
-        <ComboBox x:Name ="A" Visibility="Hidden"  FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,0,375"/>
+        <TextBlock x:Name ="A" Text = "Add drone:" Visibility="Hidden" FontFamily="Comic Sans MS" FontSize="25" Margin="324,0,276,375"/>
         <ComboBox x:Name ="B" Visibility="Hidden" FontFamily="Comic Sans MS" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,81,0,294"/>
         <Button x:Name="AddButton" Visibility="Hidden" Content="Add" HorizontalAlignment="Center" Margin="0,342,0,0" VerticalAlignment="Top" Background="#00ADB5" FontFamily="Comic Sans MS" FontSize="20" Width="200" Click="Button_Click"/>
         <Button Name="CloseButton" Visibility="Hidden" Content="Close" HorizontalAlignment="Left" Margin="347,374,0,0" VerticalAlignment="Top" Background="#00ADB5" FontFamily="Comic Sans MS" FontSize="15" Width="100" Click="Button_Click_1"/>
@@ -34,6 +34,7 @@
         <TextBlock Name="StatusText2" Text="0" HorizontalAlignment="Left" Margin="347,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="79" FontFamily="Comic Sans MS" FontSize="20" RenderTransformOrigin="0.484,1.603"/>
         <Button Name="ChangeButton1" HorizontalAlignment="Left" Margin="10,298,0,0" VerticalAlignment="Top" Background="#00ADB5" FontFamily="Comic Sans MS" FontSize="15" Width="180" Click="ChangeButton1_Click" Height="44"/>
         <Button Name="ChangeButton2" HorizontalAlignment="Left" Margin="217,296,0,0" VerticalAlignment="Top" Background="#00ADB5" FontFamily="Comic Sans MS" FontSize="15" Width="180" Click="ChangeButton2_Click" Height="46"/>
+        <TextBlock Name="CheckText" Text="Check!" HorizontalAlignment="Left" Margin="279,302,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="79" FontFamily="Comic Sans MS" FontSize="20" RenderTransformOrigin="0.484,1.603"/>
         <TextBox Name ="ChargingTime" HorizontalAlignment="Left" Margin="217,344,0,0" Background="#00FFF5" TextWrapping="Wrap" VerticalAlignment="Top" Width="183" Height="30" RenderTransformOrigin="0.5,0.5" FontFamily="Comic Sans MS" FontSize="20"/>
     </Grid>
 </Window>

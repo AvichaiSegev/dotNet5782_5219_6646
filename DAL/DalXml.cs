@@ -119,7 +119,6 @@ namespace DAL
 
                 droCharData.Save(@"Data\DroneCharges.xml");
             }
-
             
             public void AddParcel(Parcel parcel)
             {
@@ -136,7 +135,6 @@ namespace DAL
                 parSer.Serialize(parWriter, parData);
                 parWriter.Close();
             }
-
             
             public void AddStation(Station station)
             {
