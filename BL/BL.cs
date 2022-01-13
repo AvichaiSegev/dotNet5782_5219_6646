@@ -126,8 +126,7 @@ namespace BL
             {
                 double DBattery = 20 + 20 * randy.NextDouble();
                 Location Dlocation = new Location(dali.displayStation(stationId).Longitude, dali.displayStation(stationId).Lattitude);
-
-                droneList.Add(new DroneToList() { id = drone.id, maxWeight = drone.maxWeight, battery = DBattery, location = Dlocation, status = DroneStatus.matance, model = drone.model });
+                droneList.Add(new DroneToList() { id = drone.id, maxWeight = drone.maxWeight, battery = DBattery, location = Dlocation, status = DroneStatus.matance, model = drone.model, parcelNumber = -1 });
                 DO.Drone Ddrone = new DO.Drone { Id = drone.id, MaxWeight = (DO.WeightCategories)drone.maxWeight, Model = drone.model };
                 dali.AddDrone(Ddrone);
             }
