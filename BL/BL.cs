@@ -240,7 +240,7 @@ namespace BL
             dali.UpdateStation(Dstation);
         }
         
-        public void assignParcelToDrone(int droneId)//Assign parcel to drone
+        public Parcel assignParcelToDrone(int droneId)//Assign parcel to drone
         {
             Drone drone = displayDrone(droneId);
             Parcel parcel = assignAParcelToDrone(drone, Priorities.emergency);
@@ -257,6 +257,7 @@ namespace BL
             parcel.droneInParcel = new DroneInParcel() { battery = drone.battery, id = drone.id, location = drone.location };
             parcel.assignedParcelTime = DateTime.Now;
             UpdateParcel(parcel);
+            return parcel;
         }
         Parcel assignAParcelToDrone(Drone drone, Priorities priority)//Assign parcel to drone - Internal function
         {
@@ -316,7 +317,7 @@ namespace BL
             DroneToList droneToList = displayDroneToList(droneId);
             Parcel parcel = displayParcel(droneToList.parcelNumber);
             Customer customer = displayCustomer(parcel.delivered.id);
-            if (droneToList.status != DroneStatus.delivery || parcel.droneInParcel.id != droneId || parcel.assignedParcelTime == null || parcel.collectedParcelTime != null)
+            if (droneToList.status != DroneStatus.delivery || parcel.droneInParcel.id != droneId || parcel.assignedParcelTime == DateTime.MinValue || parcel.collectedParcelTime != DateTime.MinValue)
             {
                 throw new DroneDoesNotSuitable();
             }
@@ -709,7 +710,7 @@ namespace BL
             Location location1 = new Location(nearStation.Longitude, nearStation.Lattitude);
             return location1;
         }
-        double DistanceTo(double lat1, double lon1, double lat2, double lon2)//calculating distance between 2 locations
+        public double DistanceTo(double lat1, double lon1, double lat2, double lon2)//calculating distance between 2 locations
         {
             double rlat1 = Math.PI * lat1 / 180;
             double rlat2 = Math.PI * lat2 / 180;

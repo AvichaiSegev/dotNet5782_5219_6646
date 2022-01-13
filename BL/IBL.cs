@@ -28,7 +28,7 @@ namespace BlApi
         void releaseDroneFromCharging(int droneId, double chargingTime);
         void collectParcelByDrone(int droneId);
         void provideParcelByDrone(int droneId);
-        void assignParcelToDrone(int droneId);
+        Parcel assignParcelToDrone(int droneId);
         Station displayStation(int Id);
         Drone displayDrone(int Id);
         Customer displayCustomer(int Id);
@@ -42,7 +42,7 @@ namespace BlApi
         IEnumerable<ParcelToList> displayParcelListFiltered(BO.WeightCategories? W, BO.Priorities? P, DateTime? D);
         IEnumerable<ParcelToList> displayFreeParcelList();
         IEnumerable<ParcelToList> displayParcelListFiltered(DateTime? date1, DateTime? date2);
-
+        double DistanceTo(double lat1, double lon1, double lat2, double lon2);
         void ActSimulator(int DroneID, Action WPFUpdate, Func<bool> StopCheck);
 
         double[] electricityUse();
