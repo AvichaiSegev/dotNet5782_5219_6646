@@ -14,10 +14,10 @@ namespace BL
     public class BL : BlApi.IBL
     {
         List<DroneToList> droneList = new List<DroneToList>();
-        double electricityUseForVacantDrone, electricityUseForLightParcel, electricityUseForMediumParcel, electricityUseForHeavyParcel, chargingRate;
+        public double electricityUseForVacantDrone, electricityUseForLightParcel, electricityUseForMediumParcel, electricityUseForHeavyParcel, chargingRate;
         DalApi.IDal dali;
         static readonly Random randy = new Random();
-        internal BL()//constractor
+        public BL()//constractor
         {
             dali = DalApi.DalFactory.GetDal();
             double[] electricity = dali.electricityUse();
@@ -710,7 +710,7 @@ namespace BL
             Location location1 = new Location(nearStation.Longitude, nearStation.Lattitude);
             return location1;
         }
-        double DistanceTo(double lat1, double lon1, double lat2, double lon2)//calculating distance between 2 locations
+        public double DistanceTo(double lat1, double lon1, double lat2, double lon2)//calculating distance between 2 locations
         {
             double rlat1 = Math.PI * lat1 / 180;
             double rlat2 = Math.PI * lat2 / 180;

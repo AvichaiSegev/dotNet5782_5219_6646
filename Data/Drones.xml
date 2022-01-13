@@ -20,4 +20,14 @@
     <Model>benaya!!</Model>
     <MaxWeight>light</MaxWeight>
   </Drone>
+  <Drone>
+    <Id>12345</Id>
+    <Model>brhnhgfd</Model>
+    <MaxWeight>light</MaxWeight>
+  </Drone>
+  <Drone>
+    <Id>191919</Id>
+    <Model>bbbbbbb</Model>
+    <MaxWeight>liver</MaxWeight>
+  </Drone>
 </ArrayOfDrone>
