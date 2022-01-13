@@ -26,6 +26,8 @@ namespace DAL
             List<Customer> cusData;
             XmlSerializer parSer = new XmlSerializer(typeof(List<Parcel>));
             List<Parcel> parData;
+            XmlSerializer droCharSer = new XmlSerializer(typeof(List<Parcel>));
+            List<DroneCharge> droCharData;
 
 
             //XmlSerializer droCharSer = new XmlSerializer(typeof(List<DroneCharge>));
@@ -37,6 +39,17 @@ namespace DAL
             //singelton
 
             static DalXml() { }
+
+            public DalXml()
+            {
+                XElement droCharData = droCharData = new XElement("DroneCharge", new XElement[] { });
+
+                droCharData.Save(@"Data\DroneCharges.xml");
+                //XmlReader droReader = new XmlTextReader(@"Data\Drones.xml");
+                //droData = (List<Drone>)droSer.Deserialize(droReader);
+                //droReader.Close();
+            }
+
             private static DalXml instace;
             static readonly object lockname = new object();
             public static DalXml Instace
