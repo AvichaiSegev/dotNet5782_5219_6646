@@ -29,6 +29,7 @@ namespace PL
     {
         BlApi.IBL ibl;
         BO.Drone drone;
+        BO.DroneStatus status;
         bool S = false;
         BackgroundWorker worker;
         public event EventHandler<RoutedEventArgs> needToRefreshScreenEvent;
@@ -200,9 +201,11 @@ namespace PL
                 change.Content = "Simulator";
                 S = true;
                 DisplayUpdate();
+                drone.status = status;
             }
             else
             {
+                status = drone.status;
                 worker.RunWorkerAsync();
                 S = false;
                 Button change = sender as Button;
