@@ -9,8 +9,8 @@ namespace BL
     class Simulator
     {
         int speed;
-        int DELAY = 500;
-        Simulator(BL bl, int DroneID, Action WPFUpdate, Func<bool> StopCheck)
+        int SLEEP = 500;
+        public Simulator(BL bl, int DroneID, Action WPFUpdate, Func<bool> StopCheck)
         {
             Drone drone;
             while(!StopCheck())
@@ -18,10 +18,24 @@ namespace BL
                 drone = bl.displayDrone(DroneID);
                 switch (drone.status)
                 {
+                    case DroneStatus.free:
+                        break;
+                    case DroneStatus.delivery:
+                        BO.Parcel parcel = bl.displayParcel(drone.parcel.id);
+                        if(parcel.collectedParcelTime == null)
+                        {
+                            collect(drone, parcel);
+                        }
+                        break;
+                    case DroneStatus.matance:
+                        break;
                     default:
                         break;
                 }
-                Thread.Sleep(DELAY);
+            }
+            void collect(Drone drone, Parcel parcel)
+            {
+
             }
         }
     }
