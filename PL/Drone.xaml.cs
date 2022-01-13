@@ -109,7 +109,7 @@ namespace PL
         {
             if (drone.status == BO.DroneStatus.free)
             {
-                ibl.assignParcelToDrone(drone.id);                
+                ibl.assignParcelToDrone(drone.id);
             }
             if(drone.status == BO.DroneStatus.delivery)
             {
