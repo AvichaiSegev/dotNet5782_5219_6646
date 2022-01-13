@@ -766,12 +766,10 @@ namespace BL
         }
         void ActSimulator(int DroneID, Action WPFUpdate, Func<bool> StopCheck)
         {
-
         }
-
         void IBL.ActSimulator(int DroneID, Action WPFUpdate, Func<bool> StopCheck)
         {
-            throw new NotImplementedException();
+            Simulator S = new Simulator(this, DroneID, WPFUpdate, StopCheck);
         }
     }
 }
